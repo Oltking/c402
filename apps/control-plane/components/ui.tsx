@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-export function Pulse({ color = "#34d399" }: { color?: string }) {
+export function Pulse({ color = "#15803d" }: { color?: string }) {
   return <span className="pulse" style={{ background: color, color }} />;
 }
 
@@ -21,7 +21,7 @@ export function short(addr = "", head = 6, tail = 4) {
 export function AddressPill({ address, explorer, kind = "address" }: { address: string; explorer: string; kind?: "address" | "tx" }) {
   return (
     <a href={`${explorer}/${kind}/${address}`} target="_blank" rel="noreferrer"
-      className="mono inline-flex items-center gap-1 rounded-md border border-line-2 bg-panel-2/60 px-2 py-0.5 text-[11.5px] text-muted transition-colors hover:border-accent/50 hover:text-accent">
+      className="mono inline-flex items-center gap-1 border border-line-soft bg-panel-2 px-2 py-0.5 text-[11.5px] text-muted transition-colors hover:border-accent hover:text-accent">
       {short(address)}
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" className="opacity-60"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
     </a>
@@ -40,7 +40,7 @@ export function SectionTitle({ children, right }: { children: React.ReactNode; r
 function LockIcon({ className = "" }: { className?: string }) {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className={className}>
-      <rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="4" y="10" width="16" height="10" rx="1" stroke="currentColor" strokeWidth="1.7" />
       <path d="M8 10V7a4 4 0 118 0v3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
@@ -55,19 +55,19 @@ function ShieldCheck({ className = "" }: { className?: string }) {
   );
 }
 
-/** The premium confidential-memory component: styled ciphertext with shimmer, a lock,
- *  and a TEE attestation badge. Deliberately shows values as encrypted. */
+/** Confidential-memory component: styled ciphertext with shimmer, a lock, and a TEE
+ *  attestation badge. Deliberately renders values as encrypted. */
 export function EncryptedBlock({ handle, label = "encrypted", viewer, rows = 2 }: { handle: string; label?: string; viewer?: string; rows?: number }) {
   const glyphs = (handle || "0x").replace(/^0x/, "");
   const filler = (glyphs + glyphs + glyphs).slice(0, 132);
   const lines = Array.from({ length: rows }, (_, i) => filler.slice(i * 44, i * 44 + 44));
   return (
-    <div className="scanline relative overflow-hidden rounded-lg border border-line-2 bg-[#0a0c11] p-2.5">
+    <div className="scanline relative overflow-hidden border border-line-soft bg-panel-2 p-2.5">
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-accent/80">
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">
           <LockIcon /> {label}
         </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-emerald/25 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-medium text-emerald/90">
+        <span className="inline-flex items-center gap-1 border border-emerald/30 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald">
           <ShieldCheck /> TEE attested
         </span>
       </div>

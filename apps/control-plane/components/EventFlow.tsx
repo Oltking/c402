@@ -5,10 +5,10 @@ type NodeData = { title: string; sub: string; accent: string };
 
 function FlowNode({ data }: { data: NodeData }) {
   return (
-    <div className="rounded-xl border border-line-2 bg-panel-2/90 px-3 py-2 backdrop-blur" style={{ boxShadow: `0 0 24px -10px ${data.accent}` }}>
+    <div className="border border-line bg-panel px-3 py-2" style={{ boxShadow: "0 1px 2px rgba(10,11,13,0.06)", borderTop: `2px solid ${data.accent}` }}>
       <Handle type="target" position={Position.Left} style={{ opacity: 0, width: 1, height: 1 }} />
       <div className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full" style={{ background: data.accent, boxShadow: `0 0 8px ${data.accent}` }} />
+        <span className="h-2 w-2 rounded-full" style={{ background: data.accent }} />
         <span className="text-[12px] font-semibold text-text">{data.title}</span>
       </div>
       <div className="mt-0.5 text-[10.5px] text-faint">{data.sub}</div>
@@ -28,18 +28,18 @@ const nodes: Node[] = [
 ];
 
 function edges(active: boolean): Edge[] {
-  const base = { animated: active, style: { stroke: "#2b3345", strokeWidth: 1.5 } };
+  const base = { animated: active, style: { stroke: "#c3c7cf", strokeWidth: 1.5 } };
   return [
     { id: "e1", source: "market", target: "cde", label: "USDC", ...base },
     { id: "e2", source: "cde", target: "bus", label: "decision", ...base },
     { id: "e3", source: "bus", target: "treasury", label: "🔒 event", ...base },
     { id: "e4", source: "treasury", target: "exec", label: "swap", ...base },
-  ].map((e) => ({ ...e, labelStyle: { fill: "#7d8595", fontSize: 10 }, labelBgStyle: { fill: "#0c0e13" } }));
+  ].map((e) => ({ ...e, labelStyle: { fill: "#4b5058", fontSize: 10 }, labelBgStyle: { fill: "#ffffff" } }));
 }
 
 export function EventFlow({ active }: { active: boolean }) {
   return (
-    <div style={{ height: 230 }} className="mt-1 overflow-hidden rounded-xl border border-line bg-[#0a0c11]">
+    <div style={{ height: 230 }} className="mt-1 overflow-hidden border border-line-soft bg-panel-2">
       <ReactFlow
         nodes={nodes}
         edges={edges(active)}
@@ -56,7 +56,7 @@ export function EventFlow({ active }: { active: boolean }) {
         preventScrolling={false}
         proOptions={{ hideAttribution: true }}
       >
-        <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#1b1f2a" />
+        <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#d7dae0" />
       </ReactFlow>
     </div>
   );

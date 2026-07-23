@@ -3,24 +3,23 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
 body {
-  background: #08090c;
-  color: #e7e9ee;
+  background: #ffffff;
+  color: #0a0b0d;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 body {
-  background:
-    radial-gradient(1100px 600px at 82% -8%, rgba(124, 92, 255, 0.09), transparent 60%),
-    radial-gradient(900px 500px at 8% 0%, rgba(91, 140, 255, 0.08), transparent 55%),
-    #08090c;
-  background-attachment: fixed;
   min-height: 100vh;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
 }
 
 /* faint blueprint grid */
@@ -30,41 +29,40 @@ body {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-  background-size: 46px 46px;
-  mask-image: radial-gradient(circle at 50% 0%, black, transparent 78%);
+    linear-gradient(to right, rgba(17, 19, 24, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 19, 24, 0.028) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% -5%, black, transparent 72%);
   z-index: 0;
 }
 
 @layer components {
   .panel {
-    @apply relative rounded-2xl border border-line bg-panel/80 backdrop-blur-xl;
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
-      0 24px 70px -40px rgba(0, 0, 0, 0.9);
+    @apply relative border border-line bg-panel;
+    box-shadow: 0 1px 2px rgba(10, 11, 13, 0.04);
   }
   .panel-hover {
-    @apply transition-all duration-300;
+    @apply transition-all duration-200;
   }
   .panel-hover:hover {
-    @apply border-line-2;
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
-      0 0 0 1px rgba(91, 140, 255, 0.12),
-      0 24px 70px -34px rgba(91, 140, 255, 0.25);
+      0 0 0 1px rgba(29, 78, 216, 0.25),
+      0 6px 18px -10px rgba(10, 11, 13, 0.18);
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line-2 bg-panel-2/70 px-2.5 py-1 text-[11px] font-medium text-muted;
+    @apply inline-flex items-center gap-1.5 border border-line-soft bg-panel-2 px-2.5 py-1 text-[11px] font-medium text-muted;
   }
   .btn {
-    @apply inline-flex items-center gap-2 rounded-lg border border-line-2 bg-panel-2 px-3 py-1.5 text-[13px] font-medium text-text transition-colors hover:border-accent/50 hover:text-white;
+    @apply inline-flex items-center gap-2 border border-line bg-panel px-3 py-1.5 text-[13px] font-medium text-text transition-colors hover:bg-panel-2;
   }
   .label {
-    @apply text-[11px] font-medium uppercase tracking-[0.14em] text-faint;
+    @apply text-[10.5px] font-semibold uppercase tracking-[0.14em] text-faint;
   }
   .mono {
     @apply font-mono text-[12.5px];
+  }
+  .rule {
+    @apply border-b border-line-soft;
   }
 }
 
@@ -85,28 +83,28 @@ body {
   animation: pulse-ring 2.4s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
 }
 @keyframes pulse-ring {
-  0% { transform: scale(0.6); opacity: 0.6; }
+  0% { transform: scale(0.6); opacity: 0.55; }
   80%, 100% { transform: scale(2.4); opacity: 0; }
 }
 
-/* ── encrypted ciphertext block ── */
+/* ── encrypted ciphertext block (light) ── */
 .cipher {
   position: relative;
   overflow: hidden;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  color: #46566b;
-  letter-spacing: 0.06em;
+  color: #aab0bb;
+  letter-spacing: 0.05em;
   word-break: break-all;
-  line-height: 1.5;
+  line-height: 1.55;
   user-select: none;
 }
 .cipher::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg, transparent 20%, rgba(124, 150, 255, 0.14) 45%, rgba(124, 150, 255, 0.05) 55%, transparent 80%);
+  background: linear-gradient(100deg, transparent 20%, rgba(29, 78, 216, 0.1) 46%, rgba(29, 78, 216, 0.03) 56%, transparent 80%);
   transform: translateX(-100%);
-  animation: cipher-shimmer 3.4s ease-in-out infinite;
+  animation: cipher-shimmer 3.6s ease-in-out infinite;
 }
 @keyframes cipher-shimmer {
   0% { transform: translateX(-100%); }
@@ -118,27 +116,26 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  height: 28px;
-  background: linear-gradient(180deg, rgba(91, 140, 255, 0.12), transparent);
+  height: 26px;
+  background: linear-gradient(180deg, rgba(29, 78, 216, 0.07), transparent);
   animation: scan 4.5s linear infinite;
   pointer-events: none;
 }
 @keyframes scan {
-  0% { top: -28px; }
+  0% { top: -26px; }
   100% { top: 100%; }
 }
 
-/* fade/rise entrance */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.rise { animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.rise { animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #1b1f2a; border-radius: 10px; border: 2px solid #08090c; }
-::-webkit-scrollbar-thumb:hover { background: #262b38; }
+::-webkit-scrollbar-thumb { background: #d5d8dd; border: 2px solid #ffffff; }
+::-webkit-scrollbar-thumb:hover { background: #b9bdc5; }
 
-/* React Flow dark tweaks */
-.react-flow__edge-path { stroke: #262b38; }
+/* React Flow light tweaks */
+.react-flow__edge-path { stroke: #c3c7cf; }
 .react-flow__attribution { display: none; }
