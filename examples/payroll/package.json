@@ -1,0 +1,21 @@
+{
+  "name": "c402-example-payroll",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "server": "node server.ts",
+    "client": "node client.ts"
+  },
+  "dependencies": {
+    "@c402/client": "workspace:*",
+    "@c402/server": "workspace:*",
+    "@iexec-nox/handle": "0.1.0-beta.13",
+    "dotenv": "^16.4.7",
+    "express": "^4.22.2",
+    "viem": "^2.46.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}

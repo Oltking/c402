@@ -1,0 +1,14 @@
+{
+  "network": "ethereum-sepolia",
+  "chainId": 11155111,
+  "deployedAt": "2026-07-23T23:10:30.399Z",
+  "contracts": {
+    "DecisionRegistry": "0x016ad8c79ce350d02bbf5373e9ce9295cf52f0c4",
+    "PayrollCDE": "0x2040ed303ea352fa0bc3fc288b348264d315b1be"
+  },
+  "firstDecision": {
+    "id": "1",
+    "action": "APPROVE",
+    "confidence": "100"
+  }
+}

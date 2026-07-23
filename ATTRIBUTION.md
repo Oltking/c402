@@ -36,6 +36,9 @@ xCAT adds **confidentiality** to three unmodified open-source protocols (x402, S
   (`c402()` middleware), `@c402/client` (`c402Fetch`), `@c402/verify` (standalone attestation verifier),
   and the `hello-c402` example. c402 is an original layer that composes x402 (payment) with iExec Nox
   (TEE-attested confidential compute) via two added HTTP headers; it modifies neither.
+- **A second c402 app — confidential payroll**: `PayrollCDE.sol` (an independent confidential decision
+  engine deployed to Sepolia with its own registry) + the `examples/payroll` c402 server + client.
+  Different computation, same protocol — the generality proof.
 - **xCAT — the first app on c402**: the CDE / DecisionRegistry / EventBus / PaymentMeter Solidity
   contracts; the self-hosted x402 facilitator + paid CDE API (a c402 server); the SafeAdapter +
   UniswapAdapter; the `@xcat/sdk`, `xcat` CLI, and agent runtime (c402 clients); and the Next.js control

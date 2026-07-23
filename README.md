@@ -46,7 +46,11 @@ Built for the iExec WTF Hackathon (Summer Edition). All code written during the 
 | [`@c402/client`](packages/c402-client) | `c402Fetch(opts)` — pay, consume, and verify an attestation as one `fetch`. |
 | [`@c402/verify`](packages/c402-verify) | Standalone on-chain attestation verifier anyone can run. |
 
-Minimal end-to-end example: [`examples/hello-c402`](examples/hello-c402) (a c402 server + client).
+Examples (each a real c402 server + client on Sepolia, no mock data):
+- [`examples/hello-c402`](examples/hello-c402) — the minimal server + client.
+- [`examples/treasury`](apps) — xCAT, the flagship: `apps/cde-api` is a c402 server, the agents are c402 clients.
+- [`examples/payroll`](examples/payroll) — a **second** confidential app (payroll raise decisions) on the
+  same protocol, with its own deployed `PayrollCDE`. Proof that c402 is a protocol, not xCAT's plumbing.
 
 ---
 
