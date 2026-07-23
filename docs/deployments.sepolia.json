@@ -1,0 +1,18 @@
+{
+  "network": "ethereum-sepolia",
+  "chainId": 11155111,
+  "deployedAt": "2026-07-23T01:23:34.908Z",
+  "deployer": "0x6F66ec6eB0F139B1b7430327DC49Ef334865b1C7",
+  "treasuryRuntime": "0x6F66ec6eB0F139B1b7430327DC49Ef334865b1C7",
+  "contracts": {
+    "DecisionRegistry": "0x1324b5a3eaf844d41235f58b473d78e368e8a076",
+    "CDE": "0xfff6e422de60d58573da667a45a66f17b705a237"
+  },
+  "firstDecision": {
+    "id": "1",
+    "action": "HEDGE",
+    "confidence": "100",
+    "commitment": "0x5eb739e6e10b09e57b3b8822daf3e6be063f52aeabbe79211affc5d85e632ed1",
+    "decideTx": "0x0dea7936656cc43710f24e68bd359e5bf989b485a8823f0cea9db23974a267cb"
+  }
+}

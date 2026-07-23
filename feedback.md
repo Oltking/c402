@@ -9,6 +9,7 @@ Running, dated, honest log of friction and wins while building **xCAT** on the i
 **👍 Wins**
 - `@iexec-nox/*` packages resolve cleanly on npm: `handle@0.1.0-beta.13`, `nox-hardhat-plugin@0.1.0`, `nox-protocol-contracts@0.2.4`. Versions discoverable and pinnable.
 - The Nox Solidity API is intuitive and well-scoped (`select` for branchless logic, `safeAdd/safeSub`, explicit ACL). The "grant access after every handle op" rule is clearly documented as the #1 gotcha — appreciated the upfront warning.
+- **End-to-end worked on the FIRST real Sepolia run.** Deployed CDE + DecisionRegistry, then `@iexec-nox/handle`'s `createViemHandleClient` auto-resolved the Sepolia config (gateway + subgraph + NoxCompute `0x24ef…`) with zero manual setup. The full encrypt → on-chain confidential `decide()` → ACL-gated `decrypt()` + `publicDecrypt()` roundtrip returned the correct values (HEDGE / confidence 100) with **no retry needed** — the TEE computed before we polled. `viem` `WalletClient` support in the SDK is seamless. Deployed: CDE `0xfff6e422de60d58573da667a45a66f17b705a237`.
 
 **👎 Friction (with specifics)**
 1. **Networks page is JS-client-rendered → unusable for automated/agent tooling.** A static fetch of `https://docs.noxprotocol.io/getting-started/networks` returns navigation chrome but **zero network data** — no NoxCompute address, RPC, explorer, or faucet URLs. The `.md` variant (`/getting-started/networks.md`) was also empty of the address cards.
