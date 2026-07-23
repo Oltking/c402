@@ -42,6 +42,18 @@ export async function runTreasuryLoop(cfg: XcatConfig = loadConfig(), log: (m: s
     direction: treasuryAction.execution.direction,
     executed: treasuryAction.execution.executed,
     commitment: record.commitment,
+    attestation: observation.decision.attestation
+      ? {
+          standard: observation.decision.attestation.standard,
+          network: observation.decision.attestation.network,
+          contract: observation.decision.attestation.contract,
+          tx: observation.decision.attestation.tx,
+          coordinator: observation.decision.attestation.coordinator,
+        }
+      : undefined,
+    verified: observation.decision.verified
+      ? { valid: observation.decision.verified.valid, checks: observation.decision.verified.checks.map((c) => ({ name: c.name, ok: c.ok })) }
+      : undefined,
   });
 
   return {

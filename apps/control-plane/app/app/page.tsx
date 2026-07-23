@@ -4,7 +4,7 @@ import { Pulse, Chip, AddressPill, SectionTitle, EncryptedBlock } from "@/compon
 import { EventFlow } from "@/components/EventFlow";
 
 type Decision = { id: string; commitment: string; caller: string; block: string; timestamp: string; actionHandle: string; confidenceHandle: string };
-type Activity = { ts: number; decisionId: string; action: string; confidence: number; exposureBps: string; priceUsdcPerWeth: number; eventId: string; swapTx?: string; direction?: string; executed: boolean; commitment: string };
+type Activity = { ts: number; decisionId: string; action: string; confidence: number; exposureBps: string; priceUsdcPerWeth: number; eventId: string; swapTx?: string; direction?: string; executed: boolean; commitment: string; attestation?: { standard: string; network: string; contract: string; tx?: string; coordinator?: string }; verified?: { valid: boolean; checks: { name: string; ok: boolean }[] } };
 type State = {
   network: string; explorer: string; contracts: Record<string, string>;
   stats: { decisionCount: string; eventCount: string };
@@ -164,6 +164,12 @@ export default function Page() {
           </div>
         </section>
 
+        {/* c402 attestation */}
+        <section className="panel rise mt-3 p-5">
+          <SectionTitle right={<Chip>c402 · X-Attestation</Chip>}>TEE attestation — verified on-chain</SectionTitle>
+          <AttestationPanel activity={s?.activity ?? []} explorer={s?.explorer} />
+        </section>
+
         {/* Event bus flow */}
         <section className="panel rise mt-3 p-5">
           <SectionTitle right={<Chip>ACL-gated handles</Chip>}>Confidential event bus</SectionTitle>
@@ -203,6 +209,46 @@ export default function Page() {
           ))}
         </footer>
       </main>
+    </div>
+  );
+}
+
+function AttestationPanel({ activity, explorer }: { activity: Activity[]; explorer?: string }) {
+  const latest = activity.find((a) => a.attestation);
+  if (!latest?.attestation) {
+    return <div className="text-[13px] text-faint">No attestation yet — run <span className="mono text-muted">xcat run</span>. Each confidential decision returns a c402 <span className="mono">X-Attestation</span> the agent re-verifies on-chain.</div>;
+  }
+  const att = latest.attestation;
+  const checks = latest.verified?.checks ?? [];
+  const valid = latest.verified?.valid;
+  return (
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+      <div className="border border-line-soft bg-panel-2 p-4 lg:col-span-1">
+        <div className="flex items-center justify-between">
+          <span className="label">decision #{latest.decisionId}</span>
+          <span className={`inline-flex items-center gap-1.5 border px-2 py-0.5 text-[11px] font-semibold ${valid ? "border-emerald/30 bg-emerald/5 text-emerald" : "border-amber/40 bg-amber/5 text-amber"}`}>
+            <Pulse color={valid ? "#15803d" : "#b45309"} /> {valid ? "verified on-chain" : "unverified"}
+          </span>
+        </div>
+        <div className="mt-3 space-y-1.5 text-[12px]">
+          <div className="flex justify-between"><span className="text-faint">standard</span><span className="mono text-text">{att.standard}</span></div>
+          <div className="flex justify-between"><span className="text-faint">network</span><span className="mono text-text">{att.network}</span></div>
+          <div className="flex items-center justify-between"><span className="text-faint">compute</span>{explorer && <AddressPill address={att.contract} explorer={explorer} />}</div>
+          {att.tx && explorer && <div className="flex items-center justify-between"><span className="text-faint">tx</span><AddressPill address={att.tx} explorer={explorer} kind="tx" /></div>}
+        </div>
+      </div>
+      <div className="border border-line-soft bg-panel-2 p-4 lg:col-span-2">
+        <div className="label mb-2">verifier checks (@c402/verify · re-read from chain)</div>
+        <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+          {checks.map((c) => (
+            <div key={c.name} className="flex items-center gap-2 text-[12px]">
+              <span className={`grid h-4 w-4 place-items-center border text-[10px] ${c.ok ? "border-emerald bg-emerald/10 text-emerald" : "border-rose bg-rose/10 text-rose"}`}>{c.ok ? "✓" : "×"}</span>
+              <span className="mono text-muted">{c.name}</span>
+            </div>
+          ))}
+          {checks.length === 0 && <div className="text-[12px] text-faint">attestation recorded; re-run to capture verifier checks.</div>}
+        </div>
+      </div>
     </div>
   );
 }

@@ -21,6 +21,9 @@ export interface ActivityRecord {
   direction?: string;
   executed: boolean;
   commitment: string;
+  /** c402 TEE attestation the agent received + re-verified on-chain for this decision. */
+  attestation?: { standard: string; network: string; contract: string; tx?: string; coordinator?: string };
+  verified?: { valid: boolean; checks: { name: string; ok: boolean }[] };
 }
 
 /** Real, verifiable log of executed loops (every entry re-checkable via `xcat verify`). */
