@@ -27,6 +27,19 @@ Running, dated, honest log of friction and wins while building **xCAT** on the i
 - Canonical Sepolia RPC/explorer/faucet: Nox simply consumes viem's built-in `sepolia` chain (`documentation/src/utils/chain.utils.ts`). No custom RPC, no Nox-specific faucet. Faucets recommended by docs: Google Cloud Web3 + Alchemy Sepolia.
 - NoxCompute Sepolia address triple-confirmed: `0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf`.
 
+## 2026-07-23 — Wrap-up
+
+Built the entire product on the Nox stack end-to-end on Ethereum Sepolia with **no mock data**:
+confidential decision engine → paid x402 API → confidential metering → encrypted event bus → Safe +
+Uniswap execution → hands-free agent loop → CLI → live control plane. The Nox primitives (encrypted
+arithmetic, `select`, ACLs, public vs. selective decryption) were expressive enough to build a
+genuinely reusable "pay-per-confidential-decision" primitive. Biggest wins: `llms-full.txt`, the
+`@iexec-nox/handle` viem support, and how cleanly the same handle client worked across four separate
+services. Biggest friction: the client-rendered networks page, the missing `nox-hardhat-starter`, and
+the transient post-tx ACL-propagation 403 (all detailed above).
+
+---
+
 ## 2026-07-23 — Phase 2 (paid CDE API via x402 + confidential metering)
 
 **👍 Wins**

@@ -25,4 +25,15 @@ xCAT adds **confidentiality** to three unmodified open-source protocols (x402, S
 | Uniswap v3 SwapRouter02 (Sepolia) | on-chain | Rebalancing swaps |
 | viem | v2 | EVM client (end to end) |
 
-Full dependency list lives in the workspace `package.json` files. This file is updated continuously as dependencies are added.
+| `viem` | v2 | EVM client (contracts, apps, SDK) |
+| `hardhat` + `@nomicfoundation/hardhat-toolbox-viem` | 3.x / 5.x | contract build + tests |
+| `next` · `react` · `@xyflow/react` | 15 · 19 · 12 | control-plane (landing + dashboard, event-bus graph) |
+| `commander` · `ora` · `picocolors` | — | `xcat` CLI |
+| `express` · `dotenv` | 4 · 16 | services |
+
+**What we built (all during the hackathon):** the CDE / DecisionRegistry / EventBus / PaymentMeter
+Solidity contracts; the self-hosted x402 facilitator + paid CDE API; the SafeAdapter + UniswapAdapter;
+the `@xcat/sdk`, `xcat` CLI, and agent runtime; and the Next.js control plane. Third-party protocols
+(x402, Safe, Uniswap) and the Nox stack are used **unmodified**.
+
+Full dependency list lives in the workspace `package.json` files.
