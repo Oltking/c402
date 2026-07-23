@@ -1,0 +1,11 @@
+{
+  "name": "@c402/spec",
+  "version": "0.1.0",
+  "description": "c402 — confidential compute layer on top of x402. Shared protocol constants, header codecs, and types.",
+  "type": "module",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@types/node": "^22.11.0",
+    "typescript": "~5.8.0"
+  }
+}

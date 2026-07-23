@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://c402.dev/schema/attestation.schema.json",
+  "title": "c402 Attestation",
+  "type": "object",
+  "required": ["version", "standard", "network", "contract", "issuedAt"],
+  "properties": {
+    "version": { "const": "c402/1" },
+    "standard": { "type": "string", "enum": ["iexec-nox/intel-tdx"] },
+    "network": { "type": "string", "description": "CAIP-2 network id, e.g. eip155:11155111" },
+    "contract": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+    "coordinator": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+    "decisionId": { "type": "string" },
+    "commitment": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+    "registry": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+    "tx": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+    "outputHandles": { "type": "object", "additionalProperties": { "type": "string" } },
+    "issuedAt": { "type": "number" }
+  },
+  "additionalProperties": false
+}

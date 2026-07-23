@@ -1,0 +1,15 @@
+{
+  "name": "@c402/verify",
+  "version": "0.1.0",
+  "description": "Standalone c402 attestation verifier. Re-reads the on-chain decision commitment and confirms the TEE computation actually happened.",
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@c402/spec": "workspace:*",
+    "viem": "^2.46.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.11.0",
+    "typescript": "~5.8.0"
+  }
+}

@@ -1,15 +1,56 @@
-# xCAT — Confidential Autonomous Treasury
+# c402 — Confidential Compute over x402
 
-**A confidential autonomous treasury for Safe.** Its AI agents buy their intelligence through
-privacy-wrapped **x402** payments, decide inside an **iExec Nox** TEE via a reusable Confidential
-Decision Engine (CDE), and execute through **unmodified** Safe and Uniswap on **Ethereum Sepolia**.
+> x402 made any resource payable by any agent.
+> **c402 makes any computation confidential and payable by any agent.** Same pattern, one level deeper.
+
+**c402 is an open protocol: a confidential compute layer that sits on top of x402 the same way x402 sits
+on top of HTTP.** A c402 server declares "this endpoint produces TEE-attested confidential decisions —
+here is the schema, here is the price per call," and any client consumes it without knowing anything about
+the underlying implementation. It adds exactly **two headers** on top of x402 (`Compute-Required` on the
+402, `X-Attestation` on the paid response). Everything else is up to the server. Full spec:
+[`packages/c402-spec/SPEC.md`](packages/c402-spec/SPEC.md).
+
+```ts
+// A confidential, pay-per-call compute endpoint — one function.
+app.post("/decide", c402({
+  price: "0.01", token: USDC_SEPOLIA, network: "eip155:11155111",
+  facilitator: FACILITATOR_URL, contract: CDE, payTo: PAY_TO,
+  schema: { input: "euint256", output: "treasury-action" },
+  compute: async (input) => { /* runs inside the iExec Nox TEE */ },
+}));
+```
+
+```ts
+// Consume it like a normal fetch — pay + attest, invisibly.
+const call = c402Fetch({ signer, network: "eip155:11155111", rpcUrl });
+const res  = await call("http://cde/decide", { body: { exposure, signal } });
+res.result; res.attestation; res.verified.valid;  // re-verified on-chain
+```
+
+**xCAT — the confidential autonomous treasury below — is the first application built on c402, not the
+product itself. The protocol is the product.** xCAT's Confidential Decision Engine (CDE) is a c402 server;
+its agents are c402 clients; it decides inside an **iExec Nox** TEE and executes through **unmodified**
+Safe and Uniswap on **Ethereum Sepolia**.
 
 > Confidentiality of values — not anonymity of addresses. Amounts, policy, exposure and decision
 > reasoning stay encrypted; the fact that an attested decision occurred stays verifiable on-chain.
 
 Built for the iExec WTF Hackathon (Summer Edition). All code written during the hackathon.
 
+## The c402 packages
+
+| Package | What it is |
+|---|---|
+| [`@c402/spec`](packages/c402-spec) | The protocol: constants, types, header codecs, `SPEC.md`, JSON schema. |
+| [`@c402/server`](packages/c402-server) | `c402(config)` Express middleware — declare a confidential paid endpoint in one call. |
+| [`@c402/client`](packages/c402-client) | `c402Fetch(opts)` — pay, consume, and verify an attestation as one `fetch`. |
+| [`@c402/verify`](packages/c402-verify) | Standalone on-chain attestation verifier anyone can run. |
+
+Minimal end-to-end example: [`examples/hello-c402`](examples/hello-c402) (a c402 server + client).
+
 ---
+
+## xCAT — the first app on c402
 
 ## What it does
 

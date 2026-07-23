@@ -31,9 +31,16 @@ xCAT adds **confidentiality** to three unmodified open-source protocols (x402, S
 | `commander` · `ora` · `picocolors` | — | `xcat` CLI |
 | `express` · `dotenv` | 4 · 16 | services |
 
-**What we built (all during the hackathon):** the CDE / DecisionRegistry / EventBus / PaymentMeter
-Solidity contracts; the self-hosted x402 facilitator + paid CDE API; the SafeAdapter + UniswapAdapter;
-the `@xcat/sdk`, `xcat` CLI, and agent runtime; and the Next.js control plane. Third-party protocols
-(x402, Safe, Uniswap) and the Nox stack are used **unmodified**.
+**What we built (all during the hackathon):**
+- **c402 — the protocol** (the product): `@c402/spec` (headers/types/spec + JSON schema), `@c402/server`
+  (`c402()` middleware), `@c402/client` (`c402Fetch`), `@c402/verify` (standalone attestation verifier),
+  and the `hello-c402` example. c402 is an original layer that composes x402 (payment) with iExec Nox
+  (TEE-attested confidential compute) via two added HTTP headers; it modifies neither.
+- **xCAT — the first app on c402**: the CDE / DecisionRegistry / EventBus / PaymentMeter Solidity
+  contracts; the self-hosted x402 facilitator + paid CDE API (a c402 server); the SafeAdapter +
+  UniswapAdapter; the `@xcat/sdk`, `xcat` CLI, and agent runtime (c402 clients); and the Next.js control
+  plane (landing, dashboard, and non-custodial bring-your-own-Safe onboarding).
+
+Third-party protocols (x402, Safe, Uniswap) and the Nox stack are used **unmodified**.
 
 Full dependency list lives in the workspace `package.json` files.
