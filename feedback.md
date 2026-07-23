@@ -27,6 +27,14 @@ Running, dated, honest log of friction and wins while building **xCAT** on the i
 - Canonical Sepolia RPC/explorer/faucet: Nox simply consumes viem's built-in `sepolia` chain (`documentation/src/utils/chain.utils.ts`). No custom RPC, no Nox-specific faucet. Faucets recommended by docs: Google Cloud Web3 + Alchemy Sepolia.
 - NoxCompute Sepolia address triple-confirmed: `0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf`.
 
+## 2026-07-23 — Phase 2 (paid CDE API via x402 + confidential metering)
+
+**👍 Wins**
+- `@iexec-nox/handle` worked cleanly from three separate services (deploy script, CDE API, facilitator) against Sepolia with the same `createViemHandleClient(walletClient)` call. Public-decrypt for the UI confidence bucket and ACL-gated decrypt for the runtime both behaved correctly. Owner-only metering (a non-owner `decrypt` is correctly denied by the gateway) is a great primitive for confidential usage billing.
+
+**👎 Friction (Nox-specific, actionable)**
+5. **Transient `403 access_denied "not a viewer"` immediately after `decide()`.** When decrypting a freshly-produced handle in the same second the `decide()` tx is mined, the Handle Gateway returns `403 {"error":"access_denied","message":"Access denied: not a viewer"}` — even though the contract called `Nox.allow(handle, runtime)` in that same tx. Waiting a few seconds (ACL propagation to the gateway) resolves it and the decrypt succeeds. Two asks: (a) surface this as a distinct retryable error (like `NotYetComputedHandleError`) rather than a generic 403 access-denied, since it's a propagation delay, not an authorization failure; (b) document the expected ACL-propagation latency after a state-mutating tx. We worked around it by retrying on the 403 message.
+
 **Still open**
 - Exact `viewACL` return shape (docs summary partial; confirm from `nox-handle-sdk` source when wiring the SDK).
 - Whether `@iexec-nox/nox-hardhat-plugin` must be explicitly registered in `plugins` or auto-hooks (nox-confidential-contracts config doesn't list it).

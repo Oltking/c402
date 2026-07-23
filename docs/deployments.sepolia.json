@@ -6,7 +6,8 @@
   "treasuryRuntime": "0x6F66ec6eB0F139B1b7430327DC49Ef334865b1C7",
   "contracts": {
     "DecisionRegistry": "0x1324b5a3eaf844d41235f58b473d78e368e8a076",
-    "CDE": "0xfff6e422de60d58573da667a45a66f17b705a237"
+    "CDE": "0xfff6e422de60d58573da667a45a66f17b705a237",
+    "PaymentMeter": "0xc5718005f2916354103d5651d17f4305f6311230"
   },
   "firstDecision": {
     "id": "1",
@@ -14,5 +15,14 @@
     "confidence": "100",
     "commitment": "0x5eb739e6e10b09e57b3b8822daf3e6be063f52aeabbe79211affc5d85e632ed1",
     "decideTx": "0x0dea7936656cc43710f24e68bd359e5bf989b485a8823f0cea9db23974a267cb"
+  },
+  "x402": {
+    "network": "eip155:11155111",
+    "asset": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "priceAtomic": "10000",
+    "facilitator": "self-hosted (apps/facilitator, port 4022)",
+    "api": "apps/cde-api POST /v1/decide (port 4021)",
+    "exampleSettlementTx": "0x836c2d0b81aea6d95374f9d994efc056bb09bb441bffc2cf85688ebfc38aa6ac",
+    "exampleMeterRecordTx": "0x48edf9fced73851d984d8e9d49d0eb1025cac915a0c5540e5528dcc76c2ad104"
   }
 }
