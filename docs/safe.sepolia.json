@@ -1,0 +1,9 @@
+{
+  "safe": "0xe8fB6E5156CC8F9Bb7A753898aa0EaA7F35921C9",
+  "owner": "0x6F66ec6eB0F139B1b7430327DC49Ef334865b1C7",
+  "threshold": 1,
+  "fundedWith": "USDC",
+  "lastSwapTx": "0xf3f58d9bef964d415b89add620627e914301a29acea22f21bc5b3acd96010d84",
+  "action": "ACCUMULATE",
+  "direction": "USDC->WETH"
+}
