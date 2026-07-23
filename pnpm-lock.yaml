@@ -76,6 +76,22 @@ importers:
         specifier: ~5.8.0
         version: 5.8.3
 
+  apps/runtime:
+    dependencies:
+      '@xcat/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
+      viem:
+        specifier: ^2.46.3
+        version: 2.55.7(typescript@5.8.3)(zod@3.25.76)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.11.0
+        version: 22.20.1
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
+
   contracts:
     dependencies:
       '@iexec-nox/nox-protocol-contracts':

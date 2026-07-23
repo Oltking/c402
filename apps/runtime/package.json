@@ -1,0 +1,18 @@
+{
+  "name": "@xcat/runtime",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "loop": "node src/run-loop.ts"
+  },
+  "dependencies": {
+    "@xcat/sdk": "workspace:*",
+    "viem": "^2.46.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.11.0",
+    "typescript": "~5.8.0"
+  }
+}
