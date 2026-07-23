@@ -85,6 +85,7 @@ export default function Page() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <a href="/app/treasury" className="btn !py-1 !text-[12px]">Onboard your Safe</a>
             <Chip><Pulse color="#1d4ed8" /> {s?.network ?? "Ethereum Sepolia"}</Chip>
             <Chip className="tnum">{s ? `updated ${new Date(s.updatedAt).toLocaleTimeString()}` : "connecting…"}</Chip>
           </div>
