@@ -7,7 +7,9 @@
   "contracts": {
     "DecisionRegistry": "0x1324b5a3eaf844d41235f58b473d78e368e8a076",
     "CDE": "0xfff6e422de60d58573da667a45a66f17b705a237",
-    "PaymentMeter": "0xc5718005f2916354103d5651d17f4305f6311230"
+    "PaymentMeter": "0xc5718005f2916354103d5651d17f4305f6311230",
+    "EventBus": "0xfecb1545c4c5e6de5db34a5f87b1f2e90489b75c",
+    "Safe": "0xe8fB6E5156CC8F9Bb7A753898aa0EaA7F35921C9"
   },
   "firstDecision": {
     "id": "1",
