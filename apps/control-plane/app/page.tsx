@@ -1,224 +1,198 @@
-"use client";
-import { useEffect, useState } from "react";
-import { Pulse, Chip, AddressPill, SectionTitle, EncryptedBlock } from "@/components/ui";
-import { EventFlow } from "@/components/EventFlow";
+import Link from "next/link";
+import { LiveStats } from "@/components/LiveStats";
 
-type Decision = { id: string; commitment: string; caller: string; block: string; timestamp: string; actionHandle: string; confidenceHandle: string };
-type Activity = { ts: number; decisionId: string; action: string; confidence: number; exposureBps: string; priceUsdcPerWeth: number; eventId: string; swapTx?: string; direction?: string; executed: boolean; commitment: string };
-type State = {
-  network: string; explorer: string; contracts: Record<string, string>;
-  stats: { decisionCount: string; eventCount: string };
-  market: { pool: string; tick: number; priceUsdcPerWeth: number; exposureBps: string };
-  safe: { usdc: number; weth: number };
-  decisions: Decision[];
-  events: { id: string; topic: string; publisher: string; timestamp: string; payloadHandle: string }[];
-  activity: Activity[];
-  updatedAt: number;
-};
-
-const ACTION_COLOR: Record<string, string> = { HEDGE: "#c81e2b", ACCUMULATE: "#15803d", HOLD: "#b45309" };
-
-function useWorkspace() {
-  const [state, setState] = useState<State | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-  useEffect(() => {
-    let live = true;
-    const load = () =>
-      fetch("/api/state").then((r) => r.json()).then((d) => { if (!live) return; if (d.error) setErr(d.error); else { setState(d); setErr(null); } }).catch((e) => live && setErr(String(e)));
-    load();
-    const t = setInterval(load, 12000);
-    return () => { live = false; clearInterval(t); };
-  }, []);
-  return { state, err };
-}
-
-function StatTile({ label, value, sub }: { label: string; value: React.ReactNode; sub?: string }) {
+function Logo() {
   return (
-    <div className="panel panel-hover rise p-4">
-      <div className="label">{label}</div>
-      <div className="tnum mt-2 text-[26px] font-semibold leading-none tracking-tight text-text">{value}</div>
-      {sub && <div className="mt-1.5 text-[11.5px] text-faint">{sub}</div>}
-    </div>
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.2v5.3c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6.2L12 3z" stroke="#1d4ed8" strokeWidth="1.6" strokeLinejoin="round" /><path d="M9 12l2.2 2.2L15.5 10" stroke="#4338ca" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
   );
 }
 
-function AgentCard({ name, role, detail, accent }: { name: string; role: string; detail: string; accent: string }) {
+function Nav() {
   return (
-    <div className="panel panel-hover rise p-5">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center border border-line-soft bg-panel-2">
-            <span className="h-2.5 w-2.5 rounded-full" style={{ background: accent }} />
-          </div>
-          <div>
-            <div className="text-[14px] font-semibold text-text">{name}</div>
-            <div className="text-[11.5px] text-faint">{role}</div>
-          </div>
+    <header className="sticky top-0 z-20 border-b border-line bg-panel/90 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
+        <div className="flex items-center gap-2.5">
+          <div className="grid h-8 w-8 place-items-center border border-line bg-panel"><Logo /></div>
+          <span className="text-[15px] font-semibold tracking-tight text-text">xCAT</span>
         </div>
-        <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald"><Pulse /> LIVE</span>
+        <nav className="hidden items-center gap-7 text-[13px] text-muted md:flex">
+          <a href="#product" className="hover:text-text">Product</a>
+          <a href="#how" className="hover:text-text">How it works</a>
+          <a href="#protocols" className="hover:text-text">Integrations</a>
+          <a href="#architecture" className="hover:text-text">Architecture</a>
+        </nav>
+        <Link href="/app" className="border border-line bg-text px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-85">Launch app →</Link>
       </div>
-      <div className="mt-4 text-[12.5px] leading-relaxed text-muted">{detail}</div>
-    </div>
+    </header>
   );
 }
 
-export default function Page() {
-  const { state, err } = useWorkspace();
-  const s = state;
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <div className="inline-flex items-center gap-2 border border-line-soft bg-panel-2 px-2.5 py-1 text-[11px] font-medium text-muted"><span className="pulse" style={{ background: "#15803d", color: "#15803d" }} /> {children}</div>;
+}
 
-  const actById: Record<string, Activity> = {};
-  s?.activity.forEach((a) => { if (!actById[a.decisionId]) actById[a.decisionId] = a; });
-  const lastAction = s?.activity[0];
-
+export default function Landing() {
   return (
     <div>
-      {/* Top bar */}
-      <header className="sticky top-0 z-20 border-b border-line bg-panel/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-          <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center border border-line bg-panel">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.2v5.3c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6.2L12 3z" stroke="#1d4ed8" strokeWidth="1.6" strokeLinejoin="round" /><path d="M9 12l2.2 2.2L15.5 10" stroke="#4338ca" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Nav />
+
+      {/* Hero */}
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.1fr_0.9fr] md:py-24">
+          <div className="rise">
+            <Eyebrow>Live on Ethereum Sepolia · no mock data</Eyebrow>
+            <h1 className="mt-5 text-[38px] font-semibold leading-[1.05] tracking-tight text-text md:text-[52px]">
+              Treasury intelligence<br />that stays <span className="text-accent">private.</span>
+            </h1>
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted">
+              xCAT is a confidential autonomous treasury for Safe. Its agents buy their intelligence through
+              privacy-wrapped x402 payments, decide inside an iExec Nox TEE, and execute through unmodified
+              Safe and Uniswap — so amounts, policy and reasoning stay encrypted while every action remains
+              auditable on-chain.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Link href="/app" className="border border-line bg-text px-5 py-2.5 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Open the control plane →</Link>
+              <a href="#how" className="border border-line bg-panel px-5 py-2.5 text-[14px] font-medium text-text transition-colors hover:bg-panel-2">See how it works</a>
             </div>
-            <div>
-              <div className="text-[15px] font-semibold tracking-tight text-text">xCAT <span className="font-normal text-faint">Control Plane</span></div>
-              <div className="text-[11px] text-faint">Confidential Autonomous Treasury · reads live from chain, no mock data</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Chip><Pulse color="#1d4ed8" /> {s?.network ?? "Ethereum Sepolia"}</Chip>
-            <Chip className="tnum">{s ? `updated ${new Date(s.updatedAt).toLocaleTimeString()}` : "connecting…"}</Chip>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-5 py-7">
-        {err && <div className="panel mb-6 border-rose p-4 text-[13px] text-rose">Error reading workspace: {err}</div>}
-
-        {/* Stats */}
-        <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          <StatTile label="Confidential decisions" value={s?.stats.decisionCount ?? "—"} sub="recorded on-chain" />
-          <StatTile label="Encrypted events" value={s?.stats.eventCount ?? "—"} sub="EventBus pub/sub" />
-          <StatTile label="WETH price" value={s ? `$${Math.round(s.market.priceUsdcPerWeth).toLocaleString()}` : "—"} sub="Uniswap v3 pool" />
-          <StatTile label="Treasury exposure" value={s ? `${(Number(s.market.exposureBps) / 100).toFixed(1)}%` : "—"} sub="risk-asset share of Safe" />
-        </section>
-
-        {/* Agents */}
-        <section className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-          <AgentCard name="Market Agent" role="observe · pay · publish" accent="#1d4ed8"
-            detail={lastAction ? `Last: read market @ $${lastAction.priceUsdcPerWeth.toLocaleString()}, bought decision #${lastAction.decisionId} via x402, published encrypted event #${lastAction.eventId}.` : "Reads Uniswap price, pays the CDE over x402, publishes an encrypted decision."} />
-          <AgentCard name="Treasury Agent" role="decrypt · decide · execute" accent="#4338ca"
-            detail={lastAction ? `Last: decrypted event #${lastAction.eventId} → ${lastAction.action}${lastAction.executed ? `, executed ${lastAction.direction} swap via Safe.` : "."}` : "Consumes the encrypted event, recovers the action, executes via Safe + Uniswap."} />
-        </section>
-
-        {/* Decision queue + portfolio */}
-        <section className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-3">
-          <div className="panel rise p-5 lg:col-span-2">
-            <SectionTitle right={<Chip>confidence public · reasoning 🔒</Chip>}>Decision queue</SectionTitle>
-            <div className="space-y-2.5">
-              {(s?.decisions ?? []).map((d) => {
-                const a = actById[d.id];
-                return (
-                  <div key={d.id} className="border border-line-soft bg-panel-2 p-3.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <span className="mono border border-line-soft bg-panel px-1.5 py-0.5 text-[11px] text-muted">#{d.id}</span>
-                        {a ? (
-                          <span className="inline-flex items-center gap-1.5 border px-2 py-0.5 text-[11px] font-semibold tnum" style={{ color: ACTION_COLOR[a.action], borderColor: `${ACTION_COLOR[a.action]}44`, background: `${ACTION_COLOR[a.action]}0f` }}>
-                            confidence {a.confidence}%
-                          </span>
-                        ) : (
-                          <span className="chip">confidence 🔒</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {s && <AddressPill address={d.commitment} explorer={s.explorer} kind="tx" />}
-                        <a href={`/verify/${d.id}`} className="btn !py-1 !text-[12px]">verify</a>
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <EncryptedBlock handle={d.actionHandle} label="decision · reasoning" viewer="Treasury runtime" rows={2} />
-                    </div>
-                  </div>
-                );
-              })}
-              {s && s.decisions.length === 0 && <div className="text-[13px] text-faint">No decisions yet — run <span className="mono text-muted">xcat run</span>.</div>}
-            </div>
+            <div className="mt-6 text-[12px] text-faint">Confidentiality of values — not anonymity of addresses.</div>
           </div>
 
-          <div className="space-y-3">
-            <div className="panel rise p-5">
-              <SectionTitle>Portfolio · Safe</SectionTitle>
-              <ExposureBar bps={Number(s?.market.exposureBps ?? 0)} />
-              <div className="mt-3 space-y-2">
-                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">USDC</span><span className="mono tnum text-text">{s ? s.safe.usdc.toFixed(2) : "—"}</span></div>
-                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">WETH</span><span className="mono tnum text-text">{s ? s.safe.weth.toFixed(6) : "—"}</span></div>
+          {/* Hero visual: encrypted decision card */}
+          <div className="rise">
+            <div className="panel p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="label">Confidential Decision Engine</span>
+                <span className="inline-flex items-center gap-1 border border-emerald/30 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald">TEE attested</span>
               </div>
-              {s && <div className="mt-3 border-t border-line-soft pt-3"><AddressPill address={s.contracts.Safe} explorer={s.explorer} /></div>}
-            </div>
-            <div className="panel rise p-5">
-              <SectionTitle>Confidential metering</SectionTitle>
-              <p className="text-[12px] leading-relaxed text-muted">x402 payment amounts are metered <span className="text-text">encrypted</span> on-chain — decryptable only by the API owner.</p>
-              {s && <div className="mt-3"><EncryptedBlock handle={s.contracts.PaymentMeter} label="grand total · USDC" viewer="API owner" rows={1} /></div>}
-            </div>
-          </div>
-        </section>
-
-        {/* Event bus flow */}
-        <section className="panel rise mt-3 p-5">
-          <SectionTitle right={<Chip>ACL-gated handles</Chip>}>Confidential event bus</SectionTitle>
-          <EventFlow active={!!lastAction} />
-        </section>
-
-        {/* Execution history */}
-        <section className="panel rise mt-3 p-5">
-          <SectionTitle right={s ? <AddressPill address={s.contracts.CDE} explorer={s.explorer} /> : null}>Execution history</SectionTitle>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-[12.5px]">
-              <thead className="text-faint">
-                <tr className="border-b border-line">
-                  <th className="py-2 pr-4 font-medium">Decision</th><th className="py-2 pr-4 font-medium">Action</th><th className="py-2 pr-4 font-medium">Executed</th><th className="py-2 pr-4 font-medium">Swap</th><th className="py-2 font-medium">When</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(s?.activity ?? []).map((a, i) => (
-                  <tr key={i} className="border-b border-line-soft">
-                    <td className="py-2.5 pr-4"><span className="mono text-muted">#{a.decisionId}</span></td>
-                    <td className="py-2.5 pr-4"><span className="font-semibold" style={{ color: ACTION_COLOR[a.action] }}>{a.action}</span></td>
-                    <td className="py-2.5 pr-4 text-muted">{a.executed ? a.direction : "—"}</td>
-                    <td className="py-2.5 pr-4">{a.swapTx && s ? <AddressPill address={a.swapTx} explorer={s.explorer} kind="tx" /> : <span className="text-faint">—</span>}</td>
-                    <td className="py-2.5 tnum text-faint">{new Date(a.ts).toLocaleTimeString()}</td>
-                  </tr>
+              <div className="scanline relative overflow-hidden border border-line-soft bg-panel-2 p-3">
+                <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">🔒 decision · reasoning</div>
+                <div className="cipher text-[11px]">
+                  <div>0000aa36a72301ce2ebe150cb369a539913ff3636d80</div>
+                  <div>fa4fcb2f7575190ed6ee0000aa36a72301ce2ebe150c</div>
+                  <div>7d3e3d5aa27e3ed04d2a0000aa36a72301119986020c</div>
+                </div>
+              </div>
+              <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                {[["x402", "paid"], ["Nox", "decided"], ["Safe", "executed"]].map(([a, b]) => (
+                  <div key={a} className="border border-line-soft bg-panel p-2.5">
+                    <div className="text-[13px] font-semibold text-text">{a}</div>
+                    <div className="text-[10.5px] text-faint">{b}</div>
+                  </div>
                 ))}
-                {s && s.activity.length === 0 && <tr><td colSpan={5} className="py-4 text-[13px] text-faint">No executions yet.</td></tr>}
-              </tbody>
-            </table>
+              </div>
+              <div className="mt-3 flex items-center justify-between border-t border-line-soft pt-3 text-[11.5px]">
+                <span className="text-muted">confidence</span><span className="tnum font-semibold text-emerald">60% · public</span>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+        <div className="mx-auto max-w-6xl px-5 pb-16"><LiveStats /></div>
+      </section>
 
-        {/* Footer contracts */}
-        <footer className="mt-5 flex flex-wrap items-center gap-2 pb-10">
-          {s && Object.entries(s.contracts).map(([k, v]) => (
-            <span key={k} className="chip">{k} <AddressPill address={v} explorer={s.explorer} /></span>
-          ))}
-        </footer>
-      </main>
+      {/* Product / problem */}
+      <section id="product" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="label">The problem</div>
+          <h2 className="mt-3 max-w-3xl text-[26px] font-semibold leading-tight tracking-tight text-text md:text-[32px]">
+            On-chain treasuries are transparent by default. That leaks your strategy to everyone.
+          </h2>
+          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
+            Every balance, rebalance and payment is public. xCAT keeps the <span className="text-text">values</span> —
+            policy thresholds, exposure, decision reasoning and payment amounts — encrypted inside a trusted
+            execution environment, while the fact that an attested decision occurred stays verifiable on-chain.
+          </p>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="label">How it works</div>
+          <h2 className="mt-3 text-[26px] font-semibold tracking-tight text-text md:text-[32px]">One confidential loop</h2>
+          <div className="mt-8 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+            {STEPS.map((s, i) => (
+              <div key={i} className="bg-panel p-6">
+                <div className="tnum text-[13px] font-semibold text-accent">0{i + 1}</div>
+                <div className="mt-2 text-[15px] font-semibold text-text">{s.title}</div>
+                <div className="mt-1.5 text-[13px] leading-relaxed text-muted">{s.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Protocols */}
+      <section id="protocols" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="label">Integrations</div>
+          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Privacy added to open protocols — without modifying them</h2>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {PROTOCOLS.map((p) => (
+              <div key={p.name} className="panel panel-hover p-6">
+                <div className="flex items-center justify-between">
+                  <div className="text-[16px] font-semibold text-text">{p.name}</div>
+                  <span className="chip">unmodified</span>
+                </div>
+                <div className="mt-3 text-[13px] leading-relaxed text-muted">{p.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture / features */}
+      <section id="architecture" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="label">Architecture</div>
+          <h2 className="mt-3 text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Built as a reusable primitive</h2>
+          <div className="mt-8 grid grid-cols-1 gap-px border border-line bg-line md:grid-cols-2">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="bg-panel p-6">
+                <div className="text-[14px] font-semibold text-text">{f.title}</div>
+                <div className="mt-1.5 text-[13px] leading-relaxed text-muted">{f.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-b border-line bg-panel-2">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
+          <div>
+            <h2 className="text-[24px] font-semibold tracking-tight text-text">See the live workspace</h2>
+            <p className="mt-2 text-[14px] text-muted">Real decisions, encrypted memory and Safe executions — streaming from Ethereum Sepolia.</p>
+          </div>
+          <Link href="/app" className="border border-line bg-text px-6 py-3 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Launch control plane →</Link>
+        </div>
+      </section>
+
+      <footer className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-[12px] text-faint md:flex-row">
+        <div className="flex items-center gap-2"><div className="grid h-6 w-6 place-items-center border border-line-soft"><Logo /></div> xCAT · Confidential Autonomous Treasury</div>
+        <div>Built on iExec Nox · x402 · Safe · Uniswap — Ethereum Sepolia</div>
+      </footer>
     </div>
   );
 }
 
-function ExposureBar({ bps }: { bps: number }) {
-  const pct = Math.min(100, bps / 100);
-  const over = bps > 5000;
-  return (
-    <div>
-      <div className="mb-1.5 flex items-center justify-between text-[11.5px]">
-        <span className="text-muted">Risk-asset exposure</span>
-        <span className="mono tnum font-semibold" style={{ color: over ? "#c81e2b" : "#15803d" }}>{pct.toFixed(1)}%</span>
-      </div>
-      <div className="h-2 overflow-hidden border border-line-soft bg-panel-2">
-        <div className="h-full transition-all duration-700" style={{ width: `${pct}%`, background: over ? "#c81e2b" : "#1d4ed8" }} />
-      </div>
-      <div className="mt-1.5 text-[10.5px] text-faint">hedge threshold 50% · {over ? "would HEDGE" : "within policy"}</div>
-    </div>
-  );
-}
+const STEPS = [
+  { title: "Observe", body: "The Market Agent reads real market state — the live Uniswap pool price and the Safe's portfolio exposure." },
+  { title: "Pay", body: "It buys a decision from the CDE API over x402, settling in USDC through a self-hosted facilitator." },
+  { title: "Decide", body: "The Confidential Decision Engine evaluates an encrypted policy inside the Nox TEE — branchless, so nothing leaks." },
+  { title: "Publish", body: "The decision is published as an encrypted event on-chain, decryptable only by the Treasury Agent." },
+  { title: "Execute", body: "The Treasury Agent decrypts the action and executes a swap from the Safe through the Uniswap router." },
+  { title: "Verify", body: "A public commitment is recorded in the DecisionRegistry — anyone can verify a decision happened, without seeing it." },
+];
+
+const PROTOCOLS = [
+  { name: "x402", body: "Agents pay per confidential decision over the open HTTP 402 protocol. We self-host a facilitator and wrap settlement with Nox metering, so amounts stay encrypted." },
+  { name: "Safe", body: "The treasury lives in a standard Safe. Our adapter proposes and executes batched approve + swap transactions from the Safe itself." },
+  { name: "Uniswap", body: "Rebalancing swaps route through the standard v3 SwapRouter, with output landing back in the Safe. No forks, no custom pools." },
+];
+
+const FEATURES = [
+  { title: "Confidential Decision Engine (CDE)", body: "A reusable pay-per-confidential-decision primitive: encrypted inputs in, an attested decision out, selective decryption via on-chain ACLs." },
+  { title: "Confidential x402 metering", body: "Per-caller usage and amounts are metered encrypted on-chain — decryptable only by the API owner, invisible to the public." },
+  { title: "Encrypted event bus", body: "On-chain pub/sub where payloads are ACL-gated handles; only authorized subscribers can decrypt an event's contents." },
+  { title: "Verifiable, not exposed", body: "Every decision leaves a public commitment. You get auditability and privacy at the same time — confidentiality of values, not anonymity." },
+];
