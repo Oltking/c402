@@ -1,4 +1,4 @@
-import { loadConfig, makeClients, verifyDecision, EXPLORER, type XcatConfig } from "@xcat/sdk";
+import { loadConfig, makeClients, verifyDecision, appendActivity, EXPLORER, type XcatConfig } from "@xcat/sdk";
 import { MarketAgent, TreasuryAgent, type MarketObservation, type TreasuryAction } from "./agents.ts";
 
 export * from "./agents.ts";
@@ -27,6 +27,22 @@ export async function runTreasuryLoop(cfg: XcatConfig = loadConfig(), log: (m: s
 
   const record = await verifyDecision(clients, cfg, BigInt(observation.decision.decisionId));
   log(`[verify] decision #${record.id} commitment ${record.commitment} @ block ${record.blockNumber}`);
+
+  appendActivity({
+    ts: Date.now(),
+    decisionId: observation.decision.decisionId,
+    action: observation.decision.action,
+    actionCode: observation.decision.actionCode,
+    confidence: observation.decision.confidence,
+    exposureBps: observation.market.exposureBps.toString(),
+    priceUsdcPerWeth: Math.round(observation.market.priceUsdcPerWeth),
+    eventId: observation.eventId.toString(),
+    publishTx: observation.publishTx,
+    swapTx: treasuryAction.execution.swapTx,
+    direction: treasuryAction.execution.direction,
+    executed: treasuryAction.execution.executed,
+    commitment: record.commitment,
+  });
 
   return {
     observation,

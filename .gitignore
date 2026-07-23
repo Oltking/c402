@@ -25,3 +25,6 @@ contracts/typechain-types/
 *.log
 .DS_Store
 .turbo/
+
+# runtime activity log
+.xcat-state/

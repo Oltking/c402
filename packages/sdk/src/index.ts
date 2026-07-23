@@ -4,5 +4,6 @@ export * from "./cde.ts";
 export * from "./eventbus.ts";
 export * from "./execute.ts";
 export * from "./verify.ts";
+export * from "./activity.ts";
 
 export type { ActionName } from "@xcat/adapters";
