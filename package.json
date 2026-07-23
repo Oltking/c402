@@ -1,0 +1,15 @@
+{
+  "name": "xcat",
+  "version": "0.0.0",
+  "private": true,
+  "description": "xCAT — Confidential Autonomous Treasury for Safe (iExec Nox + x402 + Uniswap) on Ethereum Sepolia",
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "contracts:test": "pnpm --filter @xcat/contracts test",
+    "contracts:build": "pnpm --filter @xcat/contracts build"
+  }
+}

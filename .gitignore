@@ -1,0 +1,27 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# env / secrets — NEVER commit
+.env
+.env.*
+!.env.example
+*.key
+deployer.json
+
+# builds
+dist/
+build/
+.next/
+out/
+coverage/
+
+# hardhat
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# logs / os
+*.log
+.DS_Store
+.turbo/
