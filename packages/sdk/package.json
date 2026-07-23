@@ -1,0 +1,19 @@
+{
+  "name": "@xcat/sdk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@iexec-nox/handle": "0.1.0-beta.13",
+    "@x402/evm": "2.19.0",
+    "@x402/fetch": "2.19.0",
+    "@xcat/adapters": "workspace:*",
+    "viem": "^2.46.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.11.0",
+    "dotenv": "^16.4.7",
+    "typescript": "~5.8.0"
+  }
+}
