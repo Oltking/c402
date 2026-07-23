@@ -10,6 +10,9 @@ importers:
 
   apps/cde-api:
     dependencies:
+      '@c402/server':
+        specifier: workspace:*
+        version: link:../../packages/c402-server
       '@iexec-nox/handle':
         specifier: 0.1.0-beta.13
         version: 0.1.0-beta.13(ethers@6.17.0)(graphql@16.14.2)(viem@2.55.7(typescript@5.8.3)(zod@3.25.76))
@@ -336,6 +339,9 @@ importers:
 
   packages/sdk:
     dependencies:
+      '@c402/client':
+        specifier: workspace:*
+        version: link:../c402-client
       '@iexec-nox/handle':
         specifier: 0.1.0-beta.13
         version: 0.1.0-beta.13(ethers@6.17.0)(graphql@16.14.2)(viem@2.55.7(typescript@5.8.3)(zod@3.25.76))

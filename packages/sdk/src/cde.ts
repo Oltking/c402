@@ -1,6 +1,5 @@
-import { x402Client, wrapFetchWithPayment, x402HTTPClient } from "@x402/fetch";
-import { ExactEvmScheme } from "@x402/evm/exact/client";
 import { privateKeyToAccount } from "viem/accounts";
+import { c402Fetch, type Attestation, type VerifyResult } from "@c402/client";
 import type { XcatConfig } from "./config.ts";
 
 export interface Decision {
@@ -10,27 +9,32 @@ export interface Decision {
   actionCode: number;
   confidence: number;
   decideTx: string;
+  commitment?: string;
   explorer: string;
+  /** TEE attestation for this confidential decision (c402). */
+  attestation?: Attestation;
+  /** On-chain re-verification of the attestation (c402). */
+  verified?: VerifyResult;
 }
 
 /**
- * Pay the CDE API via x402 (USDC, exact EVM scheme) and return the confidential decision.
- * This is the agent "buying its intelligence through a privacy-wrapped payment".
+ * Pay the CDE — a c402 confidential-compute endpoint — and return the attested decision.
+ * The agent "buys its intelligence": @c402/client reads COMPUTE-REQUIRED, pays via x402,
+ * reads X-ATTESTATION, and re-verifies the attestation on-chain — all invisibly.
  */
 export async function payForDecision(cfg: XcatConfig, exposure: bigint, signal: bigint): Promise<Decision> {
-  const signer = privateKeyToAccount(cfg.privateKey);
-  const client = new x402Client();
-  client.register("eip155:*", new ExactEvmScheme(signer, { rpcUrl: cfg.rpc }));
-
-  const fetchWithPayment = wrapFetchWithPayment(fetch, client);
-  const httpClient = new x402HTTPClient(client);
-
-  const response = await fetchWithPayment(`${cfg.cdeApiUrl}/v1/decide`, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ exposure: exposure.toString(), signal: signal.toString() }),
+  const call = c402Fetch({
+    signer: privateKeyToAccount(cfg.privateKey),
+    network: "eip155:11155111",
+    rpcUrl: cfg.rpc,
   });
-  const result = (await httpClient.processResponse(response)) as { body?: Decision; status?: number };
-  if (!result.body?.ok) throw new Error(`CDE API error (status ${result.status}): ${JSON.stringify(result.body)}`);
-  return result.body;
+
+  const res = await call<Decision>(`${cfg.cdeApiUrl}/v1/decide`, {
+    body: { exposure: exposure.toString(), signal: signal.toString() },
+  });
+
+  if (!res.ok || !res.result?.ok) {
+    throw new Error(`CDE c402 call failed (status ${res.status}): ${JSON.stringify(res.result)}`);
+  }
+  return { ...res.result, attestation: res.attestation, verified: res.verified };
 }

@@ -5,6 +5,7 @@
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {
+    "@c402/client": "workspace:*",
     "@iexec-nox/handle": "0.1.0-beta.13",
     "@x402/evm": "2.19.0",
     "@x402/fetch": "2.19.0",

@@ -7,6 +7,7 @@
     "start": "node index.ts"
   },
   "dependencies": {
+    "@c402/server": "workspace:*",
     "@iexec-nox/handle": "0.1.0-beta.13",
     "@x402/core": "2.19.0",
     "@x402/evm": "2.19.0",
