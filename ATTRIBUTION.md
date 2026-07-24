@@ -1,9 +1,11 @@
 # ATTRIBUTION.md
 
 ## Originality statement
-**All project code in this repository was written during the iExec WTF Hackathon (Summer Edition), 2026.** Nothing was reused from the previous VIBE hackathon or any prior submission. xCAT is an original integration built for this event.
+**All project code in this repository was written during the iExec WTF Hackathon (Summer Edition), 2026.** Nothing was reused from the previous VIBE hackathon or any prior submission.
 
-xCAT adds **confidentiality** to three unmodified open-source protocols (x402, Safe, Uniswap) via iExec Nox TEEs, centered on a reusable **Confidential Decision Engine (CDE)** exposed as a pay-per-confidential-decision HTTP API.
+The product is **c402** — an original open protocol: a confidential compute layer that sits on top of x402 the same way x402 sits on top of HTTP. It adds two headers (`Compute-Required`, `X-Attestation`) so any server can publish a TEE-attested confidential endpoint and any client can pay for and verify it. c402 composes **unmodified** open-source protocols — x402 (payment) and iExec Nox (TEE + attestation).
+
+**xCAT (a confidential treasury for Safe) and a confidential payroll engine are the first two apps built on c402** — proof the protocol generalizes, not the product itself. The treasury app additionally composes unmodified **Safe** and **Uniswap**. Its **Confidential Decision Engine (CDE)** is a c402 server exposed as a pay-per-confidential-decision HTTP API.
 
 ## Prior art & how we differ (required originality disclosure)
 - **Bermuda** — ZK-private x402 *sender privacy* on Base using Noir proofs. **xCAT is different:** we do **TEE-based confidential metering** (Nox), not ZK sender anonymity, and our novel piece is a **Confidential Decision Engine as the paid x402 resource** on **Ethereum Sepolia**. We do **not** claim to be first at "private x402" in general.
