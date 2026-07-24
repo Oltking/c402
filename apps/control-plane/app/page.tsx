@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Shell, Footer } from "@/components/Shell";
 import { LiveStats } from "@/components/LiveStats";
+import { HeroHandshake } from "@/components/HeroHandshake";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <div className="inline-flex items-center gap-2 border border-line-soft bg-panel-2 px-2.5 py-1 text-[11px] font-medium text-muted"><span className="pulse" style={{ background: "#15803d", color: "#15803d" }} /> {children}</div>;
@@ -32,9 +33,9 @@ export default function Landing() {
             <div className="mt-6 text-[12px] text-faint">Confidentiality of values — not anonymity of addresses.</div>
           </div>
 
-          {/* Hero visual: the two headers */}
+          {/* Hero visual: the two headers, rendered from the real latest decision */}
           <div className="rise">
-            <TwoHeaders />
+            <HeroHandshake />
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-5 pb-16"><LiveStats /></div>
@@ -127,34 +128,6 @@ export default function Landing() {
       </section>
 
       <Footer />
-    </div>
-  );
-}
-
-function TwoHeaders() {
-  return (
-    <div className="panel p-5">
-      <div className="mb-3 flex items-center justify-between">
-        <span className="label">the c402 handshake</span>
-        <span className="inline-flex items-center gap-1 border border-emerald/30 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald">TEE attested</span>
-      </div>
-      <div className="space-y-2 font-mono text-[11.5px]">
-        <div className="border border-line-soft bg-panel-2 p-3">
-          <div className="text-rose">HTTP/1.1 402 Payment Required</div>
-          <div className="mt-1 text-muted"><span className="text-accent">PAYMENT-REQUIRED:</span> price 0.01 USDC · eip155:11155111</div>
-          <div className="text-muted"><span className="text-accent-2">Compute-Required:</span> euint256 → treasury-action · nox/tdx</div>
-        </div>
-        <div className="flex items-center justify-center py-0.5 text-[10px] text-faint">↓ client pays via x402 · server computes in the TEE</div>
-        <div className="border border-line-soft bg-panel-2 p-3">
-          <div className="text-emerald">HTTP/1.1 200 OK</div>
-          <div className="mt-1 text-muted"><span className="text-accent">PAYMENT-RESPONSE:</span> settled ✓</div>
-          <div className="text-muted"><span className="text-accent-2">X-Attestation:</span> commitment 0x88da… · verified on-chain ✓</div>
-        </div>
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2 text-center">
-        <div className="border border-line-soft bg-panel p-2.5"><div className="text-[12px] font-semibold text-text">x402</div><div className="text-[10.5px] text-faint">payment layer</div></div>
-        <div className="border border-line-soft bg-panel p-2.5"><div className="font-mono text-[12px] font-semibold text-accent">c402</div><div className="text-[10.5px] text-faint">confidential layer</div></div>
-      </div>
     </div>
   );
 }
