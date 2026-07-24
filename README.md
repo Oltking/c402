@@ -37,6 +37,20 @@ Safe and Uniswap on **Ethereum Sepolia**.
 
 Built for the iExec WTF Hackathon (Summer Edition). All code written during the hackathon.
 
+## Live demo
+
+**🌐 https://use-c402.vercel.app** — reads live from Ethereum Sepolia, no mock data.
+
+- **`/`** — the protocol, the two headers, the code
+- **`/app`** — Confidential Treasury dashboard (live decisions, on-chain attestation verification)
+- **`/app/payroll`** — Confidential Payroll dashboard
+- **`/inspect`** — decode any c402 endpoint's 402 handshake
+- **`/verify`** — re-verify any decision's commitment on-chain
+- **`/protocol`** · **`/developers`** — the spec and the developer guide
+
+> Install & run it yourself: [`docs/setup-deploy-usage.md`](docs/setup-deploy-usage.md) ·
+> deploy your own copy: [`docs/vercel-deploy.md`](docs/vercel-deploy.md).
+
 ## The c402 packages
 
 | Package | What it is |
