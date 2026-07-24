@@ -19,8 +19,8 @@ export function LiveStats() {
   const items = [
     { label: "Confidential decisions", value: s?.stats.decisionCount ?? "—" },
     { label: "Encrypted events", value: s?.stats.eventCount ?? "—" },
-    { label: "WETH price", value: s ? `$${Math.round(s.market.priceUsdcPerWeth).toLocaleString()}` : "—" },
-    { label: "Treasury exposure", value: s ? `${(Number(s.market.exposureBps) / 100).toFixed(1)}%` : "—" },
+    { label: "Apps on c402", value: "2" },
+    { label: "TEE standard", value: "Nox · TDX" },
   ];
 
   return (

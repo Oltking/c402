@@ -50,6 +50,12 @@ importers:
 
   apps/control-plane:
     dependencies:
+      '@c402/client':
+        specifier: workspace:*
+        version: link:../../packages/c402-client
+      '@c402/spec':
+        specifier: workspace:*
+        version: link:../../packages/c402-spec
       '@iexec-nox/handle':
         specifier: 0.1.0-beta.13
         version: 0.1.0-beta.13(ethers@6.17.0)(graphql@16.14.2)(viem@2.55.7(typescript@5.8.3)(zod@3.25.76))

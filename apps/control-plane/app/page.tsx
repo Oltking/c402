@@ -1,31 +1,6 @@
 import Link from "next/link";
+import { Shell, Footer } from "@/components/Shell";
 import { LiveStats } from "@/components/LiveStats";
-
-function Logo() {
-  return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.2v5.3c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6.2L12 3z" stroke="#1d4ed8" strokeWidth="1.6" strokeLinejoin="round" /><path d="M9 12l2.2 2.2L15.5 10" stroke="#4338ca" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-  );
-}
-
-function Nav() {
-  return (
-    <header className="sticky top-0 z-20 border-b border-line bg-panel/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-        <div className="flex items-center gap-2.5">
-          <div className="grid h-8 w-8 place-items-center border border-line bg-panel"><Logo /></div>
-          <span className="text-[15px] font-semibold tracking-tight text-text">xCAT</span>
-        </div>
-        <nav className="hidden items-center gap-7 text-[13px] text-muted md:flex">
-          <a href="#product" className="hover:text-text">Product</a>
-          <a href="#how" className="hover:text-text">How it works</a>
-          <a href="#protocols" className="hover:text-text">Integrations</a>
-          <a href="#architecture" className="hover:text-text">Architecture</a>
-        </nav>
-        <Link href="/app" className="border border-line bg-text px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-85">Launch app →</Link>
-      </div>
-    </header>
-  );
-}
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <div className="inline-flex items-center gap-2 border border-line-soft bg-panel-2 px-2.5 py-1 text-[11px] font-medium text-muted"><span className="pulse" style={{ background: "#15803d", color: "#15803d" }} /> {children}</div>;
@@ -34,73 +9,53 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default function Landing() {
   return (
     <div>
-      <Nav />
+      <Shell />
 
       {/* Hero */}
       <section className="border-b border-line">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.1fr_0.9fr] md:py-24">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:grid-cols-[1.05fr_0.95fr] md:py-24">
           <div className="rise">
-            <Eyebrow>Live on Ethereum Sepolia · no mock data</Eyebrow>
-            <h1 className="mt-5 text-[38px] font-semibold leading-[1.05] tracking-tight text-text md:text-[52px]">
-              Treasury intelligence<br />that stays <span className="text-accent">private.</span>
+            <Eyebrow>Open protocol · live on Ethereum Sepolia · no mock data</Eyebrow>
+            <h1 className="mt-5 text-[38px] font-semibold leading-[1.04] tracking-tight text-text md:text-[54px]">
+              Pay for a<br /><span className="text-accent">private thought.</span>
             </h1>
             <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted">
-              xCAT is a confidential autonomous treasury for Safe. Its agents buy their intelligence through
-              privacy-wrapped x402 payments, decide inside an iExec Nox TEE, and execute through unmodified
-              Safe and Uniswap — so amounts, policy and reasoning stay encrypted while every action remains
-              auditable on-chain.
+              x402 made any resource payable by any agent. <span className="font-mono text-text">c402</span> makes any
+              computation <span className="text-text">confidential and payable</span> — same pattern, one level deeper.
+              A c402 server declares a TEE-attested confidential endpoint; any client pays and consumes it, knowing
+              nothing about the implementation. Two headers on top of x402.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Link href="/app" className="border border-line bg-text px-5 py-2.5 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Open the control plane →</Link>
-              <a href="#how" className="border border-line bg-panel px-5 py-2.5 text-[14px] font-medium text-text transition-colors hover:bg-panel-2">See how it works</a>
+              <Link href="/inspect" className="border border-line bg-text px-5 py-2.5 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Inspect a live endpoint →</Link>
+              <Link href="/protocol" className="border border-line bg-panel px-5 py-2.5 text-[14px] font-medium text-text transition-colors hover:bg-panel-2">Read the protocol</Link>
             </div>
             <div className="mt-6 text-[12px] text-faint">Confidentiality of values — not anonymity of addresses.</div>
           </div>
 
-          {/* Hero visual: encrypted decision card */}
+          {/* Hero visual: the two headers */}
           <div className="rise">
-            <div className="panel p-5">
-              <div className="mb-3 flex items-center justify-between">
-                <span className="label">Confidential Decision Engine</span>
-                <span className="inline-flex items-center gap-1 border border-emerald/30 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald">TEE attested</span>
-              </div>
-              <div className="scanline relative overflow-hidden border border-line-soft bg-panel-2 p-3">
-                <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">🔒 decision · reasoning</div>
-                <div className="cipher text-[11px]">
-                  <div>0000aa36a72301ce2ebe150cb369a539913ff3636d80</div>
-                  <div>fa4fcb2f7575190ed6ee0000aa36a72301ce2ebe150c</div>
-                  <div>7d3e3d5aa27e3ed04d2a0000aa36a72301119986020c</div>
-                </div>
-              </div>
-              <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                {[["x402", "paid"], ["Nox", "decided"], ["Safe", "executed"]].map(([a, b]) => (
-                  <div key={a} className="border border-line-soft bg-panel p-2.5">
-                    <div className="text-[13px] font-semibold text-text">{a}</div>
-                    <div className="text-[10.5px] text-faint">{b}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center justify-between border-t border-line-soft pt-3 text-[11.5px]">
-                <span className="text-muted">confidence</span><span className="tnum font-semibold text-emerald">60% · public</span>
-              </div>
-            </div>
+            <TwoHeaders />
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-5 pb-16"><LiveStats /></div>
       </section>
 
-      {/* Product / problem */}
-      <section id="product" className="border-b border-line">
+      {/* Developer proof — two code panels */}
+      <section id="develop" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-5 py-16">
-          <div className="label">The problem</div>
+          <div className="label">For developers</div>
           <h2 className="mt-3 max-w-3xl text-[26px] font-semibold leading-tight tracking-tight text-text md:text-[32px]">
-            On-chain treasuries are transparent by default. That leaks your strategy to everyone.
+            A confidential, paid endpoint in one function. Consume it like a normal fetch.
           </h2>
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
-            Every balance, rebalance and payment is public. xCAT keeps the <span className="text-text">values</span> —
-            policy thresholds, exposure, decision reasoning and payment amounts — encrypted inside a trusted
-            execution environment, while the fact that an attested decision occurred stays verifiable on-chain.
-          </p>
+          <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <CodePanel title="server · @c402/server" lines={SERVER_CODE} />
+            <CodePanel title="client · @c402/client" lines={CLIENT_CODE} />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {PACKAGES.map((p) => (
+              <span key={p} className="chip font-mono">{p}</span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -108,48 +63,52 @@ export default function Landing() {
       <section id="how" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <div className="label">How it works</div>
-          <h2 className="mt-3 text-[26px] font-semibold tracking-tight text-text md:text-[32px]">One confidential loop</h2>
-          <div className="mt-8 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          <h2 className="mt-3 text-[26px] font-semibold tracking-tight text-text md:text-[32px]">402 → pay → compute → attest → verify</h2>
+          <div className="mt-8 grid grid-cols-1 gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
             {STEPS.map((s, i) => (
-              <div key={i} className="bg-panel p-6">
+              <div key={i} className="bg-panel p-5">
                 <div className="tnum text-[13px] font-semibold text-accent">0{i + 1}</div>
-                <div className="mt-2 text-[15px] font-semibold text-text">{s.title}</div>
-                <div className="mt-1.5 text-[13px] leading-relaxed text-muted">{s.body}</div>
+                <div className="mt-2 text-[14px] font-semibold text-text">{s.title}</div>
+                <div className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{s.body}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Protocols */}
-      <section id="protocols" className="border-b border-line">
+      {/* Apps on c402 */}
+      <section id="apps" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-5 py-16">
-          <div className="label">Integrations</div>
-          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Privacy added to open protocols — without modifying them</h2>
-          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-            {PROTOCOLS.map((p) => (
-              <div key={p.name} className="panel panel-hover p-6">
+          <div className="label">Apps on c402</div>
+          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">The protocol is the product. These are the proof.</h2>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {APPS.map((a) => (
+              <Link key={a.name} href={a.href} className="panel panel-hover group p-6">
                 <div className="flex items-center justify-between">
-                  <div className="text-[16px] font-semibold text-text">{p.name}</div>
+                  <div className="text-[16px] font-semibold text-text">{a.name}</div>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald"><span className="pulse" style={{ background: "#15803d", color: "#15803d" }} /> live on Sepolia</span>
+                </div>
+                <div className="mt-3 text-[13px] leading-relaxed text-muted">{a.body}</div>
+                <div className="mt-4 text-[12.5px] font-medium text-accent">Open dashboard →</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Composes with */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="label">Composes with</div>
+          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Privacy added to open protocols — without modifying them</h2>
+          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {PROTOCOLS.map((p) => (
+              <div key={p.name} className="panel panel-hover p-5">
+                <div className="flex items-center justify-between">
+                  <div className="text-[15px] font-semibold text-text">{p.name}</div>
                   <span className="chip">unmodified</span>
                 </div>
-                <div className="mt-3 text-[13px] leading-relaxed text-muted">{p.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Architecture / features */}
-      <section id="architecture" className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-5 py-16">
-          <div className="label">Architecture</div>
-          <h2 className="mt-3 text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Built as a reusable primitive</h2>
-          <div className="mt-8 grid grid-cols-1 gap-px border border-line bg-line md:grid-cols-2">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="bg-panel p-6">
-                <div className="text-[14px] font-semibold text-text">{f.title}</div>
-                <div className="mt-1.5 text-[13px] leading-relaxed text-muted">{f.body}</div>
+                <div className="mt-3 text-[12.5px] leading-relaxed text-muted">{p.body}</div>
               </div>
             ))}
           </div>
@@ -160,39 +119,101 @@ export default function Landing() {
       <section className="border-b border-line bg-panel-2">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
           <div>
-            <h2 className="text-[24px] font-semibold tracking-tight text-text">See the live workspace</h2>
-            <p className="mt-2 text-[14px] text-muted">Real decisions, encrypted memory and Safe executions — streaming from Ethereum Sepolia.</p>
+            <h2 className="text-[24px] font-semibold tracking-tight text-text">Feel the protocol in 15 seconds</h2>
+            <p className="mt-2 text-[14px] text-muted">Paste a c402 endpoint, decode its headers, pay, and verify the attestation on-chain.</p>
           </div>
-          <Link href="/app" className="border border-line bg-text px-6 py-3 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Launch control plane →</Link>
+          <Link href="/inspect" className="border border-line bg-text px-6 py-3 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Open the inspector →</Link>
         </div>
       </section>
 
-      <footer className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-[12px] text-faint md:flex-row">
-        <div className="flex items-center gap-2"><div className="grid h-6 w-6 place-items-center border border-line-soft"><Logo /></div> xCAT · Confidential Autonomous Treasury</div>
-        <div>Built on iExec Nox · x402 · Safe · Uniswap — Ethereum Sepolia</div>
-      </footer>
+      <Footer />
     </div>
   );
 }
 
+function TwoHeaders() {
+  return (
+    <div className="panel p-5">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="label">the c402 handshake</span>
+        <span className="inline-flex items-center gap-1 border border-emerald/30 bg-emerald/5 px-1.5 py-0.5 text-[9.5px] font-semibold text-emerald">TEE attested</span>
+      </div>
+      <div className="space-y-2 font-mono text-[11.5px]">
+        <div className="border border-line-soft bg-panel-2 p-3">
+          <div className="text-rose">HTTP/1.1 402 Payment Required</div>
+          <div className="mt-1 text-muted"><span className="text-accent">PAYMENT-REQUIRED:</span> price 0.01 USDC · eip155:11155111</div>
+          <div className="text-muted"><span className="text-accent-2">Compute-Required:</span> euint256 → treasury-action · nox/tdx</div>
+        </div>
+        <div className="flex items-center justify-center py-0.5 text-[10px] text-faint">↓ client pays via x402 · server computes in the TEE</div>
+        <div className="border border-line-soft bg-panel-2 p-3">
+          <div className="text-emerald">HTTP/1.1 200 OK</div>
+          <div className="mt-1 text-muted"><span className="text-accent">PAYMENT-RESPONSE:</span> settled ✓</div>
+          <div className="text-muted"><span className="text-accent-2">X-Attestation:</span> commitment 0x88da… · verified on-chain ✓</div>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-2 text-center">
+        <div className="border border-line-soft bg-panel p-2.5"><div className="text-[12px] font-semibold text-text">x402</div><div className="text-[10.5px] text-faint">payment layer</div></div>
+        <div className="border border-line-soft bg-panel p-2.5"><div className="font-mono text-[12px] font-semibold text-accent">c402</div><div className="text-[10.5px] text-faint">confidential layer</div></div>
+      </div>
+    </div>
+  );
+}
+
+function CodePanel({ title, lines }: { title: string; lines: { t: string; c?: string }[] }) {
+  return (
+    <div className="panel overflow-hidden p-0">
+      <div className="flex items-center justify-between border-b border-line-soft bg-panel-2 px-4 py-2">
+        <span className="font-mono text-[11.5px] text-muted">{title}</span>
+        <span className="flex gap-1"><Dot /><Dot /><Dot /></span>
+      </div>
+      <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7]">
+        {lines.map((l, i) => (
+          <div key={i} className={l.c ?? "text-text"}>{l.t || " "}</div>
+        ))}
+      </pre>
+    </div>
+  );
+}
+function Dot() { return <span className="h-2 w-2 rounded-full border border-line-soft" />; }
+
+const SERVER_CODE = [
+  { t: 'app.post("/decide", c402({', c: "text-text" },
+  { t: '  price: "0.01", token: USDC, network: "eip155:11155111",', c: "text-muted" },
+  { t: "  facilitator: FACILITATOR, contract: CDE, payTo: PAY_TO,", c: "text-muted" },
+  { t: '  schema: { input: "euint256", output: "treasury-action" },', c: "text-muted" },
+  { t: "  compute: async (input) => {", c: "text-accent-2" },
+  { t: "    // runs inside the iExec Nox TEE", c: "text-faint" },
+  { t: "    return await decideConfidentially(input);", c: "text-muted" },
+  { t: "  },", c: "text-accent-2" },
+  { t: "}));", c: "text-text" },
+];
+const CLIENT_CODE = [
+  { t: "const call = c402Fetch({", c: "text-text" },
+  { t: '  signer, network: "eip155:11155111", rpcUrl,', c: "text-muted" },
+  { t: "});", c: "text-text" },
+  { t: "", c: "text-text" },
+  { t: 'const res = await call("http://cde/decide", {', c: "text-text" },
+  { t: "  body: { exposure, signal },", c: "text-muted" },
+  { t: "});", c: "text-text" },
+  { t: "", c: "text-text" },
+  { t: "res.result;  res.attestation;  res.verified.valid;", c: "text-emerald" },
+];
+const PACKAGES = ["@c402/spec", "@c402/server", "@c402/client", "@c402/verify"];
+
 const STEPS = [
-  { title: "Observe", body: "The Market Agent reads real market state — the live Uniswap pool price and the Safe's portfolio exposure." },
-  { title: "Pay", body: "It buys a decision from the CDE API over x402, settling in USDC through a self-hosted facilitator." },
-  { title: "Decide", body: "The Confidential Decision Engine evaluates an encrypted policy inside the Nox TEE — branchless, so nothing leaks." },
-  { title: "Publish", body: "The decision is published as an encrypted event on-chain, decryptable only by the Treasury Agent." },
-  { title: "Execute", body: "The Treasury Agent decrypts the action and executes a swap from the Safe through the Uniswap router." },
-  { title: "Verify", body: "A public commitment is recorded in the DecisionRegistry — anyone can verify a decision happened, without seeing it." },
+  { title: "402", body: "An unpaid request returns 402 with PAYMENT-REQUIRED and Compute-Required — price, token, TEE, input/output schema." },
+  { title: "Pay", body: "The client pays via standard x402 (EIP-3009 USDC), settled by a facilitator. c402 doesn't touch settlement." },
+  { title: "Compute", body: "The server runs the computation inside the iExec Nox TEE. Inputs, state and reasoning stay encrypted." },
+  { title: "Attest", body: "The 200 carries X-Attestation — real on-chain artifacts (commitment, tx, handles), not a trust-us blob." },
+  { title: "Verify", body: "Anyone re-reads the commitment on-chain via @c402/verify. No server cooperation required." },
 ];
-
+const APPS = [
+  { name: "Confidential Treasury (xCAT)", href: "/apps", body: "An autonomous treasury for Safe. Agents buy confidential decisions over c402, then execute swaps through unmodified Safe + Uniswap. The first app on the protocol." },
+  { name: "Confidential Payroll", href: "/apps", body: "Approve / defer / reject raise decisions against an encrypted budget and policy cap — without revealing the numbers. A second, different computation on the same protocol." },
+];
 const PROTOCOLS = [
-  { name: "x402", body: "Agents pay per confidential decision over the open HTTP 402 protocol. We self-host a facilitator and wrap settlement with Nox metering, so amounts stay encrypted." },
-  { name: "Safe", body: "The treasury lives in a standard Safe. Our adapter proposes and executes batched approve + swap transactions from the Safe itself." },
-  { name: "Uniswap", body: "Rebalancing swaps route through the standard v3 SwapRouter, with output landing back in the Safe. No forks, no custom pools." },
-];
-
-const FEATURES = [
-  { title: "Confidential Decision Engine (CDE)", body: "A reusable pay-per-confidential-decision primitive: encrypted inputs in, an attested decision out, selective decryption via on-chain ACLs." },
-  { title: "Confidential x402 metering", body: "Per-caller usage and amounts are metered encrypted on-chain — decryptable only by the API owner, invisible to the public." },
-  { title: "Encrypted event bus", body: "On-chain pub/sub where payloads are ACL-gated handles; only authorized subscribers can decrypt an event's contents." },
-  { title: "Verifiable, not exposed", body: "Every decision leaves a public commitment. You get auditability and privacy at the same time — confidentiality of values, not anonymity." },
+  { name: "x402", body: "The open HTTP 402 payment protocol. c402 adds two headers on top; the payment and settlement legs are pure x402." },
+  { name: "iExec Nox", body: "Intel TDX TEEs with on-chain handles + ACLs. The confidential compute and the attestations are Nox." },
+  { name: "Safe", body: "The treasury app custodies funds in a standard Safe; the agent proposes and executes from the Safe itself." },
+  { name: "Uniswap", body: "Rebalancing swaps route through the standard v3 router — no forks, output lands back in the Safe." },
 ];
