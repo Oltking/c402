@@ -112,7 +112,7 @@ pnpm --filter @xcat/cde-api start        # terminal 2
 node packages/cli/src/index.ts status    # workspace status
 node packages/cli/src/index.ts run       # run one confidential loop end-to-end
 node packages/cli/src/index.ts verify 6  # prove a decision commitment on-chain
-pnpm --filter @xcat/control-plane dev     # control plane at http://localhost:3000
+pnpm --filter @xcat/control-plane dev     # control plane at http://localhost:3007
 ```
 
 ## The demo path (no mock data)

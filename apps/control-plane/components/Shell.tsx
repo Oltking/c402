@@ -42,7 +42,7 @@ export function Shell({ children, wide = false }: { children?: React.ReactNode; 
                   </Link>
                 );
               })}
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
+              <a href={process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Oltking"} target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
             </nav>
           </div>
           <WalletButton />

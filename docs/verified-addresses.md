@@ -38,7 +38,7 @@ Last verified: **2026-07-23**
 - Source: docs.noxprotocol.io/llms-full.txt — 2026-07-23 (confirm exact viewACL shape from source repo at install)
 
 ## 4. Hardhat (Nox plugin) — mirror `iExec-Nox/nox-confidential-contracts/hardhat.config.ts`
-> ⚠️ `nox-hardhat-starter` (named in CLAUDE.md §C#2 / reading-list #11) **DOES NOT EXIST** in the `iExec-Nox` org. Authoritative reference is instead **`iExec-Nox/nox-confidential-contracts`** (real Hardhat 3 + viem config) and the docs repo. Logged in feedback.md.
+> ⚠️ `nox-hardhat-starter` (named in iExec's official developer-resources list) **DOES NOT EXIST** in the `iExec-Nox` org. Authoritative reference is instead **`iExec-Nox/nox-confidential-contracts`** (real Hardhat 3 + viem config) and the docs repo. Logged in feedback.md.
 - solidity **`0.8.35`** (`.solc.json`), `settings.evmVersion: "osaka"`; contracts pragma `^0.8.27`+. Node 22+; **Docker running** for TEE tests.
 - Plugins: `@nomicfoundation/hardhat-toolbox-viem`. **Critical linking directive:** `solidity.npmFilesToBuild: ["@iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol"]` — required for Hardhat to compile/link the Nox library.
 - Networks: local `{ type: 'edr-simulated', chainType: 'op' }` (op chainType) + `sepolia: { type:'http', chainType:'l1', url: configVariable('SEPOLIA_RPC_URL'), accounts:[configVariable('SEPOLIA_PRIVATE_KEY')] }`.
