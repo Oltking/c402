@@ -126,18 +126,34 @@ program
 
 program
   .command("verify")
-  .argument("<attestation.json>", "path to an attestation JSON (as printed by `c402 call --json` → .attestation)")
+  .argument("[attestation.json]", "path to an attestation JSON (as printed by `c402 call --json` → .attestation)")
+  .option("--id <n>", "verify by decision id instead of a file (needs --registry)")
+  .option("--registry <addr>", "DecisionRegistry address (for --id mode)")
+  .option("--cde <addr>", "compute contract, to also check contract-matches (for --id mode)")
+  .option("--network <caip2>", "CAIP-2 network id", DEFAULT_NETWORK)
   .option("--rpc <url>", "RPC URL (or env SEPOLIA_RPC_URL)")
-  .description("Re-verify a c402 attestation on-chain, standalone — no server needed")
-  .action(async (path: string, opts: { rpc?: string }) => {
-    const spin = ora("re-reading commitment from chain…").start();
+  .description("Re-verify on-chain, standalone — from an attestation file OR just a decision id")
+  .action(async (path: string | undefined, opts: { id?: string; registry?: string; cde?: string; network: string; rpc?: string }) => {
+    const spin = ora("re-reading the commitment from chain…").start();
     try {
-      const att = JSON.parse(readFileSync(path, "utf8")) as Attestation;
+      let att: Attestation;
+      if (path) {
+        att = JSON.parse(readFileSync(path, "utf8")) as Attestation;
+      } else if (opts.id && opts.registry) {
+        // Id-mode: the on-chain registry record IS the source of truth. We don't have the
+        // commitment locally, so the verifier reads it from chain and reports what it found.
+        att = { version: "c402/1", standard: "iexec-nox/intel-tdx", network: opts.network, contract: opts.cde ?? opts.registry, registry: opts.registry, decisionId: opts.id, issuedAt: 0 } as Attestation;
+      } else {
+        spin.fail("give an attestation file, or --id <n> --registry <addr>");
+        process.exit(1);
+        return;
+      }
       const result = await verifyAttestation(att, { rpcUrl: resolveRpc(opts.rpc) });
       spin.stop();
       head(`verified on-chain: ${result.valid ? c.green("YES") : c.red("NO")}`);
       for (const ch of result.checks) checkline(ch.name, ch.ok, ch.detail);
-      console.log();
+      if (result.onChainCommitment) { console.log(); kv("commitment", result.onChainCommitment); }
+      console.log(c.dim("\n  Note: this proves the decision exists & matches its commitment — it does NOT\n  reveal the private result (that stays ACL-encrypted to the authorized runtime).\n"));
       process.exit(result.valid ? 0 : 1);
     } catch (e) {
       spin.fail(e instanceof Error ? e.message : "verify failed");

@@ -19,6 +19,7 @@ export function C402Mark({ size = 22 }: { size?: number }) {
 
 const NAV = [
   { href: "/protocol", label: "Protocol" },
+  { href: "/developers", label: "Developers" },
   { href: "/apps", label: "Apps" },
   { href: "/inspect", label: "Inspect" },
   { href: "/verify", label: "Verify" },
