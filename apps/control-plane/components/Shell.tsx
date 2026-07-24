@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { WalletButton } from "./WalletButton";
 
 /** c402 wordmark - a bracketed lock glyph + monospace wordmark. */
@@ -27,6 +28,14 @@ const NAV = [
 
 export function Shell({ children, wide = false }: { children?: React.ReactNode; wide?: boolean }) {
   const path = usePathname();
+  const [open, setOpen] = useState(false);
+  const github = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Oltking/c402";
+
+  // Close the mobile menu on route change.
+  useEffect(() => { setOpen(false); }, [path]);
+
+  const isActive = (href: string) => path === href || (href !== "/" && path.startsWith(href));
+
   return (
     <div>
       <header className="sticky top-0 z-30 border-b border-line bg-panel/90 backdrop-blur">
@@ -34,19 +43,45 @@ export function Shell({ children, wide = false }: { children?: React.ReactNode; 
           <div className="flex items-center gap-7">
             <Link href="/" className="shrink-0"><C402Mark /></Link>
             <nav className="hidden items-center gap-6 text-[13px] text-muted md:flex">
-              {NAV.map((n) => {
-                const active = path === n.href || (n.href !== "/" && path.startsWith(n.href));
-                return (
-                  <Link key={n.href} href={n.href} className={active ? "text-text" : "hover:text-text"}>
-                    {n.label}
-                  </Link>
-                );
-              })}
-              <a href={process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Oltking/c402"} target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
+              {NAV.map((n) => (
+                <Link key={n.href} href={n.href} className={isActive(n.href) ? "text-text" : "hover:text-text"}>{n.label}</Link>
+              ))}
+              <a href={github} target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
             </nav>
           </div>
-          <WalletButton />
+
+          <div className="flex items-center gap-2">
+            <WalletButton />
+            {/* Hamburger — mobile only */}
+            <button
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              className="grid h-9 w-9 place-items-center border border-line-soft bg-panel text-text md:hidden"
+            >
+              {open ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile menu panel */}
+        {open && (
+          <nav className="border-t border-line bg-panel md:hidden">
+            <div className="mx-auto max-w-6xl px-5 py-2">
+              {NAV.map((n) => (
+                <Link key={n.href} href={n.href}
+                  className={`block border-b border-line-soft py-3 text-[15px] ${isActive(n.href) ? "font-medium text-accent" : "text-text"}`}>
+                  {n.label}
+                </Link>
+              ))}
+              <a href={github} target="_blank" rel="noreferrer" className="block py-3 text-[15px] text-text">GitHub ↗</a>
+            </div>
+          </nav>
+        )}
       </header>
       {children}
     </div>
