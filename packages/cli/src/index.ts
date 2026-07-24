@@ -10,8 +10,8 @@ import {
   verifyDecision,
   ABIS,
   EXPLORER,
-} from "@xcat/sdk";
-import { runTreasuryLoop } from "@xcat/runtime";
+} from "@c402/sdk";
+import { runTreasuryLoop } from "@c402/runtime";
 
 const ERC20 = parseAbi(["function balanceOf(address) view returns (uint256)"]);
 

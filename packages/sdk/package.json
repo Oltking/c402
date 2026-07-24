@@ -1,5 +1,5 @@
 {
-  "name": "@xcat/sdk",
+  "name": "@c402/sdk",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "@iexec-nox/handle": "0.1.0-beta.13",
     "@x402/evm": "2.19.0",
     "@x402/fetch": "2.19.0",
-    "@xcat/adapters": "workspace:*",
+    "@c402/adapters": "workspace:*",
     "viem": "^2.46.3"
   },
   "devDependencies": {

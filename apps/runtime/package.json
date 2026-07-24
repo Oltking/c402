@@ -1,5 +1,5 @@
 {
-  "name": "@xcat/runtime",
+  "name": "@c402/runtime",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
     "loop": "node src/run-loop.ts"
   },
   "dependencies": {
-    "@xcat/sdk": "workspace:*",
+    "@c402/sdk": "workspace:*",
     "viem": "^2.46.3"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@ import {
   publishEncrypted,
   consumeEvent,
   executeDecision,
-} from "@xcat/sdk";
+} from "@c402/sdk";
 
 const TOPIC = "treasury-decision";
 const ACTION_NAMES: ActionName[] = ["HOLD", "HEDGE", "ACCUMULATE"];

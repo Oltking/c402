@@ -46,7 +46,7 @@ Minimal end-to-end usage lives in [`examples/hello-c402`](../examples/hello-c402
 
 ```bash
 # Docker must be running
-pnpm --filter @xcat/contracts test
+pnpm --filter @c402/contracts test
 ```
 
 ## 5. (Optional) Deploy fresh contracts to Sepolia
@@ -72,8 +72,8 @@ node packages/adapters/scripts/phase3-demo.ts   # deploys a Safe, funds it, exec
 ## 6. Run the services
 
 ```bash
-pnpm --filter @xcat/facilitator start          # x402 facilitator            → http://localhost:4022
-pnpm --filter @xcat/cde-api start               # treasury c402 server        → http://localhost:4021
+pnpm --filter @c402/facilitator start          # x402 facilitator            → http://localhost:4022
+pnpm --filter @c402/cde-api start               # treasury c402 server        → http://localhost:4021
 node examples/payroll/server.ts                 # payroll c402 server         → http://localhost:4026
 ```
 
@@ -113,7 +113,7 @@ node packages/cli/src/index.ts deploy -n sepolia
 ## 9. Control plane (protocol-first frontend)
 
 ```bash
-pnpm --filter @xcat/control-plane dev          # http://localhost:3007
+pnpm --filter @c402/control-plane dev          # http://localhost:3007
 ```
 
 | Route | What it is |

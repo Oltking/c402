@@ -108,7 +108,7 @@ apps/
   runtime/            Market Agent + Treasury Agent - the hands-free loop
   control-plane/      Next.js landing page (/) + live dashboard (/app)
 packages/
-  sdk/                @xcat/sdk - market reads, x402 payments, event bus, execution, verify
+  sdk/                @c402/sdk - market reads, x402 payments, event bus, execution, verify
   cli/                xcat CLI (status / market / run / verify / deploy)
   adapters/           SafeAdapter + UniswapAdapter (unmodified protocols)
 ```
@@ -121,12 +121,12 @@ Requirements: **Node 22+**, **pnpm 10**, **Docker** (for local Nox tests). See
 ```bash
 pnpm install
 cp .env.example .env          # fill SEPOLIA_RPC_URL + SEPOLIA_PRIVATE_KEY, fund the wallet
-pnpm --filter @xcat/facilitator start   # terminal 1
-pnpm --filter @xcat/cde-api start        # terminal 2
+pnpm --filter @c402/facilitator start   # terminal 1
+pnpm --filter @c402/cde-api start        # terminal 2
 node packages/cli/src/index.ts status    # workspace status
 node packages/cli/src/index.ts run       # run one confidential loop end-to-end
 node packages/cli/src/index.ts verify 6  # prove a decision commitment on-chain
-pnpm --filter @xcat/control-plane dev     # control plane at http://localhost:3007
+pnpm --filter @c402/control-plane dev     # control plane at http://localhost:3007
 ```
 
 ## The demo path (no mock data)

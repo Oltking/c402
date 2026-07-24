@@ -1,4 +1,4 @@
-import { loadConfig, makeClients, verifyDecision, appendActivity, EXPLORER, type XcatConfig } from "@xcat/sdk";
+import { loadConfig, makeClients, verifyDecision, appendActivity, EXPLORER, type XcatConfig } from "@c402/sdk";
 import { MarketAgent, TreasuryAgent, type MarketObservation, type TreasuryAction } from "./agents.ts";
 
 export * from "./agents.ts";

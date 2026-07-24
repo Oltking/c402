@@ -1,6 +1,6 @@
 import { parseAbi, type Address, type Hex } from "viem";
 import { sepolia } from "viem/chains";
-import { buildSwapBatch, execSafeBatch, intentForAction, type ActionName } from "@xcat/adapters";
+import { buildSwapBatch, execSafeBatch, intentForAction, type ActionName } from "@c402/adapters";
 import type { Clients, XcatConfig } from "./config.ts";
 import { EXPLORER } from "./config.ts";
 

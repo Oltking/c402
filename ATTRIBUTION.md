@@ -43,7 +43,7 @@ The product is **c402** - an original open protocol: a confidential compute laye
   Different computation, same protocol - the generality proof.
 - **xCAT - the first app on c402**: the CDE / DecisionRegistry / EventBus / PaymentMeter Solidity
   contracts; the self-hosted x402 facilitator + paid CDE API (a c402 server); the SafeAdapter +
-  UniswapAdapter; the `@xcat/sdk`, `xcat` CLI, and agent runtime (c402 clients); and the Next.js control
+  UniswapAdapter; the `@c402/sdk`, `xcat` CLI, and agent runtime (c402 clients); and the Next.js control
   plane (landing, dashboard, and non-custodial bring-your-own-Safe onboarding).
 
 Third-party protocols (x402, Safe, Uniswap) and the Nox stack are used **unmodified**.

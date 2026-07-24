@@ -9,7 +9,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "contracts:test": "pnpm --filter @xcat/contracts test",
-    "contracts:build": "pnpm --filter @xcat/contracts build"
+    "contracts:test": "pnpm --filter @c402/contracts test",
+    "contracts:build": "pnpm --filter @c402/contracts build"
   }
 }

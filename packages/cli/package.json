@@ -1,5 +1,5 @@
 {
-  "name": "@xcat/cli",
+  "name": "@c402/xcat",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -7,8 +7,8 @@
     "xcat": "src/index.ts"
   },
   "dependencies": {
-    "@xcat/runtime": "workspace:*",
-    "@xcat/sdk": "workspace:*",
+    "@c402/runtime": "workspace:*",
+    "@c402/sdk": "workspace:*",
     "commander": "^12.1.0",
     "ora": "^8.1.1",
     "picocolors": "^1.1.1",

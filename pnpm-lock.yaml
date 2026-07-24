@@ -139,7 +139,7 @@ importers:
 
   apps/runtime:
     dependencies:
-      '@xcat/sdk':
+      '@c402/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       viem:
@@ -376,10 +376,10 @@ importers:
 
   packages/cli:
     dependencies:
-      '@xcat/runtime':
+      '@c402/runtime':
         specifier: workspace:*
         version: link:../../apps/runtime
-      '@xcat/sdk':
+      '@c402/sdk':
         specifier: workspace:*
         version: link:../sdk
       commander:
@@ -404,6 +404,9 @@ importers:
 
   packages/sdk:
     dependencies:
+      '@c402/adapters':
+        specifier: workspace:*
+        version: link:../adapters
       '@c402/client':
         specifier: workspace:*
         version: link:../c402-client
@@ -416,9 +419,6 @@ importers:
       '@x402/fetch':
         specifier: 2.19.0
         version: 2.19.0
-      '@xcat/adapters':
-        specifier: workspace:*
-        version: link:../adapters
       viem:
         specifier: ^2.46.3
         version: 2.55.7(typescript@5.8.3)(zod@3.25.76)
