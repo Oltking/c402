@@ -11,7 +11,7 @@ loadEnv({ path: resolve(process.cwd(), "../../.env") });
 
 /**
  * Execute a real paid c402 call and return the attestation + on-chain verification.
- * Pays with the demo agent wallet (SEPOLIA_PRIVATE_KEY) so the inspector is fully live —
+ * Pays with the demo agent wallet (SEPOLIA_PRIVATE_KEY) so the inspector is fully live -
  * real USDC settlement, real TEE attestation, real verify. Disabled when no key is present.
  */
 export async function POST(req: Request) {

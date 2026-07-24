@@ -1,6 +1,6 @@
 # hello-c402
 
-The smallest possible c402 server + client — a confidential, pay-per-call compute endpoint and an agent
+The smallest possible c402 server + client - a confidential, pay-per-call compute endpoint and an agent
 that pays for it. Uses the real deployed CDE on Ethereum Sepolia (no mock data).
 
 ## Run
@@ -9,10 +9,10 @@ From the repo root, with the self-hosted facilitator running (`apps/facilitator`
 `SEPOLIA_PRIVATE_KEY` + `SEPOLIA_RPC_URL` in the root `.env`:
 
 ```bash
-# terminal 1 — the c402 server (confidential endpoint on :4025)
+# terminal 1 - the c402 server (confidential endpoint on :4025)
 node examples/hello-c402/server.ts
 
-# terminal 2 — the c402 client (pays via x402, verifies the attestation on-chain)
+# terminal 2 - the c402 client (pays via x402, verifies the attestation on-chain)
 node examples/hello-c402/client.ts
 ```
 

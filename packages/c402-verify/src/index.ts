@@ -1,5 +1,5 @@
 /**
- * @c402/verify — anyone can independently check a c402 attestation.
+ * @c402/verify - anyone can independently check a c402 attestation.
  *
  * The attestation is not a trust-us blob: it points at an on-chain commitment. This verifier
  * re-reads that commitment from the registry contract on the declared network and confirms it

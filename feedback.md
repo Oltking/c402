@@ -1,21 +1,21 @@
-# feedback.md — iExec / Nox tooling feedback (judged deliverable)
+# feedback.md - iExec / Nox tooling feedback (judged deliverable)
 
-Running, dated, honest log of friction and wins while building **c402** (an open confidential-compute protocol over x402) and its first apps — **xCAT** (confidential treasury) and confidential payroll — on the iExec Nox stack for the WTF Hackathon (Summer Edition). Newest entries at top.
+Running, dated, honest log of friction and wins while building **c402** (an open confidential-compute protocol over x402) and its first apps - **xCAT** (confidential treasury) and confidential payroll - on the iExec Nox stack for the WTF Hackathon (Summer Edition). Newest entries at top.
 
 ---
 
-## 2026-07-23 — Phase 0: verification & environment
+## 2026-07-23 - Phase 0: verification & environment
 
 **👍 Wins**
 - `@iexec-nox/*` packages resolve cleanly on npm: `handle@0.1.0-beta.13`, `nox-hardhat-plugin@0.1.0`, `nox-protocol-contracts@0.2.4`. Versions discoverable and pinnable.
-- The Nox Solidity API is intuitive and well-scoped (`select` for branchless logic, `safeAdd/safeSub`, explicit ACL). The "grant access after every handle op" rule is clearly documented as the #1 gotcha — appreciated the upfront warning.
+- The Nox Solidity API is intuitive and well-scoped (`select` for branchless logic, `safeAdd/safeSub`, explicit ACL). The "grant access after every handle op" rule is clearly documented as the #1 gotcha - appreciated the upfront warning.
 
 **👎 Friction (with specifics)**
-1. **Networks page is JS-client-rendered → unusable for automated/agent tooling.** A static fetch of `https://docs.noxprotocol.io/getting-started/networks` returns navigation chrome but **zero network data** — no NoxCompute address, RPC, explorer, or faucet URLs. The `.md` variant (`/getting-started/networks.md`) was also empty of the address cards.
+1. **Networks page is JS-client-rendered → unusable for automated/agent tooling.** A static fetch of `https://docs.noxprotocol.io/getting-started/networks` returns navigation chrome but **zero network data** - no NoxCompute address, RPC, explorer, or faucet URLs. The `.md` variant (`/getting-started/networks.md`) was also empty of the address cards.
    - *Impact:* An AI/agent building against Nox (exactly the WTF use case) cannot read the single most important config page.
-   - *Workaround that worked:* `https://docs.noxprotocol.io/llms-full.txt` **does** contain the NoxCompute addresses (Sepolia `0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf`, Arbitrum Sepolia `0xd464B198f06756a1d00be223634b85E0a731c229`). Great that llms-full.txt exists — suggest surfacing it prominently.
-   - *Suggestion:* also render network cards as static HTML (or expose `/networks.json`), and quote the canonical **RPC URL, explorer URL, and faucet links** in llms-full.txt — those were referenced but not actually printed.
-2. **RPC / explorer / faucet URLs not quoted anywhere machine-readable** for Sepolia — had to fall back to standard Ethereum Sepolia defaults. Please state the canonical endpoints Nox expects.
+   - *Workaround that worked:* `https://docs.noxprotocol.io/llms-full.txt` **does** contain the NoxCompute addresses (Sepolia `0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf`, Arbitrum Sepolia `0xd464B198f06756a1d00be223634b85E0a731c229`). Great that llms-full.txt exists - suggest surfacing it prominently.
+   - *Suggestion:* also render network cards as static HTML (or expose `/networks.json`), and quote the canonical **RPC URL, explorer URL, and faucet links** in llms-full.txt - those were referenced but not actually printed.
+2. **RPC / explorer / faucet URLs not quoted anywhere machine-readable** for Sepolia - had to fall back to standard Ethereum Sepolia defaults. Please state the canonical endpoints Nox expects.
 
 3. **`nox-hardhat-starter` does not exist.** The docs "Getting started / Hardhat" flow and multiple references point to a starter repo `github.com/iExec-Nox/nox-hardhat-starter`, but it 404s and is absent from the `iExec-Nox` org repo list. New  developers following the docs hit a dead link on step one of local setup.
    - *Workaround:* `iExec-Nox/nox-confidential-contracts` contains a real, working Hardhat 3 + viem config (`solc 0.8.35`, `evmVersion: osaka`, and the essential `npmFilesToBuild: ["@iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol"]` linking directive). Used that as the template instead.

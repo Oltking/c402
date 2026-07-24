@@ -1,5 +1,5 @@
 /**
- * @c402/spec — the c402 protocol, in code.
+ * @c402/spec - the c402 protocol, in code.
  *
  * c402 sits on top of x402 the same way x402 sits on top of HTTP:
  *   x402  = "pay to access a resource"        (HTTP 402 + PAYMENT-REQUIRED)
@@ -10,7 +10,7 @@
  * the confidential computation. On a paid request it runs the computation inside a TEE
  * and returns the result plus an X-ATTESTATION header proving the TEE executed it.
  *
- * Everything else — what the computation means — is up to the server. Two headers. That's it.
+ * Everything else - what the computation means - is up to the server. Two headers. That's it.
  */
 
 export const C402_VERSION = "c402/1" as const;
@@ -24,7 +24,7 @@ export const ATTESTATION_HEADER = "X-Attestation";
 export type TeeStandard = "iexec-nox/intel-tdx";
 
 /**
- * COMPUTE-REQUIRED — the confidential-compute contract a server publishes on its 402.
+ * COMPUTE-REQUIRED - the confidential-compute contract a server publishes on its 402.
  * A client reads this to know what to encrypt, which on-chain TEE contract executes,
  * and what shape of output to expect.
  */
@@ -50,8 +50,8 @@ export interface ComputeRequired {
 }
 
 /**
- * X-ATTESTATION — proof the confidential computation actually ran in the TEE.
- * Every field is a real, independently re-verifiable on-chain artifact — no fabricated
+ * X-ATTESTATION - proof the confidential computation actually ran in the TEE.
+ * Every field is a real, independently re-verifiable on-chain artifact - no fabricated
  * quotes. A verifier re-reads the decision commitment from chain and checks it matches.
  */
 export interface Attestation {

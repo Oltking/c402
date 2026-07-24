@@ -1,5 +1,5 @@
 /**
- * xCAT CDE API — the first c402 server.
+ * xCAT CDE API - the first c402 server.
  *
  * POST /v1/decide is a c402 confidential-compute endpoint: on an unpaid request it returns
  * HTTP 402 with the x402 PAYMENT-REQUIRED header AND the c402 COMPUTE-REQUIRED header; on a paid
@@ -7,7 +7,7 @@
  * exposure → CDE.decide() on Sepolia → ACL-decrypt the action, public-decrypt the confidence),
  * records a public commitment, and returns the decision with an X-ATTESTATION header.
  *
- * The x402 payment, 402/attestation headers, and settlement are all handled by @c402/server —
+ * The x402 payment, 402/attestation headers, and settlement are all handled by @c402/server -
  * this file only supplies the confidential computation. No mock data anywhere on this path.
  */
 import { config as loadEnv } from "dotenv";
@@ -71,7 +71,7 @@ async function withRetry<T>(fn: () => Promise<T>, tries = 30, delayMs = 6000): P
     } catch (e) {
       // Right after decide(), the TEE may not have computed the handle yet AND the
       // ACL grant may not have propagated to the gateway (transient 403 "not a viewer").
-      // Both resolve within a few seconds — retry on either.
+      // Both resolve within a few seconds - retry on either.
       const msg = e instanceof Error ? e.message : "";
       const transient =
         e instanceof NotYetComputedHandleError ||
@@ -128,7 +128,7 @@ app.get("/health", (_req, res) => res.json({ ok: true, network: NETWORK, cde: CD
 
 // The c402 confidential-compute endpoint. One declaration: the payment gate, the 402 +
 // COMPUTE-REQUIRED / X-ATTESTATION headers, and settlement are all handled by @c402/server;
-// we only supply `compute` — the actual confidential decision.
+// we only supply `compute` - the actual confidential decision.
 app.post(
   "/v1/decide",
   c402({
@@ -141,7 +141,7 @@ app.post(
     contract: CDE_ADDRESS,
     coordinator: NOX_COMPUTE,
     schema: { input: "euint256", output: "treasury-action" },
-    description: "Confidential treasury decision (CDE) — pay-per-confidential-decision",
+    description: "Confidential treasury decision (CDE) - pay-per-confidential-decision",
     compute: async (input) => {
       const body = (input ?? {}) as { exposure?: string | number; signal?: string | number };
       const decision = await runConfidentialDecision(BigInt(body.exposure ?? 0), BigInt(body.signal ?? 0));

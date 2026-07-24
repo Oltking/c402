@@ -97,10 +97,10 @@ export default function Page() {
 
         {/* Stats */}
         <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          <StatTile label="Confidential decisions" value={s?.stats.decisionCount ?? "—"} sub="recorded on-chain" />
-          <StatTile label="Encrypted events" value={s?.stats.eventCount ?? "—"} sub="EventBus pub/sub" />
-          <StatTile label="WETH price" value={s ? `$${Math.round(s.market.priceUsdcPerWeth).toLocaleString()}` : "—"} sub="Uniswap v3 pool" />
-          <StatTile label="Treasury exposure" value={s ? `${(Number(s.market.exposureBps) / 100).toFixed(1)}%` : "—"} sub="risk-asset share of Safe" />
+          <StatTile label="Confidential decisions" value={s?.stats.decisionCount ?? "-"} sub="recorded on-chain" />
+          <StatTile label="Encrypted events" value={s?.stats.eventCount ?? "-"} sub="EventBus pub/sub" />
+          <StatTile label="WETH price" value={s ? `$${Math.round(s.market.priceUsdcPerWeth).toLocaleString()}` : "-"} sub="Uniswap v3 pool" />
+          <StatTile label="Treasury exposure" value={s ? `${(Number(s.market.exposureBps) / 100).toFixed(1)}%` : "-"} sub="risk-asset share of Safe" />
         </section>
 
         {/* Agents */}
@@ -142,7 +142,7 @@ export default function Page() {
                   </div>
                 );
               })}
-              {s && s.decisions.length === 0 && <div className="text-[13px] text-faint">No decisions yet — run <span className="mono text-muted">xcat run</span>.</div>}
+              {s && s.decisions.length === 0 && <div className="text-[13px] text-faint">No decisions yet - run <span className="mono text-muted">xcat run</span>.</div>}
             </div>
           </div>
 
@@ -151,14 +151,14 @@ export default function Page() {
               <SectionTitle>Portfolio · Safe</SectionTitle>
               <ExposureBar bps={Number(s?.market.exposureBps ?? 0)} />
               <div className="mt-3 space-y-2">
-                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">USDC</span><span className="mono tnum text-text">{s ? s.safe.usdc.toFixed(2) : "—"}</span></div>
-                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">WETH</span><span className="mono tnum text-text">{s ? s.safe.weth.toFixed(6) : "—"}</span></div>
+                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">USDC</span><span className="mono tnum text-text">{s ? s.safe.usdc.toFixed(2) : "-"}</span></div>
+                <div className="flex items-center justify-between text-[13px]"><span className="text-muted">WETH</span><span className="mono tnum text-text">{s ? s.safe.weth.toFixed(6) : "-"}</span></div>
               </div>
               {s && <div className="mt-3 border-t border-line-soft pt-3"><AddressPill address={s.contracts.Safe} explorer={s.explorer} /></div>}
             </div>
             <div className="panel rise p-5">
               <SectionTitle>Confidential metering</SectionTitle>
-              <p className="text-[12px] leading-relaxed text-muted">x402 payment amounts are metered <span className="text-text">encrypted</span> on-chain — decryptable only by the API owner.</p>
+              <p className="text-[12px] leading-relaxed text-muted">x402 payment amounts are metered <span className="text-text">encrypted</span> on-chain - decryptable only by the API owner.</p>
               {s && <div className="mt-3"><EncryptedBlock handle={s.contracts.PaymentMeter} label="grand total · USDC" viewer="API owner" rows={1} /></div>}
             </div>
           </div>
@@ -166,7 +166,7 @@ export default function Page() {
 
         {/* c402 attestation */}
         <section className="panel rise mt-3 p-5">
-          <SectionTitle right={<Chip>c402 · X-Attestation</Chip>}>TEE attestation — verified on-chain</SectionTitle>
+          <SectionTitle right={<Chip>c402 · X-Attestation</Chip>}>TEE attestation - verified on-chain</SectionTitle>
           <AttestationPanel activity={s?.activity ?? []} explorer={s?.explorer} />
         </section>
 
@@ -191,8 +191,8 @@ export default function Page() {
                   <tr key={i} className="border-b border-line-soft">
                     <td className="py-2.5 pr-4"><span className="mono text-muted">#{a.decisionId}</span></td>
                     <td className="py-2.5 pr-4"><span className="font-semibold" style={{ color: ACTION_COLOR[a.action] }}>{a.action}</span></td>
-                    <td className="py-2.5 pr-4 text-muted">{a.executed ? a.direction : "—"}</td>
-                    <td className="py-2.5 pr-4">{a.swapTx && s ? <AddressPill address={a.swapTx} explorer={s.explorer} kind="tx" /> : <span className="text-faint">—</span>}</td>
+                    <td className="py-2.5 pr-4 text-muted">{a.executed ? a.direction : "-"}</td>
+                    <td className="py-2.5 pr-4">{a.swapTx && s ? <AddressPill address={a.swapTx} explorer={s.explorer} kind="tx" /> : <span className="text-faint">-</span>}</td>
                     <td className="py-2.5 tnum text-faint">{new Date(a.ts).toLocaleTimeString()}</td>
                   </tr>
                 ))}
@@ -216,7 +216,7 @@ export default function Page() {
 function AttestationPanel({ activity, explorer }: { activity: Activity[]; explorer?: string }) {
   const latest = activity.find((a) => a.attestation);
   if (!latest?.attestation) {
-    return <div className="text-[13px] text-faint">No attestation yet — run <span className="mono text-muted">xcat run</span>. Each confidential decision returns a c402 <span className="mono">X-Attestation</span> the agent re-verifies on-chain.</div>;
+    return <div className="text-[13px] text-faint">No attestation yet - run <span className="mono text-muted">xcat run</span>. Each confidential decision returns a c402 <span className="mono">X-Attestation</span> the agent re-verifies on-chain.</div>;
   }
   const att = latest.attestation;
   const checks = latest.verified?.checks ?? [];

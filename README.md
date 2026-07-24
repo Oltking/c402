@@ -1,17 +1,17 @@
-# c402 — Confidential Compute over x402
+# c402 - Confidential Compute over x402
 
 > x402 made any resource payable by any agent.
 > **c402 makes any computation confidential and payable by any agent.** Same pattern, one level deeper.
 
 **c402 is an open protocol: a confidential compute layer that sits on top of x402 the same way x402 sits
-on top of HTTP.** A c402 server declares "this endpoint produces TEE-attested confidential decisions —
+on top of HTTP.** A c402 server declares "this endpoint produces TEE-attested confidential decisions -
 here is the schema, here is the price per call," and any client consumes it without knowing anything about
 the underlying implementation. It adds exactly **two headers** on top of x402 (`Compute-Required` on the
 402, `X-Attestation` on the paid response). Everything else is up to the server. Full spec:
 [`packages/c402-spec/SPEC.md`](packages/c402-spec/SPEC.md).
 
 ```ts
-// A confidential, pay-per-call compute endpoint — one function.
+// A confidential, pay-per-call compute endpoint - one function.
 app.post("/decide", c402({
   price: "0.01", token: USDC_SEPOLIA, network: "eip155:11155111",
   facilitator: FACILITATOR_URL, contract: CDE, payTo: PAY_TO,
@@ -21,18 +21,18 @@ app.post("/decide", c402({
 ```
 
 ```ts
-// Consume it like a normal fetch — pay + attest, invisibly.
+// Consume it like a normal fetch - pay + attest, invisibly.
 const call = c402Fetch({ signer, network: "eip155:11155111", rpcUrl });
 const res  = await call("http://cde/decide", { body: { exposure, signal } });
 res.result; res.attestation; res.verified.valid;  // re-verified on-chain
 ```
 
-**xCAT — the confidential autonomous treasury below — is the first application built on c402, not the
+**xCAT - the confidential autonomous treasury below - is the first application built on c402, not the
 product itself. The protocol is the product.** xCAT's Confidential Decision Engine (CDE) is a c402 server;
 its agents are c402 clients; it decides inside an **iExec Nox** TEE and executes through **unmodified**
 Safe and Uniswap on **Ethereum Sepolia**.
 
-> Confidentiality of values — not anonymity of addresses. Amounts, policy, exposure and decision
+> Confidentiality of values - not anonymity of addresses. Amounts, policy, exposure and decision
 > reasoning stay encrypted; the fact that an attested decision occurred stays verifiable on-chain.
 
 Built for the iExec WTF Hackathon (Summer Edition). All code written during the hackathon.
@@ -42,20 +42,20 @@ Built for the iExec WTF Hackathon (Summer Edition). All code written during the 
 | Package | What it is |
 |---|---|
 | [`@c402/spec`](packages/c402-spec) | The protocol: constants, types, header codecs, `SPEC.md`, JSON schema. |
-| [`@c402/server`](packages/c402-server) | `c402(config)` Express middleware — declare a confidential paid endpoint in one call. |
-| [`@c402/client`](packages/c402-client) | `c402Fetch(opts)` — pay, consume, and verify an attestation as one `fetch`. |
+| [`@c402/server`](packages/c402-server) | `c402(config)` Express middleware - declare a confidential paid endpoint in one call. |
+| [`@c402/client`](packages/c402-client) | `c402Fetch(opts)` - pay, consume, and verify an attestation as one `fetch`. |
 | [`@c402/verify`](packages/c402-verify) | Standalone on-chain attestation verifier anyone can run. |
-| [`@c402/cli`](packages/c402-cli) | Generic `c402` CLI — `inspect` / `call` / `verify` any endpoint from the terminal. |
+| [`@c402/cli`](packages/c402-cli) | Generic `c402` CLI - `inspect` / `call` / `verify` any endpoint from the terminal. |
 
 Examples (each a real c402 server + client on Sepolia, no mock data):
-- [`examples/hello-c402`](examples/hello-c402) — the minimal server + client.
-- [`examples/treasury`](apps) — xCAT, the flagship: `apps/cde-api` is a c402 server, the agents are c402 clients.
-- [`examples/payroll`](examples/payroll) — a **second** confidential app (payroll raise decisions) on the
+- [`examples/hello-c402`](examples/hello-c402) - the minimal server + client.
+- [`examples/treasury`](apps) - xCAT, the flagship: `apps/cde-api` is a c402 server, the agents are c402 clients.
+- [`examples/payroll`](examples/payroll) - a **second** confidential app (payroll raise decisions) on the
   same protocol, with its own deployed `PayrollCDE`. Proof that c402 is a protocol, not xCAT's plumbing.
 
 ---
 
-## xCAT — the first app on c402
+## xCAT - the first app on c402
 
 ## What it does
 
@@ -87,14 +87,14 @@ Settlement asset: Circle USDC `0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238`. Full
 ## Monorepo
 
 ```
-contracts/            Hardhat 3 + @iexec-nox/nox-hardhat-plugin — CDE, DecisionRegistry, EventBus, PaymentMeter
+contracts/            Hardhat 3 + @iexec-nox/nox-hardhat-plugin - CDE, DecisionRegistry, EventBus, PaymentMeter
 apps/
   cde-api/            Paid decision endpoint (POST /v1/decide) behind x402
   facilitator/        Self-hosted x402 facilitator for eip155:11155111 + encrypted metering
-  runtime/            Market Agent + Treasury Agent — the hands-free loop
+  runtime/            Market Agent + Treasury Agent - the hands-free loop
   control-plane/      Next.js landing page (/) + live dashboard (/app)
 packages/
-  sdk/                @xcat/sdk — market reads, x402 payments, event bus, execution, verify
+  sdk/                @xcat/sdk - market reads, x402 payments, event bus, execution, verify
   cli/                xcat CLI (status / market / run / verify / deploy)
   adapters/           SafeAdapter + UniswapAdapter (unmodified protocols)
 ```
@@ -124,7 +124,7 @@ Every value is real and on Sepolia.
 ## Prior art
 
 See [`ATTRIBUTION.md`](ATTRIBUTION.md). Notably **Bermuda** does ZK sender-privacy for x402 on Base;
-xCAT is different — TEE-based confidential *metering* plus a Confidential Decision Engine as the paid
+xCAT is different - TEE-based confidential *metering* plus a Confidential Decision Engine as the paid
 x402 resource, on Ethereum Sepolia. We do not claim to be first at "private x402".
 
 ## Roadmap

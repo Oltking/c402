@@ -18,9 +18,9 @@ export interface Decision {
 }
 
 /**
- * Pay the CDE — a c402 confidential-compute endpoint — and return the attested decision.
+ * Pay the CDE - a c402 confidential-compute endpoint - and return the attested decision.
  * The agent "buys its intelligence": @c402/client reads COMPUTE-REQUIRED, pays via x402,
- * reads X-ATTESTATION, and re-verifies the attestation on-chain — all invisibly.
+ * reads X-ATTESTATION, and re-verifies the attestation on-chain - all invisibly.
  */
 export async function payForDecision(cfg: XcatConfig, exposure: bigint, signal: bigint): Promise<Decision> {
   const call = c402Fetch({

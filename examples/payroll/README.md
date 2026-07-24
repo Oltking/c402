@@ -1,4 +1,4 @@
-# c402 example — Confidential Payroll
+# c402 example - Confidential Payroll
 
 The **second** application on c402, and the proof the protocol generalizes: a genuinely different
 confidential computation (a payroll raise decision) on the exact same `@c402/server` / `@c402/client`
@@ -6,7 +6,7 @@ surface as the treasury CDE.
 
 A manager submits an **encrypted remaining budget** and an **encrypted requested raise**. The
 `PayrollCDE` TEE contract decides **APPROVE / DEFER / REJECT** against an **encrypted policy cap**,
-branchlessly (`Nox.select`), and records a public commitment — without the server host, or anyone
+branchlessly (`Nox.select`), and records a public commitment - without the server host, or anyone
 on-chain, seeing the numbers.
 
 Deployed on Ethereum Sepolia (its own registry, since the registry is keyed by decision id):
@@ -33,6 +33,6 @@ attestation: 2 0x6051e44a…
 verified   : true  standard:true … commitment-matches:true contract-matches:true compute-tx-mined:true
 ```
 
-The client is identical in shape to the treasury agent — it neither knows nor cares that the
+The client is identical in shape to the treasury agent - it neither knows nor cares that the
 computation is payroll rather than treasury. **That is the point of c402:** the confidential compute is
 a black box behind two headers and a price.

@@ -38,7 +38,7 @@ async function bal(token: Address, who: Address) {
 }
 
 async function main() {
-  // The "decision JSON" — action produced by the CDE (Phase 2). Default ACCUMULATE.
+  // The "decision JSON" - action produced by the CDE (Phase 2). Default ACCUMULATE.
   const action = ((process.argv[2] as ActionName) || "ACCUMULATE") as ActionName;
   const intent = intentForAction(action);
   console.log(`Decision action: ${action} → ${intent ? intent.direction : "no swap (HOLD)"}`);
@@ -75,7 +75,7 @@ async function main() {
   const [tokenIn, tokenOut] = intent.direction === "USDC->WETH" ? [USDC, WETH] : [WETH, USDC];
   const wethBefore = await bal(WETH, safe);
   const usdcBefore = await bal(USDC, safe);
-  console.log(`\nSafe before — USDC ${Number(usdcBefore) / 1e6}, WETH ${Number(wethBefore) / 1e18}`);
+  console.log(`\nSafe before - USDC ${Number(usdcBefore) / 1e6}, WETH ${Number(wethBefore) / 1e18}`);
 
   const batch = buildSwapBatch({ router: ROUTER, tokenIn, tokenOut, fee: FEE, recipient: safe, amountIn, amountOutMinimum: 0n });
   console.log(`Executing Safe batch: approve + exactInputSingle (${Number(amountIn) / 1e6} ${intent.direction})…`);
@@ -84,12 +84,12 @@ async function main() {
 
   const wethAfter = await bal(WETH, safe);
   const usdcAfter = await bal(USDC, safe);
-  console.log(`Safe after  — USDC ${Number(usdcAfter) / 1e6}, WETH ${Number(wethAfter) / 1e18}`);
+  console.log(`Safe after  - USDC ${Number(usdcAfter) / 1e6}, WETH ${Number(wethAfter) / 1e18}`);
   console.log(`Swap tx: ${EXPLORER}/tx/${swapTx}`);
 
   const gainedWeth = wethAfter - wethBefore;
   if (gainedWeth <= 0n) throw new Error("Swap did not increase Safe WETH balance");
-  console.log(`\n✅ Phase 3 gate PASSED — Safe received ${Number(gainedWeth) / 1e18} WETH from a Uniswap swap it executed.`);
+  console.log(`\n✅ Phase 3 gate PASSED - Safe received ${Number(gainedWeth) / 1e18} WETH from a Uniswap swap it executed.`);
   console.log(`Safe: ${EXPLORER}/address/${safe}`);
 
   writeFileSync(

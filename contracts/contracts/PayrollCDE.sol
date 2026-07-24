@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import {Nox, euint256, ebool, externalEuint256} from "@iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol";
 import {DecisionRegistry} from "./DecisionRegistry.sol";
 
-/// @title PayrollCDE — a SECOND confidential decision engine, on the same c402 protocol.
+/// @title PayrollCDE - a SECOND confidential decision engine, on the same c402 protocol.
 /// @notice Proves c402 generalizes beyond treasury: a genuinely different confidential
 ///         computation (a payroll raise decision) exposed as a pay-per-confidential-decision
 ///         c402 endpoint, attested and committed exactly like the treasury CDE.

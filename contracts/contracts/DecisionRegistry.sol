@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 /// @title DecisionRegistry
 /// @notice Public, auditable log of confidential-decision commitments produced by
 ///         the CDE. The registry stores ONLY public metadata (an opaque commitment
-///         hash + provenance) — never the decision itself, which stays encrypted in
+///         hash + provenance) - never the decision itself, which stays encrypted in
 ///         the CDE and is decryptable only by the authorized runtime via Nox ACLs.
 ///         This is the on-chain proof surface for the `xcat verify <decisionId>` flow.
 contract DecisionRegistry {

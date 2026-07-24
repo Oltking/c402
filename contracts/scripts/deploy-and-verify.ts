@@ -86,7 +86,7 @@ async function main() {
   console.log(`\nDeployer: ${account.address}`);
   const bal = await publicClient.getBalance({ address: account.address });
   console.log(`Balance : ${Number(bal) / 1e18} ETH\n`);
-  if (bal === 0n) throw new Error("Deployer has 0 ETH — fund it before deploying.");
+  if (bal === 0n) throw new Error("Deployer has 0 ETH - fund it before deploying.");
 
   console.log("Deploying to Ethereum Sepolia:");
   const registry = await deploy("DecisionRegistry", "DecisionRegistry", []);

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * c402 — a generic CLI for the confidential-compute-over-x402 protocol.
+ * c402 - a generic CLI for the confidential-compute-over-x402 protocol.
  *
  *   c402 inspect <url>                 decode the 402 handshake (no wallet needed)
  *   c402 call <url> --key <k> ...      pay with your wallet + verify the attestation
  *   c402 verify <attestation.json>     re-verify an attestation on-chain, standalone
  *
- * Works against ANY c402 server — this repo's treasury/payroll endpoints or someone else's.
+ * Works against ANY c402 server - this repo's treasury/payroll endpoints or someone else's.
  */
 import { readFileSync } from "node:fs";
 import { Command } from "commander";
@@ -26,13 +26,13 @@ function checkline(name: string, ok: boolean, detail?: string) {
 }
 function resolveKey(opt?: string): `0x${string}` {
   let k = opt || process.env.C402_KEY || process.env.SEPOLIA_PRIVATE_KEY || "";
-  if (!k) throw new Error("no wallet key — pass --key, or set C402_KEY / SEPOLIA_PRIVATE_KEY");
+  if (!k) throw new Error("no wallet key - pass --key, or set C402_KEY / SEPOLIA_PRIVATE_KEY");
   if (!k.startsWith("0x")) k = "0x" + k;
   return k as `0x${string}`;
 }
 function resolveRpc(opt?: string): string {
   const r = opt || process.env.SEPOLIA_RPC_URL;
-  if (!r) throw new Error("no RPC — pass --rpc, or set SEPOLIA_RPC_URL");
+  if (!r) throw new Error("no RPC - pass --rpc, or set SEPOLIA_RPC_URL");
   return r;
 }
 function parseBody(opts: { body?: string; bodyFile?: string }): unknown {
@@ -46,7 +46,7 @@ program.name("c402").description("Call any c402 confidential-compute endpoint fr
 program
   .command("inspect")
   .argument("<url>", "c402 endpoint URL")
-  .description("Decode the 402 handshake (Compute-Required + PAYMENT-REQUIRED) — no wallet needed")
+  .description("Decode the 402 handshake (Compute-Required + PAYMENT-REQUIRED) - no wallet needed")
   .action(async (url: string) => {
     const spin = ora("fetching 402 handshake…").start();
     try {
@@ -55,7 +55,7 @@ program
       const prRaw = r.headers.get("payment-required");
       spin.stop();
       if (!crRaw) {
-        console.log(c.yellow(`\n  Not a c402 endpoint — no Compute-Required header (HTTP ${r.status}).`));
+        console.log(c.yellow(`\n  Not a c402 endpoint - no Compute-Required header (HTTP ${r.status}).`));
         return;
       }
       const cr = decodeComputeRequired(crRaw);
@@ -132,7 +132,7 @@ program
   .option("--cde <addr>", "compute contract, to also check contract-matches (for --id mode)")
   .option("--network <caip2>", "CAIP-2 network id", DEFAULT_NETWORK)
   .option("--rpc <url>", "RPC URL (or env SEPOLIA_RPC_URL)")
-  .description("Re-verify on-chain, standalone — from an attestation file OR just a decision id")
+  .description("Re-verify on-chain, standalone - from an attestation file OR just a decision id")
   .action(async (path: string | undefined, opts: { id?: string; registry?: string; cde?: string; network: string; rpc?: string }) => {
     const spin = ora("re-reading the commitment from chain…").start();
     try {
@@ -153,7 +153,7 @@ program
       head(`verified on-chain: ${result.valid ? c.green("YES") : c.red("NO")}`);
       for (const ch of result.checks) checkline(ch.name, ch.ok, ch.detail);
       if (result.onChainCommitment) { console.log(); kv("commitment", result.onChainCommitment); }
-      console.log(c.dim("\n  Note: this proves the decision exists & matches its commitment — it does NOT\n  reveal the private result (that stays ACL-encrypted to the authorized runtime).\n"));
+      console.log(c.dim("\n  Note: this proves the decision exists & matches its commitment - it does NOT\n  reveal the private result (that stays ACL-encrypted to the authorized runtime).\n"));
       process.exit(result.valid ? 0 : 1);
     } catch (e) {
       spin.fail(e instanceof Error ? e.message : "verify failed");

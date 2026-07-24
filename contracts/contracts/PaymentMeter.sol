@@ -6,7 +6,7 @@ import {Nox, euint256, externalEuint256} from "@iexec-nox/nox-protocol-contracts
 /// @title PaymentMeter
 /// @notice Confidential x402 usage metering. The self-hosted facilitator records each
 ///         settlement here as an ENCRYPTED amount, so the public sees only that a
-///         settlement happened — never how much a given caller paid or how often.
+///         settlement happened - never how much a given caller paid or how often.
 ///         Per-caller counts/totals and the grand total are Nox-encrypted and
 ///         decryptable ONLY by the meter owner (the CDE API operator).
 contract PaymentMeter {
@@ -67,7 +67,7 @@ contract PaymentMeter {
         emit Metered(payer, msg.sender);
     }
 
-    // Handle getters — the returned handles are ACL-gated to `owner` only.
+    // Handle getters - the returned handles are ACL-gated to `owner` only.
     function countOf(address payer) external view returns (euint256) {
         return _count[payer];
     }

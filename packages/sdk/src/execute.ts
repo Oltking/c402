@@ -29,7 +29,7 @@ export async function executeDecision(
   amountIn = 1_000_000n, // 1 USDC (or equivalent) per rebalance step
 ): Promise<ExecutionResult> {
   const intent = intentForAction(action);
-  if (!intent) return { executed: false, action, note: "HOLD — no swap" };
+  if (!intent) return { executed: false, action, note: "HOLD - no swap" };
 
   const { safe, usdc, weth, router, uniswapPoolFee } = cfg.addr;
   const [tokenIn, tokenOut] = intent.direction === "USDC->WETH" ? [usdc, weth] : [weth, usdc];

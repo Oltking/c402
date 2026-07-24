@@ -17,8 +17,8 @@ export function LiveStats() {
   }, []);
 
   const items = [
-    { label: "Confidential decisions", value: s?.stats.decisionCount ?? "—" },
-    { label: "Encrypted events", value: s?.stats.eventCount ?? "—" },
+    { label: "Confidential decisions", value: s?.stats.decisionCount ?? "-" },
+    { label: "Encrypted events", value: s?.stats.eventCount ?? "-" },
     { label: "Apps on c402", value: "2" },
     { label: "TEE standard", value: "Nox · TDX" },
   ];

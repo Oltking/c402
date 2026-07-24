@@ -22,7 +22,7 @@ export default function Landing() {
             </h1>
             <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted">
               x402 made any resource payable by any agent. <span className="font-mono text-text">c402</span> makes any
-              computation <span className="text-text">confidential and payable</span> — same pattern, one level deeper.
+              computation <span className="text-text">confidential and payable</span> - same pattern, one level deeper.
               A c402 server declares a TEE-attested confidential endpoint; any client pays and consumes it, knowing
               nothing about the implementation. Two headers on top of x402.
             </p>
@@ -30,7 +30,7 @@ export default function Landing() {
               <Link href="/inspect" className="border border-line bg-text px-5 py-2.5 text-[14px] font-medium text-white transition-opacity hover:opacity-85">Inspect a live endpoint →</Link>
               <Link href="/protocol" className="border border-line bg-panel px-5 py-2.5 text-[14px] font-medium text-text transition-colors hover:bg-panel-2">Read the protocol</Link>
             </div>
-            <div className="mt-6 text-[12px] text-faint">Confidentiality of values — not anonymity of addresses.</div>
+            <div className="mt-6 text-[12px] text-faint">Confidentiality of values - not anonymity of addresses.</div>
           </div>
 
           {/* Hero visual: the two headers, rendered from the real latest decision */}
@@ -41,7 +41,7 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-5 pb-16"><LiveStats /></div>
       </section>
 
-      {/* Developer proof — two code panels */}
+      {/* Developer proof - two code panels */}
       <section id="develop" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <div className="label">For developers</div>
@@ -101,7 +101,7 @@ export default function Landing() {
       <section className="border-b border-line">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <div className="label">Composes with</div>
-          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Privacy added to open protocols — without modifying them</h2>
+          <h2 className="mt-3 max-w-2xl text-[26px] font-semibold tracking-tight text-text md:text-[32px]">Privacy added to open protocols - without modifying them</h2>
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             {PROTOCOLS.map((p) => (
               <div key={p.name} className="panel panel-hover p-5">
@@ -174,19 +174,19 @@ const CLIENT_CODE = [
 const PACKAGES = ["@c402/spec", "@c402/server", "@c402/client", "@c402/verify"];
 
 const STEPS = [
-  { title: "402", body: "An unpaid request returns 402 with PAYMENT-REQUIRED and Compute-Required — price, token, TEE, input/output schema." },
+  { title: "402", body: "An unpaid request returns 402 with PAYMENT-REQUIRED and Compute-Required - price, token, TEE, input/output schema." },
   { title: "Pay", body: "The client pays via standard x402 (EIP-3009 USDC), settled by a facilitator. c402 doesn't touch settlement." },
   { title: "Compute", body: "The server runs the computation inside the iExec Nox TEE. Inputs, state and reasoning stay encrypted." },
-  { title: "Attest", body: "The 200 carries X-Attestation — real on-chain artifacts (commitment, tx, handles), not a trust-us blob." },
+  { title: "Attest", body: "The 200 carries X-Attestation - real on-chain artifacts (commitment, tx, handles), not a trust-us blob." },
   { title: "Verify", body: "Anyone re-reads the commitment on-chain via @c402/verify. No server cooperation required." },
 ];
 const APPS = [
   { name: "Confidential Treasury (xCAT)", href: "/apps", body: "An autonomous treasury for Safe. Agents buy confidential decisions over c402, then execute swaps through unmodified Safe + Uniswap. The first app on the protocol." },
-  { name: "Confidential Payroll", href: "/apps", body: "Approve / defer / reject raise decisions against an encrypted budget and policy cap — without revealing the numbers. A second, different computation on the same protocol." },
+  { name: "Confidential Payroll", href: "/apps", body: "Approve / defer / reject raise decisions against an encrypted budget and policy cap - without revealing the numbers. A second, different computation on the same protocol." },
 ];
 const PROTOCOLS = [
   { name: "x402", body: "The open HTTP 402 payment protocol. c402 adds two headers on top; the payment and settlement legs are pure x402." },
   { name: "iExec Nox", body: "Intel TDX TEEs with on-chain handles + ACLs. The confidential compute and the attestations are Nox." },
   { name: "Safe", body: "The treasury app custodies funds in a standard Safe; the agent proposes and executes from the Safe itself." },
-  { name: "Uniswap", body: "Rebalancing swaps route through the standard v3 router — no forks, output lands back in the Safe." },
+  { name: "Uniswap", body: "Rebalancing swaps route through the standard v3 router - no forks, output lands back in the Safe." },
 ];

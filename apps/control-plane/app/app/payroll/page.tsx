@@ -30,7 +30,7 @@ export default function PayrollDashboard() {
               <h1 className="text-[20px] font-semibold tracking-tight text-text">Confidential Payroll</h1>
               <Chip>app on c402</Chip>
             </div>
-            <p className="mt-1 text-[12.5px] text-faint">Raise decisions against an encrypted budget + policy cap — the numbers are never revealed.</p>
+            <p className="mt-1 text-[12.5px] text-faint">Raise decisions against an encrypted budget + policy cap - the numbers are never revealed.</p>
           </div>
           <div className="flex items-center gap-2">
             <a href="/apps" className="btn !py-1 !text-[12px]">All apps</a>
@@ -41,7 +41,7 @@ export default function PayrollDashboard() {
         {err && <div className="panel mt-6 border-rose p-4 text-[13px] text-rose">Error: {err}</div>}
 
         <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-          <Tile label="Confidential decisions" value={s?.decisionCount ?? "—"} sub="recorded on-chain" />
+          <Tile label="Confidential decisions" value={s?.decisionCount ?? "-"} sub="recorded on-chain" />
           <Tile label="Input schema" value="euint256" sub="encrypted budget + raise" mono />
           <Tile label="Output" value="payroll-action" sub="APPROVE / DEFER / REJECT" mono />
           <Tile label="TEE" value="Nox · TDX" sub="attested" />
@@ -65,7 +65,7 @@ export default function PayrollDashboard() {
                 <div className="mt-3"><EncryptedBlock handle={d.actionHandle} label="raise decision · encrypted" viewer="payroll runtime" rows={2} /></div>
               </div>
             ))}
-            {s && s.decisions.length === 0 && <div className="text-[13px] text-faint">No decisions yet — run the payroll example.</div>}
+            {s && s.decisions.length === 0 && <div className="text-[13px] text-faint">No decisions yet - run the payroll example.</div>}
           </div>
         </section>
 

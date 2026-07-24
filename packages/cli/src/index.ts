@@ -97,7 +97,7 @@ program
     kv("decision", `#${trace.observation.decision.decisionId} ${c.green(trace.observation.decision.action)} ` + c.dim(`(confidence ${trace.observation.decision.confidence})`));
     kv("event", `#${trace.observation.eventId}`);
     const ex = trace.treasury.execution;
-    kv("executed", ex.executed ? c.green(ex.direction!) : c.yellow(ex.note ?? "—"));
+    kv("executed", ex.executed ? c.green(ex.direction!) : c.yellow(ex.note ?? "-"));
     if (ex.swapExplorer) kv("swap tx", c.cyan(ex.swapExplorer));
     kv("commitment", c.dim(trace.commitment));
     console.log();

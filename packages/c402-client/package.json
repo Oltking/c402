@@ -1,7 +1,7 @@
 {
   "name": "@c402/client",
   "version": "0.1.0",
-  "description": "Consume a c402 endpoint like a normal fetch. Reads the compute contract, pays via x402, verifies the TEE attestation — invisibly.",
+  "description": "Consume a c402 endpoint like a normal fetch. Reads the compute contract, pays via x402, verifies the TEE attestation - invisibly.",
   "type": "module",
   "main": "src/index.ts",
   "dependencies": {

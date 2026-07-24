@@ -48,8 +48,8 @@ export default function InspectPage() {
         <div className="label">Inspector</div>
         <h1 className="mt-3 text-[30px] font-semibold tracking-tight text-text md:text-[38px]">Feel the protocol</h1>
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-muted">
-          Paste any c402 endpoint. We decode its 402 handshake — the <span className="font-mono text-accent-2">Compute-Required</span> and
-          <span className="font-mono text-accent"> PAYMENT-REQUIRED</span> headers — then pay it and verify the returned attestation on-chain.
+          Paste any c402 endpoint. We decode its 402 handshake - the <span className="font-mono text-accent-2">Compute-Required</span> and
+          <span className="font-mono text-accent"> PAYMENT-REQUIRED</span> headers - then pay it and verify the returned attestation on-chain.
         </p>
 
         {/* URL bar */}
@@ -104,8 +104,8 @@ export default function InspectPage() {
                 <div className="mb-3 font-mono text-[12px] font-semibold text-accent">PAYMENT-REQUIRED</div>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-[12.5px] sm:grid-cols-3">
                   <Field k="scheme" v={decoded.paymentRequired.accepts[0].scheme ?? "exact"} />
-                  <Field k="network" v={decoded.paymentRequired.accepts[0].network ?? "—"} />
-                  <Field k="amount (atomic)" v={decoded.paymentRequired.accepts[0].amount ?? "—"} />
+                  <Field k="network" v={decoded.paymentRequired.accepts[0].network ?? "-"} />
+                  <Field k="amount (atomic)" v={decoded.paymentRequired.accepts[0].amount ?? "-"} />
                   <Field k="asset" v={short(decoded.paymentRequired.accepts[0].asset ?? "")} mono />
                   <Field k="payTo" v={short(decoded.paymentRequired.accepts[0].payTo ?? "")} mono />
                 </div>
@@ -124,7 +124,7 @@ export default function InspectPage() {
                 className="mt-2.5 border border-line bg-text px-4 py-2 text-[12.5px] font-semibold text-white transition-opacity hover:opacity-85 disabled:opacity-40">
                 {busy === "pay" ? "Paying + computing in TEE…" : "Pay & run →"}
               </button>
-              {busy === "pay" && <span className="ml-3 text-[11.5px] text-faint">this is a real on-chain decision — ~10–40s</span>}
+              {busy === "pay" && <span className="ml-3 text-[11.5px] text-faint">this is a real on-chain decision - ~10–40s</span>}
             </div>
           </section>
         )}
@@ -146,7 +146,7 @@ export default function InspectPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-[12.5px] sm:grid-cols-3">
                   <Field k="standard" v={paid.attestation.standard} />
-                  <Field k="decisionId" v={paid.attestation.decisionId ?? "—"} />
+                  <Field k="decisionId" v={paid.attestation.decisionId ?? "-"} />
                   {paid.attestation.tx && <Field k="tx" v={short(paid.attestation.tx)} mono link={`https://sepolia.etherscan.io/tx/${paid.attestation.tx}`} />}
                 </div>
                 {paid.verified && (

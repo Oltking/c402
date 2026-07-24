@@ -1,5 +1,5 @@
 /**
- * @c402/server — one function to publish a confidential, pay-per-call compute endpoint.
+ * @c402/server - one function to publish a confidential, pay-per-call compute endpoint.
  *
  *   app.post("/decide", c402({ price, token, network, facilitator, contract, schema, compute }))
  *
@@ -26,7 +26,7 @@ import {
 } from "@c402/spec";
 
 export interface C402Config {
-  /** Human-readable price, e.g. "0.01" — converted to atomic units with `decimals`. */
+  /** Human-readable price, e.g. "0.01" - converted to atomic units with `decimals`. */
   price: string;
   /** ERC-20 (EIP-3009) settlement token address, e.g. Circle Sepolia USDC. */
   token: `0x${string}`;
@@ -44,7 +44,7 @@ export interface C402Config {
   contract: `0x${string}`;
   /** TEE standard. Default "iexec-nox/intel-tdx". */
   tee?: TeeStandard;
-  /** Nox on-chain TEE coordinator (NoxCompute) — included in the attestation. */
+  /** Nox on-chain TEE coordinator (NoxCompute) - included in the attestation. */
   coordinator?: `0x${string}`;
   /** What the client provides and what comes back. */
   schema: {
@@ -70,7 +70,7 @@ export interface ComputeContext {
 export interface ComputeResult {
   /** The result payload returned to the client under `result`. */
   result: unknown;
-  /** On-chain artifacts proving the TEE ran — surfaced in X-ATTESTATION. */
+  /** On-chain artifacts proving the TEE ran - surfaced in X-ATTESTATION. */
   decisionId?: string | number | bigint;
   commitment?: string;
   registry?: string;
@@ -109,7 +109,7 @@ export function c402(config: C402Config): RequestHandler[] {
     next();
   };
 
-  // 2) x402 gate. Built per-request so the route key always matches the mounted path —
+  // 2) x402 gate. Built per-request so the route key always matches the mounted path -
   //    no need to make the caller repeat the path in config.
   const gate: RequestHandler = (req, res, next) => {
     const key = `${req.method} ${req.path}`;

@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { nox } from "@iexec-nox/nox-hardhat-plugin";
 import { stringToHex } from "viem";
 
-describe("EventBus — confidential pub/sub", () => {
+describe("EventBus - confidential pub/sub", () => {
   it("publishes an encrypted payload decryptable only by the subscriber", { timeout: 180_000 }, async () => {
     const { viem } = await nox.connect();
     const [wallet] = await viem.getWalletClients();

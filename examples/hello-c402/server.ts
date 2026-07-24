@@ -1,4 +1,4 @@
-// hello-c402 server — a confidential, pay-per-call endpoint in one c402() call.
+// hello-c402 server - a confidential, pay-per-call endpoint in one c402() call.
 // The protocol boilerplate is the c402({...}) block; everything inside `compute`
 // is the confidential computation itself (a real Nox round-trip against the CDE).
 import { config } from "dotenv";
@@ -40,7 +40,7 @@ app.post("/decide", c402({
   contract: CDE,
   coordinator: "0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf",
   schema: { input: "euint256", output: "treasury-action" },
-  description: "Confidential treasury decision — pay per confidential thought.",
+  description: "Confidential treasury decision - pay per confidential thought.",
   compute: async (input) => {
     const { exposure = 6000, signal = 50 } = (input ?? {}) as { exposure?: number; signal?: number };
     const handle = await handleP;

@@ -10,7 +10,7 @@ type State = {
 const ACTIONS: Record<string, string> = { "0": "HOLD", "1": "HEDGE", "2": "ACCUMULATE" };
 
 /**
- * The c402 handshake, rendered from the REAL latest on-chain decision — no illustrative data.
+ * The c402 handshake, rendered from the REAL latest on-chain decision - no illustrative data.
  * While the first fetch is in flight it shows neutral placeholders (dashes), never fake values.
  */
 export function HeroHandshake() {
@@ -25,7 +25,7 @@ export function HeroHandshake() {
 
   const latest = s?.decisions?.[0];
   const commitment = latest ? `${latest.commitment.slice(0, 10)}…${latest.commitment.slice(-4)}` : "…";
-  const decId = latest?.id ?? "—";
+  const decId = latest?.id ?? "-";
 
   return (
     <div className="panel p-5">

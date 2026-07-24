@@ -2,7 +2,7 @@
 node_modules/
 .pnpm-store/
 
-# env / secrets — NEVER commit
+# env / secrets - NEVER commit
 .env
 .env.*
 !.env.example
@@ -29,7 +29,7 @@ contracts/typechain-types/
 # runtime activity log
 .xcat-state/
 
-# internal / private — kept on disk, never published
+# internal / private - kept on disk, never published
 CLAUDE.md
 docs/demo-script.md
 docs/x-post.md

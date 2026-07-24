@@ -21,7 +21,7 @@ export default function VerifyIndex() {
         <h1 className="mt-3 text-[30px] font-semibold tracking-tight text-text md:text-[38px]">Verify any c402 decision</h1>
         <p className="mt-3 text-[14px] leading-relaxed text-muted">
           Every confidential decision leaves a public commitment in its app&rsquo;s registry. Enter a decision id and
-          we re-read the commitment straight from Ethereum Sepolia — no server cooperation, no trust required.
+          we re-read the commitment straight from Ethereum Sepolia - no server cooperation, no trust required.
         </p>
 
         <form onSubmit={go} className="panel mt-7 p-5">

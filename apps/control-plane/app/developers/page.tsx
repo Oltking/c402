@@ -11,14 +11,14 @@ export default function DevelopersPage() {
         <div className="label">Developers</div>
         <h1 className="mt-3 text-[32px] font-semibold tracking-tight text-text md:text-[40px]">Calling & verifying c402</h1>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
-          The honest, practical answers to the questions people actually ask — no accounts, no API keys,
+          The honest, practical answers to the questions people actually ask - no accounts, no API keys,
           bring your own wallet.
         </p>
 
         {/* Quickstart */}
         <div className="panel mt-8 overflow-hidden p-0">
           <div className="border-b border-line-soft bg-panel-2 px-4 py-2 font-mono text-[11.5px] text-muted">terminal · @c402/cli</div>
-          <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7] text-text">{`# 1. look at an endpoint — no wallet needed
+          <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7] text-text">{`# 1. look at an endpoint - no wallet needed
 c402 inspect https://server.example/decide
 
 # 2. pay it with YOUR wallet, get the attested result
@@ -33,7 +33,7 @@ c402 verify --id 12 --registry 0xRegistry --cde 0xCDE`}</pre>
         {/* Q&A */}
         <Faq n="01" q="What do you actually see when you “verify”? Isn’t this private?">
           <p>Verification proves a confidential decision <b>happened and matches its commitment</b>. It does
-          <b> not</b> reveal the private result. The decision action stays encrypted and ACL-gated — only the
+          <b> not</b> reveal the private result. The decision action stays encrypted and ACL-gated - only the
           authorized runtime can decrypt it. A third party verifying sees integrity and provenance, never content:</p>
           <ul className="mt-3 space-y-1.5">
             <Li>the decision exists in the on-chain registry (<code>registry-has-decision</code>)</Li>
@@ -46,7 +46,7 @@ c402 verify --id 12 --registry 0xRegistry --cde 0xCDE`}</pre>
 
         <Faq n="02" q="Do I need a JSON file to verify? Or can I verify from an id / hash?">
           <p>The JSON file is just a convenience container. The <b>source of truth is the on-chain commitment
-          record</b>, addressable by <code>(registry, decisionId)</code> — so you can verify from <b>just a decision
+          record</b>, addressable by <code>(registry, decisionId)</code> - so you can verify from <b>just a decision
           id</b>. Two equivalent ways:</p>
           <CodeMini>{`# from an id (reads the commitment from chain for you)
 c402 verify --id 12 --registry 0xRegistry --cde 0xCDE
@@ -60,22 +60,22 @@ c402 verify attestation.json`}</CodeMini>
 
         <Faq n="03" q="Is --key / C402_KEY an API key? Where do I get it?">
           <p><b>No.</b> c402 inherits x402’s model: <b>no accounts, no API keys, no signup.</b> <code>C402_KEY</code> is
-          simply <b>your wallet’s private key</b> — the wallet that signs the payment. We do not issue keys, and the
+          simply <b>your wallet’s private key</b> - the wallet that signs the payment. We do not issue keys, and the
           site will never hand one out. You bring your own wallet.</p>
           <ul className="mt-3 space-y-1.5">
             <Li>Pass it with <code>--key</code>, or set <code>C402_KEY</code> / <code>SEPOLIA_PRIVATE_KEY</code>.</Li>
-            <Li>The wallet needs the <b>settlement token</b> (e.g. Sepolia USDC) — <b>not gas</b>. Payment is an EIP-3009
+            <Li>The wallet needs the <b>settlement token</b> (e.g. Sepolia USDC) - <b>not gas</b>. Payment is an EIP-3009
             signed authorization; the facilitator relays it and pays gas.</Li>
-            <Li amber>Use a <b>dedicated, funded test wallet</b> — never your main key in a shell env.</Li>
+            <Li amber>Use a <b>dedicated, funded test wallet</b> - never your main key in a shell env.</Li>
           </ul>
-          <p className="mt-3">In the browser, a wallet extension (MetaMask) would sign instead of a raw key — that path
+          <p className="mt-3">In the browser, a wallet extension (MetaMask) would sign instead of a raw key - that path
           isn’t wired yet; the CLI/agent path uses a key, which is the right shape for scripts.</p>
         </Faq>
 
         <Faq n="04" q="In c402 call …/decide, is /decide special? Do I have to create it?">
-          <p><b>No — <code>/decide</code> is not a c402 convention.</b> It’s just whatever path the <i>server author</i>
+          <p><b>No - <code>/decide</code> is not a c402 convention.</b> It’s just whatever path the <i>server author</i>
           chose when mounting the middleware. It could be <code>/score</code>, <code>/v1/anything</code>. c402 doesn’t
-          follow a fixed path — the client discovers everything (price, token, schema) from the <b>headers</b> the URL
+          follow a fixed path - the client discovers everything (price, token, schema) from the <b>headers</b> the URL
           returns, not from the URL itself.</p>
           <CodeMini>{`// the SERVER author picks the path:
 app.post("/decide", c402({ /* … */ }));   // ← or "/score", "/v1/predict", anything
@@ -83,7 +83,7 @@ app.post("/decide", c402({ /* … */ }));   // ← or "/score", "/v1/predict", a
 // the CALLER just uses whatever URL the server published:
 c402 call https://server.example/decide --body '…'`}</CodeMini>
           <p className="mt-3">If a URL returns a <code>402</code> with a <code>Compute-Required</code> header, it’s a
-          c402 endpoint — regardless of its path. Check with <code>c402 inspect &lt;url&gt;</code>.</p>
+          c402 endpoint - regardless of its path. Check with <code>c402 inspect &lt;url&gt;</code>.</p>
         </Faq>
 
         <Faq n="05" q="What does the request body look like? How do I know the fields?">
@@ -94,7 +94,7 @@ c402 call https://server.example/decide --body '…'`}</CodeMini>
             <BodyCard app="Treasury CDE" schema="euint256 · plaintext" body={`{ "exposure": 6000,\n  "signal": 50 }`} />
             <BodyCard app="Payroll" schema="euint256 · plaintext" body={`{ "budget": 100000,\n  "requested": 5000 }`} />
           </div>
-          <p className="mt-3">Same protocol, different fields — because they’re different computations. Run
+          <p className="mt-3">Same protocol, different fields - because they’re different computations. Run
           <code> c402 inspect</code> to see the declared schema, then send the app’s documented JSON.</p>
         </Faq>
 

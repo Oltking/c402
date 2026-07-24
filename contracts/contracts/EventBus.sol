@@ -7,7 +7,7 @@ import {Nox, euint256, externalEuint256} from "@iexec-nox/nox-protocol-contracts
 /// @notice Confidential on-chain pub/sub. A publisher (e.g. the Market Agent) posts an
 ///         ENCRYPTED payload handle under a plaintext topic and grants selective
 ///         decryption to a set of subscribers (e.g. the Treasury Agent) via Nox ACLs.
-///         The public sees that an event was published and by whom — never its contents.
+///         The public sees that an event was published and by whom - never its contents.
 contract EventBus {
     struct EventMeta {
         uint256 id;

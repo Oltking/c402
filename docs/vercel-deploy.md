@@ -4,7 +4,7 @@ The control plane is a Next.js app in a pnpm monorepo. It reads live from Sepoli
 handlers and needs **no private key** (read-only). ABIs are inlined, so nothing outside the app is
 required at runtime.
 
-## Option A — Vercel dashboard (recommended)
+## Option A - Vercel dashboard (recommended)
 
 1. Push the repo to GitHub.
 2. Vercel → **New Project** → import the repo.
@@ -12,7 +12,7 @@ required at runtime.
 4. Framework preset: **Next.js** (auto-detected). Install command auto-uses pnpm; if needed set
    Install Command to `pnpm install` and enable **Include files outside the root directory** so the
    workspace resolves.
-5. **Environment Variables** (Production + Preview) — public values only, no secrets:
+5. **Environment Variables** (Production + Preview) - public values only, no secrets:
 
    ```
    SEPOLIA_RPC_URL           = <your Alchemy/Infura Sepolia URL>
@@ -31,7 +31,7 @@ required at runtime.
 
 6. Deploy. The landing page is `/`, the dashboard is `/app`.
 
-## Option B — CLI
+## Option B - CLI
 
 ```bash
 npm i -g vercel
@@ -42,7 +42,7 @@ vercel --prod     # after adding the env vars above in the dashboard or via `ver
 
 ## Notes
 
-- **DO NOT** set `SEPOLIA_PRIVATE_KEY` on Vercel — the control plane is read-only for all live reads,
+- **DO NOT** set `SEPOLIA_PRIVATE_KEY` on Vercel - the control plane is read-only for all live reads,
   the landing/protocol/apps pages, both dashboards, `/verify`, and the `/inspect` **decode** step. The only
   feature that needs a signer is the `/inspect` **Pay & run** button (it pays with the demo agent wallet);
   without a key it is automatically disabled with an explanation, and everything else still works.

@@ -1,7 +1,7 @@
 /**
  * xCAT self-hosted x402 facilitator for Ethereum Sepolia (eip155:11155111).
  *
- * The hosted x402 facilitators do NOT support Ethereum Sepolia, so we run our own —
+ * The hosted x402 facilitators do NOT support Ethereum Sepolia, so we run our own -
  * which is also exactly where xCAT's confidential payment metering lives: the
  * `onAfterSettle` hook records each settlement into the Nox-encrypted PaymentMeter,
  * so per-caller amounts stay confidential while the settlement itself is public.
@@ -72,9 +72,9 @@ async function meter(payer: `0x${string}`, amount: bigint) {
       args: [payer, enc.handle, enc.handleProof], account, chain: sepolia,
     });
     await viemClient.waitForTransactionReceipt({ hash: tx });
-    console.info(`[facilitator] metered ${payer} (amount encrypted) — tx ${tx}`);
+    console.info(`[facilitator] metered ${payer} (amount encrypted) - tx ${tx}`);
   } catch (e) {
-    // Metering must never break settlement — log and move on.
+    // Metering must never break settlement - log and move on.
     console.warn("[facilitator] metering skipped:", e instanceof Error ? e.message : e);
   }
 }
@@ -84,7 +84,7 @@ const facilitator = new x402Facilitator()
     const payer = ctx.result?.payer as `0x${string}` | undefined;
     const amount = ctx.requirements?.amount;
     const tx = ctx.result?.transaction;
-    console.info(`[facilitator] settled on ${NETWORK}${tx ? ` — tx ${tx}` : ""}`);
+    console.info(`[facilitator] settled on ${NETWORK}${tx ? ` - tx ${tx}` : ""}`);
     if (ctx.result?.success && payer && amount) {
       void meter(payer, BigInt(amount)); // fire-and-forget encrypted metering
     }

@@ -1,4 +1,4 @@
-# c402 — Confidential Compute over x402
+# c402 - Confidential Compute over x402
 
 **Version:** `c402/1`
 
@@ -13,16 +13,16 @@
 | **x402** | "**pay** to access a resource" | `402` + `PAYMENT-REQUIRED` header |
 | **c402** | "**pay** to access a **private thought**" | x402 **+ two headers** |
 
-c402 is intentionally minimal. It adds exactly **two headers** on top of x402. Everything else — what the
-computation is, what the inputs mean, what the output means — is defined by the server. c402 does not modify x402;
+c402 is intentionally minimal. It adds exactly **two headers** on top of x402. Everything else - what the
+computation is, what the inputs mean, what the output means - is defined by the server. c402 does not modify x402;
 it composes with it.
 
 ## 2. Roles
 
-- **c402 server** — any HTTP server that publishes a TEE-attested confidential computation as a paid endpoint.
-- **c402 client** — anything that reads the headers, pays, and consumes the attested result.
-- **facilitator** — the standard x402 settlement facilitator (unmodified). c402 does not touch settlement.
-- **verifier** — anyone; re-checks an attestation against on-chain state with no server cooperation.
+- **c402 server** - any HTTP server that publishes a TEE-attested confidential computation as a paid endpoint.
+- **c402 client** - anything that reads the headers, pays, and consumes the attested result.
+- **facilitator** - the standard x402 settlement facilitator (unmodified). c402 does not touch settlement.
+- **verifier** - anyone; re-checks an attestation against on-chain state with no server cooperation.
 
 ## 3. The protocol
 
@@ -30,8 +30,8 @@ it composes with it.
 
 On an unauthenticated request, a c402 server responds `HTTP 402` with **both**:
 
-- `PAYMENT-REQUIRED` — the standard x402 header (price, token, network).
-- `Compute-Required` — base64url JSON describing the confidential computation:
+- `PAYMENT-REQUIRED` - the standard x402 header (price, token, network).
+- `Compute-Required` - base64url JSON describing the confidential computation:
 
 ```json
 {
@@ -46,8 +46,8 @@ On an unauthenticated request, a c402 server responds `HTTP 402` with **both**:
 ```
 
 `input.encoding`:
-- `"nox-handle"` — the client encrypts its input to a Nox handle against `contract` before paying.
-- `"plaintext"` — the client sends plaintext over TLS and the server encrypts it inside the TEE boundary.
+- `"nox-handle"` - the client encrypts its input to a Nox handle against `contract` before paying.
+- `"plaintext"` - the client sends plaintext over TLS and the server encrypts it inside the TEE boundary.
   (Confidentiality of the *computation and its persisted state* is preserved either way; the difference is
   only whether the transport carries ciphertext.)
 
@@ -56,9 +56,9 @@ On an unauthenticated request, a c402 server responds `HTTP 402` with **both**:
 On a request carrying a valid x402 payment, the server runs the computation inside the TEE and responds `200`
 with **both**:
 
-- `PAYMENT-RESPONSE` — the standard x402 settlement header.
-- `X-Attestation` — base64url JSON proving the TEE executed. Every field is a real, independently
-  re-verifiable on-chain artifact — **no fabricated quotes**:
+- `PAYMENT-RESPONSE` - the standard x402 settlement header.
+- `X-Attestation` - base64url JSON proving the TEE executed. Every field is a real, independently
+  re-verifiable on-chain artifact - **no fabricated quotes**:
 
 ```json
 {
@@ -95,14 +95,14 @@ requires no trust in, and no cooperation from, the server. See `@c402/verify`.
 
 ## 5. Reference packages
 
-- `@c402/spec` — constants, types, header codecs (this document, in code).
-- `@c402/server` — `c402(config)` Express middleware: declare a confidential paid endpoint in one call.
-- `@c402/client` — `c402Fetch(opts)`: pay + consume + verify, as one `fetch`.
-- `@c402/verify` — standalone on-chain attestation verifier.
+- `@c402/spec` - constants, types, header codecs (this document, in code).
+- `@c402/server` - `c402(config)` Express middleware: declare a confidential paid endpoint in one call.
+- `@c402/client` - `c402Fetch(opts)`: pay + consume + verify, as one `fetch`.
+- `@c402/verify` - standalone on-chain attestation verifier.
 
 ## 6. Non-goals
 
-- c402 does not define *what* the computation is — that is the server's domain.
+- c402 does not define *what* the computation is - that is the server's domain.
 - c402 does not provide anonymity. The TEE (iExec Nox) provides **confidentiality of values**, not anonymity
   of addresses. Calls and addresses remain public; inputs, state, and reasoning are encrypted.
 - c402 does not modify x402, Safe, or Uniswap. It composes with unmodified open protocols.

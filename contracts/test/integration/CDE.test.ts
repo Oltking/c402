@@ -13,7 +13,7 @@ const CONF_STRONG = 100n;
 const CONF_MEDIUM = 60n;
 const CONF_LOW = 20n;
 
-describe("CDE — Confidential Decision Engine (end-to-end on Nox stack)", () => {
+describe("CDE - Confidential Decision Engine (end-to-end on Nox stack)", () => {
   let viem: Awaited<ReturnType<typeof nox.connect>>["viem"];
   let runtime: `0x${string}`;
   let registry: any;

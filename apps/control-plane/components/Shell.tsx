@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WalletButton } from "./WalletButton";
 
-/** c402 wordmark — a bracketed lock glyph + monospace wordmark. */
+/** c402 wordmark - a bracketed lock glyph + monospace wordmark. */
 export function C402Mark({ size = 22 }: { size?: number }) {
   return (
     <span className="inline-flex items-center gap-2">
@@ -42,7 +42,7 @@ export function Shell({ children, wide = false }: { children?: React.ReactNode; 
                   </Link>
                 );
               })}
-              <a href={process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Oltking"} target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
+              <a href={process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Oltking/c402"} target="_blank" rel="noreferrer" className="hover:text-text">GitHub ↗</a>
             </nav>
           </div>
           <WalletButton />
@@ -58,7 +58,7 @@ export function Footer() {
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-[12px] text-faint md:flex-row">
         <div className="flex items-center gap-2"><C402Mark size={18} /> · Confidential compute over x402</div>
-        <div>Composes x402 · iExec Nox · Safe · Uniswap — unmodified, on Ethereum Sepolia</div>
+        <div>Composes x402 · iExec Nox · Safe · Uniswap - unmodified, on Ethereum Sepolia</div>
       </div>
     </footer>
   );

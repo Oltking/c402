@@ -1,7 +1,7 @@
 {
   "name": "@c402/spec",
   "version": "0.1.0",
-  "description": "c402 — confidential compute layer on top of x402. Shared protocol constants, header codecs, and types.",
+  "description": "c402 - confidential compute layer on top of x402. Shared protocol constants, header codecs, and types.",
   "type": "module",
   "main": "src/index.ts",
   "devDependencies": {

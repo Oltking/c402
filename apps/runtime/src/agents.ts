@@ -23,7 +23,7 @@ export interface MarketObservation {
 }
 
 /**
- * Market Agent — reads real market state, buys a confidential decision from the CDE
+ * Market Agent - reads real market state, buys a confidential decision from the CDE
  * over x402, then publishes the decision (encrypted) on the EventBus for the Treasury
  * Agent. The public sees an event was emitted; only the Treasury Agent can read it.
  */
@@ -58,7 +58,7 @@ export interface TreasuryAction {
 }
 
 /**
- * Treasury Agent — consumes the encrypted EventBus event (ACL-gated decrypt), recovers
+ * Treasury Agent - consumes the encrypted EventBus event (ACL-gated decrypt), recovers
  * the action, and executes it through the Safe + Uniswap adapters.
  */
 export class TreasuryAgent {

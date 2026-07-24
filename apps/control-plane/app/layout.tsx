@@ -5,7 +5,7 @@ import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "c402 · Confidential compute over x402",
-  description: "c402 makes any computation confidential and payable by any agent — two headers on top of x402, TEE-attested by iExec Nox on Ethereum Sepolia.",
+  description: "c402 makes any computation confidential and payable by any agent - two headers on top of x402, TEE-attested by iExec Nox on Ethereum Sepolia.",
   icons: { icon: "/icon.svg", apple: "/apple-icon.svg" },
 };
 

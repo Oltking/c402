@@ -8,8 +8,8 @@ protocol packages, both apps, and the control plane.
 ## 1. Prerequisites
 
 - **Node 22+** (the Nox Hardhat plugin requires 22+; the repo runs `.ts` directly via Node's type stripping).
-- **pnpm 10** — `npm i -g pnpm@10`.
-- **Docker** running — only needed to run the local Nox contract tests (`contracts/`).
+- **pnpm 10** - `npm i -g pnpm@10`.
+- **Docker** running - only needed to run the local Nox contract tests (`contracts/`).
 - A funded **Ethereum Sepolia** wallet: test ETH ([Google Cloud faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)) and Circle USDC ([faucet.circle.com](https://faucet.circle.com), network: Ethereum Sepolia).
 
 ## 2. Install & configure
@@ -22,8 +22,8 @@ cp .env.example .env
 
 Edit `.env`:
 
-- `SEPOLIA_RPC_URL` — an Alchemy/Infura Sepolia endpoint (or `https://ethereum-sepolia-rpc.publicnode.com`).
-- `SEPOLIA_PRIVATE_KEY` — deployer/agent key, `0x`-prefixed. **Never commit `.env`.**
+- `SEPOLIA_RPC_URL` - an Alchemy/Infura Sepolia endpoint (or `https://ethereum-sepolia-rpc.publicnode.com`).
+- `SEPOLIA_PRIVATE_KEY` - deployer/agent key, `0x`-prefixed. **Never commit `.env`.**
 
 All contract/asset addresses are pre-filled from `docs/verified-addresses.md`. Already-deployed addresses
 live in `docs/deployments.sepolia.json` (treasury) and `docs/payroll.sepolia.json` (payroll); to reuse
@@ -31,13 +31,13 @@ them, keep the `*_ADDRESS` values in `.env`.
 
 ## 3. The c402 protocol packages
 
-No build step — they run directly. The four packages:
+No build step - they run directly. The four packages:
 
 | Package | Role |
 |---|---|
 | `@c402/spec` | Protocol constants, header codecs, types, `SPEC.md`, JSON schema |
-| `@c402/server` | `c402(config)` Express middleware — a confidential paid endpoint in one call |
-| `@c402/client` | `c402Fetch(opts)` — pay, consume, verify an attestation as one `fetch` |
+| `@c402/server` | `c402(config)` Express middleware - a confidential paid endpoint in one call |
+| `@c402/client` | `c402Fetch(opts)` - pay, consume, verify an attestation as one `fetch` |
 | `@c402/verify` | Standalone on-chain attestation verifier |
 
 Minimal end-to-end usage lives in [`examples/hello-c402`](../examples/hello-c402).
@@ -66,7 +66,7 @@ Copy the printed addresses into `.env` (`CDE_ADDRESS`, `DECISION_REGISTRY_ADDRES
 node packages/adapters/scripts/phase3-demo.ts   # deploys a Safe, funds it, executes a swap; prints SAFE_ADDRESS
 ```
 
-> Note: the `DecisionRegistry` is keyed by decision id, so **each c402 engine needs its own registry** —
+> Note: the `DecisionRegistry` is keyed by decision id, so **each c402 engine needs its own registry** -
 > `deploy-payroll.ts` deploys a fresh one for PayrollCDE.
 
 ## 6. Run the services
@@ -118,7 +118,7 @@ pnpm --filter @xcat/control-plane dev          # http://localhost:3007
 
 | Route | What it is |
 |---|---|
-| `/` | c402 landing — the protocol, the two headers, the code |
+| `/` | c402 landing - the protocol, the two headers, the code |
 | `/protocol` | The spec, packages, verification |
 | `/apps` | Directory of apps on c402 |
 | `/inspect` | Paste a c402 URL → decode headers → **Pay & run** → verify the attestation |
@@ -143,5 +143,5 @@ uses the demo agent wallet (`SEPOLIA_PRIVATE_KEY`) and is disabled where no sign
 
 ## Notes
 
-- Node runs TypeScript directly (type-stripping) — **no build step**; avoid TS parameter-properties/enums in runtime code.
+- Node runs TypeScript directly (type-stripping) - **no build step**; avoid TS parameter-properties/enums in runtime code.
 - Docker Desktop's `docker` CLI must be on `PATH` for the Nox plugin (Settings → Advanced → Install CLI tools).

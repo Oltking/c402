@@ -12,8 +12,8 @@ export default function ProtocolPage() {
         <h1 className="mt-3 text-[32px] font-semibold tracking-tight text-text md:text-[40px]">The c402 protocol</h1>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
           c402 is a confidential compute layer that sits on top of x402 the same way x402 sits on top of HTTP.
-          It adds exactly <span className="text-text">two headers</span>. Everything else — what the computation is,
-          what the inputs and outputs mean — is defined by the server.
+          It adds exactly <span className="text-text">two headers</span>. Everything else - what the computation is,
+          what the inputs and outputs mean - is defined by the server.
         </p>
 
         {/* layer stack */}
@@ -33,7 +33,7 @@ export default function ProtocolPage() {
         <h2 className="mt-14 text-[22px] font-semibold tracking-tight text-text">Two headers</h2>
         <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
           <HeaderCard name="Compute-Required" when="on the 402" body="Describes the confidential computation: the TEE standard, the on-chain compute contract, the input schema/encoding, and the output schema. The client reads it to know what to encrypt and what to expect." tone="accent-2" />
-          <HeaderCard name="X-Attestation" when="on the paid 200" body="Proves the TEE executed. Every field is a real, independently re-verifiable on-chain artifact — decisionId, commitment, registry, tx, output handles. No fabricated quotes." tone="accent" />
+          <HeaderCard name="X-Attestation" when="on the paid 200" body="Proves the TEE executed. Every field is a real, independently re-verifiable on-chain artifact - decisionId, commitment, registry, tx, output handles. No fabricated quotes." tone="accent" />
         </div>
 
         {/* packages */}
@@ -88,7 +88,7 @@ const LAYERS = [
 ];
 const PKGS = [
   { name: "@c402/spec", body: "The protocol in code: constants, types, header codecs, SPEC.md, JSON schema." },
-  { name: "@c402/server", body: "c402(config) Express middleware — declare a confidential paid endpoint in one call." },
-  { name: "@c402/client", body: "c402Fetch(opts) — pay, consume, and verify an attestation as one fetch." },
+  { name: "@c402/server", body: "c402(config) Express middleware - declare a confidential paid endpoint in one call." },
+  { name: "@c402/client", body: "c402Fetch(opts) - pay, consume, and verify an attestation as one fetch." },
   { name: "@c402/verify", body: "Standalone on-chain attestation verifier anyone can run." },
 ];

@@ -17,7 +17,7 @@ const APPS = [
     name: "Confidential Payroll",
     tag: "second app",
     href: "/app/payroll",
-    body: "Approve / defer / reject a raise against an encrypted remaining budget and an encrypted policy cap — the manager, the server host and the chain never see the numbers. A genuinely different computation on the exact same protocol surface.",
+    body: "Approve / defer / reject a raise against an encrypted remaining budget and an encrypted policy cap - the manager, the server host and the chain never see the numbers. A genuinely different computation on the exact same protocol surface.",
     contract: "0x2040ed303ea352fa0bc3fc288b348264d315b1be",
     label: "PayrollCDE",
     output: "payroll-action (APPROVE / DEFER / REJECT)",
@@ -33,7 +33,7 @@ export default function AppsPage() {
         <h1 className="mt-3 text-[32px] font-semibold tracking-tight text-text md:text-[40px]">Built on the protocol</h1>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
           Each app is a c402 server (a confidential endpoint) and its clients. Same two headers, same attestation
-          and verification — entirely different computations. All live on Ethereum Sepolia, no mock data.
+          and verification - entirely different computations. All live on Ethereum Sepolia, no mock data.
         </p>
 
         <div className="mt-9 grid grid-cols-1 gap-4">
@@ -61,8 +61,8 @@ export default function AppsPage() {
           <div className="text-[15px] font-semibold text-text">Build your own</div>
           <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-muted">
             A c402 app is a server with one <span className="font-mono text-text">c402(&#123;…&#125;)</span> endpoint and clients that
-            call it with <span className="font-mono text-text">c402Fetch</span>. See <span className="font-mono text-muted">examples/hello-c402</span> —
-            a full server + client — and the <Link href="/protocol" className="text-accent hover:underline">protocol page</Link>.
+            call it with <span className="font-mono text-text">c402Fetch</span>. See <span className="font-mono text-muted">examples/hello-c402</span> -
+            a full server + client - and the <Link href="/protocol" className="text-accent hover:underline">protocol page</Link>.
           </p>
         </div>
       </main>

@@ -1,4 +1,4 @@
-# c402 — Brand
+# c402 - Brand
 
 The official c402 logo. **Do not alter the proportions, colors, or reconstruct the glyph.**
 
@@ -8,7 +8,7 @@ It reads as "a call, made private."
 
 | File | Use |
 |---|---|
-| `c402-mark.svg` | The mark, transparent, scalable — **primary source of truth** |
+| `c402-mark.svg` | The mark, transparent, scalable - **primary source of truth** |
 | `c402-mark-1024.png` · `-512` · `-256` · `-128` | Raster mark, transparent background |
 | `c402-mark-onlight.svg` / `c402-icon-1024.png` | App icon: mark on a white square (favicon / tile) |
 | `c402-wordmark.svg` | Horizontal lockup (mark + `c402`), scalable |

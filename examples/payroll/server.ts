@@ -1,6 +1,6 @@
-// c402 example: CONFIDENTIAL PAYROLL — a second, genuinely different app on the same protocol.
+// c402 example: CONFIDENTIAL PAYROLL - a second, genuinely different app on the same protocol.
 // A manager submits an encrypted remaining budget + an encrypted requested raise; the TEE decides
-// APPROVE / DEFER / REJECT against an encrypted policy cap, and nobody — not even the server host —
+// APPROVE / DEFER / REJECT against an encrypted policy cap, and nobody - not even the server host -
 // sees the numbers. Same c402 wiring as the treasury CDE; entirely different computation.
 import { config } from "dotenv";
 import { resolve, dirname } from "node:path";
@@ -42,7 +42,7 @@ app.post("/decide", c402({
   contract: PAYROLL,
   coordinator: "0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf",
   schema: { input: "euint256", output: "payroll-action" },
-  description: "Confidential payroll raise decision — approve/defer/reject without revealing budgets.",
+  description: "Confidential payroll raise decision - approve/defer/reject without revealing budgets.",
   compute: async (input) => {
     const { budget = 100000, requested = 5000 } = (input ?? {}) as { budget?: number; requested?: number };
     const handle = await handleP;

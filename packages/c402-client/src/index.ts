@@ -1,5 +1,5 @@
 /**
- * @c402/client — call a confidential endpoint as if it were a normal fetch.
+ * @c402/client - call a confidential endpoint as if it were a normal fetch.
  *
  *   const fetch = c402Fetch({ signer, network });
  *   const res = await fetch("http://cde/decide", { method: "POST", body: { ... } });
@@ -48,7 +48,7 @@ export interface C402Response<T = unknown> {
 }
 
 export interface C402RequestInit extends Omit<RequestInit, "body"> {
-  /** Plain object body — JSON-encoded automatically. */
+  /** Plain object body - JSON-encoded automatically. */
   body?: unknown;
 }
 
@@ -68,7 +68,7 @@ export function c402Fetch(opts: C402FetchOptions) {
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
 
-    // Headers are readable on the final (paid) response too — the server sets COMPUTE-REQUIRED
+    // Headers are readable on the final (paid) response too - the server sets COMPUTE-REQUIRED
     // on every response, and X-ATTESTATION on success.
     const crHeader = response.headers.get(COMPUTE_REQUIRED_HEADER);
     const atHeader = response.headers.get(ATTESTATION_HEADER);

@@ -1,5 +1,5 @@
 /**
- * UniswapAdapter — builds the calldata to swap through the UNMODIFIED Uniswap v3
+ * UniswapAdapter - builds the calldata to swap through the UNMODIFIED Uniswap v3
  * SwapRouter02 (exactInputSingle). Returned as MetaTransactions so a Safe can execute
  * them as a batch (approve + swap), with the output token sent to `recipient`.
  */
@@ -18,7 +18,7 @@ export interface SwapParams {
   fee: number; // pool fee tier, e.g. 500
   recipient: Address; // where output lands (the Safe)
   amountIn: bigint;
-  amountOutMinimum: bigint; // slippage floor (0 = accept any — testnet demo only)
+  amountOutMinimum: bigint; // slippage floor (0 = accept any - testnet demo only)
 }
 
 const ERC20_APPROVE_ABI = [
@@ -34,7 +34,7 @@ const ERC20_APPROVE_ABI = [
   },
 ] as const;
 
-// SwapRouter02 exactInputSingle — note: NO `deadline` field (differs from SwapRouter v1).
+// SwapRouter02 exactInputSingle - note: NO `deadline` field (differs from SwapRouter v1).
 const SWAP_ROUTER02_ABI = [
   {
     type: "function",

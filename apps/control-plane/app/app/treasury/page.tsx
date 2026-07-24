@@ -58,7 +58,7 @@ export default function TreasuryPage() {
             </div>
             <div>
               <div className="text-[15px] font-semibold tracking-tight text-text">xCAT <span className="font-normal text-faint">· Onboard your treasury</span></div>
-              <div className="text-[11px] text-faint">Connect your wallet, bring your own Safe — non-custodial</div>
+              <div className="text-[11px] text-faint">Connect your wallet, bring your own Safe - non-custodial</div>
             </div>
           </a>
           <WalletButton />
@@ -69,21 +69,21 @@ export default function TreasuryPage() {
         <div className="mb-6">
           <h1 className="text-[22px] font-semibold tracking-tight text-text">Bring your own Safe</h1>
           <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-muted">
-            xCAT never holds your keys. Connect your wallet and point it at a Safe you own on Sepolia — the agent
+            xCAT never holds your keys. Connect your wallet and point it at a Safe you own on Sepolia - the agent
             operates as a Safe signer/module, and every confidential decision it makes is re-verifiable on-chain.
           </p>
         </div>
 
-        {/* Step 1 — wallet */}
+        {/* Step 1 - wallet */}
         <Step n={1} title="Connect your wallet" done={!!address && !wrongNet}>
           {!address && <p className="text-[13px] text-muted">Use the <span className="font-semibold text-text">Connect wallet</span> button above.</p>}
-          {address && wrongNet && <p className="text-[13px] text-amber">You’re connected but on the wrong network — switch to Sepolia above.</p>}
+          {address && wrongNet && <p className="text-[13px] text-amber">You’re connected but on the wrong network - switch to Sepolia above.</p>}
           {address && !wrongNet && (
             <div className="flex items-center gap-2 text-[13px] text-emerald"><Pulse /> Connected as <span className="mono text-text">{short(address)}</span> on Sepolia</div>
           )}
         </Step>
 
-        {/* Step 2 — safe */}
+        {/* Step 2 - safe */}
         <Step n={2} title="Point at your Safe" done={!!safe} disabled={!address || wrongNet}>
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
@@ -104,7 +104,7 @@ export default function TreasuryPage() {
           <p className="mt-2 text-[11.5px] text-faint">Don’t have one? Create a Safe at <span className="text-muted">app.safe.global</span> on Sepolia, then paste its address.</p>
         </Step>
 
-        {/* Step 3 — verified */}
+        {/* Step 3 - verified */}
         {safe && (
           <Step n={3} title="Treasury verified" done>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -139,7 +139,7 @@ export default function TreasuryPage() {
               <p className="text-[12.5px] leading-relaxed text-muted">
                 To let the treasury agent act, add the xCAT runtime as a Safe module or co-signer (threshold-preserving),
                 then set a policy. The agent proposes swaps; your Safe’s threshold still governs execution. The confidential
-                decision engine is already a public <span className="text-text">pay-per-decision</span> x402 API — any wallet can call it.
+                decision engine is already a public <span className="text-text">pay-per-decision</span> x402 API - any wallet can call it.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="chip opacity-70">Add module <span className="ml-1 text-faint">soon</span></span>

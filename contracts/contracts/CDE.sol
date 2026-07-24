@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import {Nox, euint256, ebool, externalEuint256} from "@iexec-nox/nox-protocol-contracts/contracts/sdk/Nox.sol";
 import {DecisionRegistry} from "./DecisionRegistry.sol";
 
-/// @title CDE — Confidential Decision Engine
+/// @title CDE - Confidential Decision Engine
 /// @notice Reusable "pay-per-confidential-decision" primitive. Takes encrypted
 ///         market signal + encrypted portfolio exposure, evaluates an encrypted
 ///         policy entirely inside the Nox TEE using BRANCHLESS `Nox.select` (so the

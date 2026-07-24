@@ -1,5 +1,5 @@
 /**
- * SafeAdapter — thin wrapper over the UNMODIFIED Safe protocol-kit. Deploys a demo
+ * SafeAdapter - thin wrapper over the UNMODIFIED Safe protocol-kit. Deploys a demo
  * Safe (single-owner, threshold 1) and executes batched MetaTransactions from it, so
  * the treasury lives in a standard Safe and our runtime proposes + executes swaps.
  */

@@ -1,6 +1,6 @@
-// hello-c402 client — call the confidential endpoint like a normal fetch.
+// hello-c402 client - call the confidential endpoint like a normal fetch.
 // c402Fetch reads COMPUTE-REQUIRED, pays via x402, reads X-ATTESTATION, and
-// re-verifies the attestation on-chain — all invisibly.
+// re-verifies the attestation on-chain - all invisibly.
 import { config } from "dotenv";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
