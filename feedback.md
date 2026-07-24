@@ -4,6 +4,38 @@ Running, dated, honest log of friction and wins while building **xCAT** on the i
 
 ---
 
+## 2026-07-24 — Building the c402 protocol layer on top of the Nox + x402 stack
+
+Extracted **c402** (a confidential-compute protocol: two headers on top of x402, TEE-attested by Nox) as
+reusable packages, migrated the treasury app onto it, and shipped a second app (confidential payroll). Notes
+specific to the iExec/Nox + x402 tooling:
+
+**👍 Wins**
+- The same `@iexec-nox/handle` `createViemHandleClient` worked unchanged across **five** independent services
+  (facilitator, treasury server, payroll server, deploy scripts, control-plane API). Deploying a *second*
+  confidential engine (`PayrollCDE`) and running its encrypt → decide → ACL-decrypt roundtrip on Sepolia
+  worked first try — the Nox primitives compose cleanly, so "a reusable confidential-compute API" is a real,
+  buildable abstraction, not just a slogan.
+- Attestation without a bespoke TEE-quote format: because every Nox decision already writes a public
+  commitment to a registry, the c402 `X-Attestation` could be built from real on-chain artifacts
+  (commitment, tx, handles) and a verifier could re-check them trustlessly. Nox's public-commitment +
+  selective-decryption split is exactly the right shape for a verifiable confidential-compute protocol.
+
+**👎 Friction (actionable)**
+6. **`createViemHandleClient` returns a `Promise<HandleClient>`, which is easy to get wrong.** Several call
+   sites naturally write `const h = createViemHandleClient(wallet); h.encryptInput(...)` — which type-checks
+   as `any` in loose setups and fails only at runtime (`encryptInput is not a function`). The name reads
+   synchronous. Consider either a synchronous factory or a name like `connectHandleClient()` that signals the
+   await. (We store the promise and `await` it per call, matching the SDK's own pattern.)
+7. **Post-`decide()` transient `403 access_denied "not a viewer"` reappeared** on every new engine (payroll
+   included) — still the single most confusing Nox behaviour, since it looks like an auth failure but is ACL
+   propagation. Re-flagging item 5's ask: surface it as a distinct retryable error. We reuse the same regex
+   retry across all services.
+
+Not a Nox issue but worth recording for anyone composing multiple engines against one registry: **a shared
+decision registry keyed only by `id` will silently overwrite** across engines (both count from 1). Each c402
+engine needs its own registry instance.
+
 ## 2026-07-23 — Phase 0: verification & environment
 
 **👍 Wins**

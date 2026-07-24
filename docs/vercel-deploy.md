@@ -25,6 +25,8 @@ required at runtime.
    WETH9_ADDRESS             = 0xfff9976782d46cc05630d1f6ebab18b2324d6b14
    UNISWAP_V3_FACTORY        = 0x0227628f3F023bb0B980b67D528571c95c6DaC1c
    UNISWAP_POOL_FEE          = 500
+   PAYROLL_CDE_ADDRESS       = 0x2040ed303ea352fa0bc3fc288b348264d315b1be
+   PAYROLL_REGISTRY_ADDRESS  = 0x016ad8c79ce350d02bbf5373e9ce9295cf52f0c4
    ```
 
 6. Deploy. The landing page is `/`, the dashboard is `/app`.
@@ -40,7 +42,11 @@ vercel --prod     # after adding the env vars above in the dashboard or via `ver
 
 ## Notes
 
-- **DO NOT** set `SEPOLIA_PRIVATE_KEY` on Vercel — the control plane is read-only and never needs it.
+- **DO NOT** set `SEPOLIA_PRIVATE_KEY` on Vercel — the control plane is read-only for all live reads,
+  the landing/protocol/apps pages, both dashboards, `/verify`, and the `/inspect` **decode** step. The only
+  feature that needs a signer is the `/inspect` **Pay & run** button (it pays with the demo agent wallet);
+  without a key it is automatically disabled with an explanation, and everything else still works.
+- `/inspect` decode + `/app/payroll` + `/verify?app=payroll` need the `PAYROLL_*` addresses above.
 - The decision **timeline** (execution history / public confidence) is fed by the runtime activity log
   (`.xcat-state/activity.json`), which is written locally by `xcat run`. On Vercel the live on-chain
   stats, decision queue, encrypted memory and `/verify/<id>` all work from chain; the timeline shows
