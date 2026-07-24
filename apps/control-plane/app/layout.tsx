@@ -4,8 +4,9 @@ import "@xyflow/react/dist/style.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "xCAT · Confidential Autonomous Treasury",
-  description: "A confidential autonomous treasury for Safe — iExec Nox + x402 + Uniswap on Ethereum Sepolia.",
+  title: "c402 · Confidential compute over x402",
+  description: "c402 makes any computation confidential and payable by any agent — two headers on top of x402, TEE-attested by iExec Nox on Ethereum Sepolia.",
+  icons: { icon: "/icon.svg", apple: "/apple-icon.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 400 400" fill="none">
+  <!-- c402 square lockup: mark + wordmark centered (for avatars / og / app tile) -->
+  <g transform="translate(21,126) scale(2.3)">
+    <path d="M22 13 H12 V51 H22" stroke="#0a0b0d" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M42 13 H52 V51 H42" stroke="#0a0b0d" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/>
+    <path d="M27 31 V26.5 a5 5 0 0 1 10 0 V31" stroke="#1d4ed8" stroke-width="3" stroke-linecap="square"/>
+    <rect x="25" y="31" width="14" height="14" stroke="#1d4ed8" stroke-width="3"/>
+    <path d="M32 36 V40" stroke="#1d4ed8" stroke-width="3" stroke-linecap="square"/>
+    <text x="72" y="41" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="30" font-weight="600" letter-spacing="-0.5" fill="#0a0b0d">c402</text>
+  </g>
+</svg>

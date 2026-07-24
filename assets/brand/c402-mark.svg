@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 64 64" fill="none">
+  <!-- c402 mark: code brackets (protocol) enclosing a lock (confidential compute) -->
+  <path d="M22 13 H12 V51 H22" stroke="#0a0b0d" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M42 13 H52 V51 H42" stroke="#0a0b0d" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M27 31 V26.5 a5 5 0 0 1 10 0 V31" stroke="#1d4ed8" stroke-width="3" stroke-linecap="square"/>
+  <rect x="25" y="31" width="14" height="14" stroke="#1d4ed8" stroke-width="3"/>
+  <path d="M32 36 V40" stroke="#1d4ed8" stroke-width="3" stroke-linecap="square"/>
+</svg>
