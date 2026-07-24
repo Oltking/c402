@@ -45,6 +45,7 @@ Built for the iExec WTF Hackathon (Summer Edition). All code written during the 
 | [`@c402/server`](packages/c402-server) | `c402(config)` Express middleware — declare a confidential paid endpoint in one call. |
 | [`@c402/client`](packages/c402-client) | `c402Fetch(opts)` — pay, consume, and verify an attestation as one `fetch`. |
 | [`@c402/verify`](packages/c402-verify) | Standalone on-chain attestation verifier anyone can run. |
+| [`@c402/cli`](packages/c402-cli) | Generic `c402` CLI — `inspect` / `call` / `verify` any endpoint from the terminal. |
 
 Examples (each a real c402 server + client on Sepolia, no mock data):
 - [`examples/hello-c402`](examples/hello-c402) — the minimal server + client.

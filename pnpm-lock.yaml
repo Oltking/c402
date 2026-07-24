@@ -259,6 +259,37 @@ importers:
         specifier: ~5.8.0
         version: 5.8.3
 
+  packages/c402-cli:
+    dependencies:
+      '@c402/client':
+        specifier: workspace:*
+        version: link:../c402-client
+      '@c402/spec':
+        specifier: workspace:*
+        version: link:../c402-spec
+      '@c402/verify':
+        specifier: workspace:*
+        version: link:../c402-verify
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
+      ora:
+        specifier: ^8.1.1
+        version: 8.2.0
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
+      viem:
+        specifier: ^2.46.3
+        version: 2.55.7(typescript@5.8.3)(zod@3.25.76)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.11.0
+        version: 22.20.1
+      typescript:
+        specifier: ~5.8.0
+        version: 5.8.3
+
   packages/c402-client:
     dependencies:
       '@c402/spec':

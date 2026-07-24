@@ -1,0 +1,22 @@
+{
+  "name": "@c402/cli",
+  "version": "0.1.0",
+  "description": "Call any c402 endpoint from the terminal: inspect the 402 handshake, pay with your wallet, and verify the TEE attestation on-chain.",
+  "type": "module",
+  "bin": {
+    "c402": "src/index.ts"
+  },
+  "dependencies": {
+    "@c402/client": "workspace:*",
+    "@c402/spec": "workspace:*",
+    "@c402/verify": "workspace:*",
+    "commander": "^12.1.0",
+    "ora": "^8.1.1",
+    "picocolors": "^1.1.1",
+    "viem": "^2.46.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.11.0",
+    "typescript": "~5.8.0"
+  }
+}
