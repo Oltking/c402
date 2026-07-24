@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { readFileSync, existsSync } from "node:fs";
 import { createPublicClient, http, parseAbi, getAddress, hexToString, type Abi, type Address, type Hex } from "viem";
 import { sepolia } from "viem/chains";
+import { verifyAttestation, type VerifyResult } from "@c402/verify";
 
 const REPO_ROOT = resolve(process.cwd(), "../..");
 loadEnv({ path: resolve(REPO_ROOT, ".env") });
@@ -25,7 +26,8 @@ export const ADDR = {
   poolFee: Number(process.env.UNISWAP_POOL_FEE || "500"),
 };
 
-const pc = createPublicClient({ chain: sepolia, transport: http(req("SEPOLIA_RPC_URL")) });
+const RPC = req("SEPOLIA_RPC_URL");
+const pc = createPublicClient({ chain: sepolia, transport: http(RPC) });
 // Inline ABIs (only the read fns the UI needs) so the app deploys anywhere (e.g. Vercel)
 // without bundling contract artifacts. euint256 handles are bytes32 on the wire.
 const CDE_ABI = parseAbi([
@@ -71,6 +73,12 @@ export interface WorkspaceState {
   decisions: { id: string; commitment: Hex; caller: Address; block: string; timestamp: string; actionHandle: Hex; confidenceHandle: Hex }[];
   events: { id: string; topic: string; publisher: Address; timestamp: string; payloadHandle: Hex }[];
   activity: ActivityRecord[];
+  // The latest decision's attestation, re-verified live on-chain by @c402/verify. Always
+  // populated from chain (independent of any local activity log), so it works on any deploy.
+  liveAttestation?: {
+    decisionId: string; commitment: string; contract: Address; registry: Address;
+    standard: string; network: string; verified: VerifyResult;
+  };
   updatedAt: number;
 }
 
@@ -216,6 +224,19 @@ export async function getWorkspaceState(overrides?: { safe?: Address }): Promise
     }),
   );
 
+  // Re-verify the latest decision's attestation live on-chain (works on any deploy, no local log).
+  let liveAttestation: WorkspaceState["liveAttestation"];
+  const latest = decisions[0];
+  if (latest) {
+    try {
+      const verified = await verifyAttestation(
+        { version: "c402/1", standard: "iexec-nox/intel-tdx", network: "eip155:11155111", contract: ADDR.cde, registry: ADDR.registry, decisionId: latest.id, commitment: latest.commitment, issuedAt: 0 },
+        { rpcUrl: RPC },
+      );
+      liveAttestation = { decisionId: latest.id, commitment: latest.commitment, contract: ADDR.cde, registry: ADDR.registry, standard: "iexec-nox/intel-tdx", network: "eip155:11155111", verified };
+    } catch { /* leave undefined */ }
+  }
+
   return {
     network: "Ethereum Sepolia",
     explorer: "https://sepolia.etherscan.io",
@@ -226,6 +247,7 @@ export async function getWorkspaceState(overrides?: { safe?: Address }): Promise
     decisions,
     events,
     activity: readActivity(),
+    liveAttestation,
     updatedAt: Date.now(),
   };
 }

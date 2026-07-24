@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Pulse, Chip, AddressPill, SectionTitle, EncryptedBlock } from "@/components/ui";
 import { EventFlow } from "@/components/EventFlow";
+import { Shell } from "@/components/Shell";
 
 type Decision = { id: string; commitment: string; caller: string; block: string; timestamp: string; actionHandle: string; confidenceHandle: string };
 type Activity = { ts: number; decisionId: string; action: string; confidence: number; exposureBps: string; priceUsdcPerWeth: number; eventId: string; swapTx?: string; direction?: string; executed: boolean; commitment: string; attestation?: { standard: string; network: string; contract: string; tx?: string; coordinator?: string }; verified?: { valid: boolean; checks: { name: string; ok: boolean }[] } };
@@ -13,6 +14,7 @@ type State = {
   decisions: Decision[];
   events: { id: string; topic: string; publisher: string; timestamp: string; payloadHandle: string }[];
   activity: Activity[];
+  liveAttestation?: { decisionId: string; commitment: string; contract: string; registry: string; standard: string; network: string; verified: { valid: boolean; checks: { name: string; ok: boolean }[] } };
   updatedAt: number;
 };
 
@@ -72,17 +74,16 @@ export default function Page() {
 
   return (
     <div>
-      {/* Top bar */}
-      <header className="sticky top-0 z-20 border-b border-line bg-panel/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
-          <div className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center border border-line bg-panel">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.2v5.3c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6.2L12 3z" stroke="#1d4ed8" strokeWidth="1.6" strokeLinejoin="round" /><path d="M9 12l2.2 2.2L15.5 10" stroke="#4338ca" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Shell />
+      {/* App title bar */}
+      <div className="border-b border-line bg-panel">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-5 py-3">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <div className="text-[15px] font-semibold tracking-tight text-text">Confidential Treasury <span className="font-normal text-faint">· xCAT</span></div>
+              <Chip>app on c402</Chip>
             </div>
-            <div>
-              <div className="text-[15px] font-semibold tracking-tight text-text">xCAT <span className="font-normal text-faint">Control Plane</span></div>
-              <div className="text-[11px] text-faint">Confidential Autonomous Treasury · reads live from chain, no mock data</div>
-            </div>
+            <div className="text-[11px] text-faint">Reads live from chain, no mock data</div>
           </div>
           <div className="flex items-center gap-2">
             <a href="/app/treasury" className="btn !py-1 !text-[12px]">Onboard your Safe</a>
@@ -90,7 +91,7 @@ export default function Page() {
             <Chip className="tnum">{s ? `updated ${new Date(s.updatedAt).toLocaleTimeString()}` : "connecting…"}</Chip>
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="mx-auto max-w-6xl px-5 py-7">
         {err && <div className="panel mb-6 border-rose p-4 text-[13px] text-rose">Error reading workspace: {err}</div>}
@@ -167,7 +168,7 @@ export default function Page() {
         {/* c402 attestation */}
         <section className="panel rise mt-3 p-5">
           <SectionTitle right={<Chip>c402 · X-Attestation</Chip>}>TEE attestation - verified on-chain</SectionTitle>
-          <AttestationPanel activity={s?.activity ?? []} explorer={s?.explorer} />
+          <AttestationPanel live={s?.liveAttestation} activity={s?.activity ?? []} explorer={s?.explorer} />
         </section>
 
         {/* Event bus flow */}
@@ -176,31 +177,56 @@ export default function Page() {
           <EventFlow active={!!lastAction} />
         </section>
 
-        {/* Execution history */}
-        <section className="panel rise mt-3 p-5">
-          <SectionTitle right={s ? <AddressPill address={s.contracts.CDE} explorer={s.explorer} /> : null}>Execution history</SectionTitle>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-[12.5px]">
-              <thead className="text-faint">
-                <tr className="border-b border-line">
-                  <th className="py-2 pr-4 font-medium">Decision</th><th className="py-2 pr-4 font-medium">Action</th><th className="py-2 pr-4 font-medium">Executed</th><th className="py-2 pr-4 font-medium">Swap</th><th className="py-2 font-medium">When</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(s?.activity ?? []).map((a, i) => (
-                  <tr key={i} className="border-b border-line-soft">
-                    <td className="py-2.5 pr-4"><span className="mono text-muted">#{a.decisionId}</span></td>
-                    <td className="py-2.5 pr-4"><span className="font-semibold" style={{ color: ACTION_COLOR[a.action] }}>{a.action}</span></td>
-                    <td className="py-2.5 pr-4 text-muted">{a.executed ? a.direction : "-"}</td>
-                    <td className="py-2.5 pr-4">{a.swapTx && s ? <AddressPill address={a.swapTx} explorer={s.explorer} kind="tx" /> : <span className="text-faint">-</span>}</td>
-                    <td className="py-2.5 tnum text-faint">{new Date(a.ts).toLocaleTimeString()}</td>
+        {/* History: rich execution log when the runtime ran locally; else the on-chain decision trail */}
+        {s && s.activity.length > 0 ? (
+          <section className="panel rise mt-3 p-5">
+            <SectionTitle right={<AddressPill address={s.contracts.CDE} explorer={s.explorer} />}>Execution history</SectionTitle>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-[12.5px]">
+                <thead className="text-faint">
+                  <tr className="border-b border-line">
+                    <th className="py-2 pr-4 font-medium">Decision</th><th className="py-2 pr-4 font-medium">Action</th><th className="py-2 pr-4 font-medium">Executed</th><th className="py-2 pr-4 font-medium">Swap</th><th className="py-2 font-medium">When</th>
                   </tr>
-                ))}
-                {s && s.activity.length === 0 && <tr><td colSpan={5} className="py-4 text-[13px] text-faint">No executions yet.</td></tr>}
-              </tbody>
-            </table>
-          </div>
-        </section>
+                </thead>
+                <tbody>
+                  {s.activity.map((a, i) => (
+                    <tr key={i} className="border-b border-line-soft">
+                      <td className="py-2.5 pr-4"><span className="mono text-muted">#{a.decisionId}</span></td>
+                      <td className="py-2.5 pr-4"><span className="font-semibold" style={{ color: ACTION_COLOR[a.action] }}>{a.action}</span></td>
+                      <td className="py-2.5 pr-4 text-muted">{a.executed ? a.direction : "-"}</td>
+                      <td className="py-2.5 pr-4">{a.swapTx ? <AddressPill address={a.swapTx} explorer={s.explorer} kind="tx" /> : <span className="text-faint">-</span>}</td>
+                      <td className="py-2.5 tnum text-faint">{new Date(a.ts).toLocaleTimeString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ) : (
+          <section className="panel rise mt-3 p-5">
+            <SectionTitle right={s ? <AddressPill address={s.contracts.DecisionRegistry} explorer={s.explorer} /> : null}>On-chain decision trail</SectionTitle>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-[12.5px]">
+                <thead className="text-faint">
+                  <tr className="border-b border-line">
+                    <th className="py-2 pr-4 font-medium">Decision</th><th className="py-2 pr-4 font-medium">Commitment</th><th className="py-2 pr-4 font-medium">Block</th><th className="py-2 font-medium">Proof</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(s?.decisions ?? []).map((d) => (
+                    <tr key={d.id} className="border-b border-line-soft">
+                      <td className="py-2.5 pr-4"><span className="mono text-muted">#{d.id}</span></td>
+                      <td className="py-2.5 pr-4">{s && <AddressPill address={d.commitment} explorer={s.explorer} kind="tx" />}</td>
+                      <td className="py-2.5 pr-4 tnum text-muted">{d.block}</td>
+                      <td className="py-2.5"><a href={`/verify/${d.id}?app=treasury`} className="text-accent hover:underline">verify</a></td>
+                    </tr>
+                  ))}
+                  {s && s.decisions.length === 0 && <tr><td colSpan={4} className="py-4 text-[13px] text-faint">No decisions yet.</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
 
         {/* Footer contracts */}
         <footer className="mt-5 flex flex-wrap items-center gap-2 pb-10">
@@ -213,28 +239,35 @@ export default function Page() {
   );
 }
 
-function AttestationPanel({ activity, explorer }: { activity: Activity[]; explorer?: string }) {
-  const latest = activity.find((a) => a.attestation);
-  if (!latest?.attestation) {
-    return <div className="text-[13px] text-faint">No attestation yet - run <span className="mono text-muted">xcat run</span>. Each confidential decision returns a c402 <span className="mono">X-Attestation</span> the agent re-verifies on-chain.</div>;
+function AttestationPanel({ live, activity, explorer }: { live?: State["liveAttestation"]; activity: Activity[]; explorer?: string }) {
+  // Prefer the live on-chain re-verification of the latest decision (works on any deploy).
+  // Fall back to the richest local activity record (has the compute tx) when present.
+  const fromLog = activity.find((a) => a.attestation);
+  const decisionId = live?.decisionId ?? fromLog?.decisionId;
+  const standard = live?.standard ?? fromLog?.attestation?.standard;
+  const network = live?.network ?? fromLog?.attestation?.network;
+  const contract = live?.contract ?? fromLog?.attestation?.contract;
+  const tx = fromLog?.attestation?.tx;
+  const checks = live?.verified.checks ?? fromLog?.verified?.checks ?? [];
+  const valid = live?.verified.valid ?? fromLog?.verified?.valid;
+
+  if (!decisionId) {
+    return <div className="text-[13px] text-faint">No decisions yet. Each confidential decision returns a c402 <span className="mono">X-Attestation</span> that is re-verified on-chain.</div>;
   }
-  const att = latest.attestation;
-  const checks = latest.verified?.checks ?? [];
-  const valid = latest.verified?.valid;
   return (
     <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
       <div className="border border-line-soft bg-panel-2 p-4 lg:col-span-1">
         <div className="flex items-center justify-between">
-          <span className="label">decision #{latest.decisionId}</span>
+          <span className="label">decision #{decisionId}</span>
           <span className={`inline-flex items-center gap-1.5 border px-2 py-0.5 text-[11px] font-semibold ${valid ? "border-emerald/30 bg-emerald/5 text-emerald" : "border-amber/40 bg-amber/5 text-amber"}`}>
             <Pulse color={valid ? "#15803d" : "#b45309"} /> {valid ? "verified on-chain" : "unverified"}
           </span>
         </div>
         <div className="mt-3 space-y-1.5 text-[12px]">
-          <div className="flex justify-between"><span className="text-faint">standard</span><span className="mono text-text">{att.standard}</span></div>
-          <div className="flex justify-between"><span className="text-faint">network</span><span className="mono text-text">{att.network}</span></div>
-          <div className="flex items-center justify-between"><span className="text-faint">compute</span>{explorer && <AddressPill address={att.contract} explorer={explorer} />}</div>
-          {att.tx && explorer && <div className="flex items-center justify-between"><span className="text-faint">tx</span><AddressPill address={att.tx} explorer={explorer} kind="tx" /></div>}
+          <div className="flex justify-between"><span className="text-faint">standard</span><span className="mono text-text">{standard}</span></div>
+          <div className="flex justify-between"><span className="text-faint">network</span><span className="mono text-text">{network}</span></div>
+          {contract && <div className="flex items-center justify-between"><span className="text-faint">compute</span>{explorer && <AddressPill address={contract} explorer={explorer} />}</div>}
+          {tx && explorer && <div className="flex items-center justify-between"><span className="text-faint">tx</span><AddressPill address={tx} explorer={explorer} kind="tx" /></div>}
         </div>
       </div>
       <div className="border border-line-soft bg-panel-2 p-4 lg:col-span-2">
@@ -246,7 +279,6 @@ function AttestationPanel({ activity, explorer }: { activity: Activity[]; explor
               <span className="mono text-muted">{c.name}</span>
             </div>
           ))}
-          {checks.length === 0 && <div className="text-[12px] text-faint">attestation recorded; re-run to capture verifier checks.</div>}
         </div>
       </div>
     </div>

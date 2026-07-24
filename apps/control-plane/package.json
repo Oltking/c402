@@ -11,6 +11,7 @@
   "dependencies": {
     "@c402/client": "workspace:*",
     "@c402/spec": "workspace:*",
+    "@c402/verify": "workspace:*",
     "@iexec-nox/handle": "0.1.0-beta.13",
     "@xyflow/react": "^12.3.5",
     "framer-motion": "^11.11.17",

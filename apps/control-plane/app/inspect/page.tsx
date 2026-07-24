@@ -8,9 +8,13 @@ type PaymentRequired = { accepts?: { network?: string; amount?: string; asset?: 
 type Decoded = { url: string; status: number; isC402: boolean; is402: boolean; computeRequired: ComputeRequired | null; paymentRequired: PaymentRequired | null; canPay: boolean; error?: string };
 type Paid = { ok: boolean; status: number; result: unknown; attestation: { standard: string; network: string; contract: string; tx?: string; decisionId?: string; commitment?: string } | null; verified: { valid: boolean; checks: { name: string; ok: boolean }[] } | null; error?: string };
 
+// Public server URLs if configured (a hosted deploy can point these at real endpoints);
+// otherwise the local demo servers.
+const CDE_URL = process.env.NEXT_PUBLIC_CDE_URL || "http://localhost:4021/v1/decide";
+const PAYROLL_URL = process.env.NEXT_PUBLIC_PAYROLL_URL || "http://localhost:4026/decide";
 const PRESETS = [
-  { label: "Treasury CDE", url: "http://localhost:4021/v1/decide", body: '{ "exposure": 6000, "signal": 50 }' },
-  { label: "Payroll", url: "http://localhost:4026/decide", body: '{ "budget": 100000, "requested": 5000 }' },
+  { label: "Treasury CDE", url: CDE_URL, body: '{ "exposure": 6000, "signal": 50 }' },
+  { label: "Payroll", url: PAYROLL_URL, body: '{ "budget": 100000, "requested": 5000 }' },
 ];
 
 export default function InspectPage() {
@@ -20,6 +24,13 @@ export default function InspectPage() {
   const [paid, setPaid] = useState<Paid | null>(null);
   const [busy, setBusy] = useState<"decode" | "pay" | null>(null);
   const [err, setErr] = useState<string | null>(null);
+
+  // Served from a non-localhost host but the target is a localhost URL → the demo servers
+  // aren't reachable from here. Show a friendly explainer instead of a raw fetch error.
+  const hostedButLocalUrl =
+    typeof window !== "undefined" &&
+    !/^(localhost|127\.0\.0\.1)/.test(window.location.hostname) &&
+    /localhost|127\.0\.0\.1/.test(url);
 
   async function decode() {
     setBusy("decode"); setErr(null); setDecoded(null); setPaid(null);
@@ -71,7 +82,21 @@ export default function InspectPage() {
           </div>
         </div>
 
-        {err && <div className="panel mt-4 border-rose p-3.5 text-[12.5px] text-rose">{err}</div>}
+        {/* On a hosted deploy the demo servers (localhost) aren't reachable — explain instead of erroring. */}
+        {hostedButLocalUrl && !decoded && (
+          <div className="panel mt-4 p-4 text-[12.5px] leading-relaxed text-muted">
+            <div className="mb-1 font-semibold text-text">Heads up — the demo servers run locally</div>
+            The <span className="font-mono">Treasury CDE</span> and <span className="font-mono">Payroll</span> presets point at
+            <span className="font-mono"> localhost</span>, which this hosted page can&apos;t reach. To try the inspector live,
+            clone the repo and run the c402 servers, then decode <span className="font-mono">localhost:4021/v1/decide</span> — or
+            paste any public c402 endpoint above. Meanwhile, everything already on-chain is live: see the
+            {" "}<a href="/app" className="text-accent hover:underline">treasury</a> and{" "}
+            <a href="/app/payroll" className="text-accent hover:underline">payroll</a> dashboards, or{" "}
+            <a href="/verify" className="text-accent hover:underline">verify a decision</a>.
+          </div>
+        )}
+
+        {err && !hostedButLocalUrl && <div className="panel mt-4 border-rose p-3.5 text-[12.5px] text-rose">{err}</div>}
 
         {/* Decoded headers */}
         {decoded && (
