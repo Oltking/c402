@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { Pulse, Chip, AddressPill, SectionTitle, short } from "@/components/ui";
-import { WalletButton } from "@/components/WalletButton";
+import { Shell } from "@/components/Shell";
 import { useWallet, isSepolia } from "@/lib/wallet";
 
 type SafeInfo = { address: string; owners: string[]; threshold: number; version: string };
@@ -50,20 +50,16 @@ export default function TreasuryPage() {
 
   return (
     <div>
-      <header className="sticky top-0 z-20 border-b border-line bg-panel/90 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-5 py-3.5">
-          <a href="/app" className="flex items-center gap-3">
-            <div className="grid h-9 w-9 place-items-center border border-line bg-panel">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3.2v5.3c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6.2L12 3z" stroke="#1d4ed8" strokeWidth="1.6" strokeLinejoin="round" /><path d="M9 12l2.2 2.2L15.5 10" stroke="#4338ca" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </div>
-            <div>
-              <div className="text-[15px] font-semibold tracking-tight text-text">xCAT <span className="font-normal text-faint">· Onboard your treasury</span></div>
-              <div className="text-[11px] text-faint">Connect your wallet, bring your own Safe - non-custodial</div>
-            </div>
-          </a>
-          <WalletButton />
+      <Shell />
+      <div className="border-b border-line bg-panel">
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2 px-5 py-3">
+          <div>
+            <div className="text-[15px] font-semibold tracking-tight text-text">Onboard your treasury <span className="font-normal text-faint">· xCAT</span></div>
+            <div className="text-[11px] text-faint">Connect your wallet, bring your own Safe - non-custodial</div>
+          </div>
+          <a href="/app" className="text-[12.5px] text-muted hover:text-accent">← back to treasury dashboard</a>
         </div>
-      </header>
+      </div>
 
       <main className="mx-auto max-w-4xl px-5 py-8">
         <div className="mb-6">
