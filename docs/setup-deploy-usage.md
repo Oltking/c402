@@ -15,7 +15,7 @@ protocol packages, both apps, and the control plane.
 ## 2. Install & configure
 
 ```bash
-git clone <repo> && cd xcat
+git clone <repo> && cd c402
 pnpm install
 cp .env.example .env
 ```
