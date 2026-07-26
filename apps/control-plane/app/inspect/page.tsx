@@ -82,17 +82,47 @@ export default function InspectPage() {
           </div>
         </div>
 
-        {/* On a hosted deploy the demo servers (localhost) aren't reachable — explain instead of erroring. */}
+        {/* On a hosted deploy the demo servers (localhost) aren't reachable — walk the user
+            through running one themselves instead of erroring. */}
         {hostedButLocalUrl && !decoded && (
-          <div className="panel mt-4 p-4 text-[12.5px] leading-relaxed text-muted">
-            <div className="mb-1 font-semibold text-text">Heads up — the demo servers run locally</div>
-            The <span className="font-mono">Treasury CDE</span> and <span className="font-mono">Payroll</span> presets point at
-            <span className="font-mono"> localhost</span>, which this hosted page can&apos;t reach. To try the inspector live,
-            clone the repo and run the c402 servers, then decode <span className="font-mono">localhost:4021/v1/decide</span> — or
-            paste any public c402 endpoint above. Meanwhile, everything already on-chain is live: see the
-            {" "}<a href="/app" className="text-accent hover:underline">treasury</a> and{" "}
-            <a href="/app/payroll" className="text-accent hover:underline">payroll</a> dashboards, or{" "}
-            <a href="/verify" className="text-accent hover:underline">verify a decision</a>.
+          <div className="panel mt-4 p-5 leading-relaxed">
+            <div className="text-[13.5px] font-semibold text-text">Run a c402 server, then decode it here</div>
+            <p className="mt-1.5 text-[12.5px] text-muted">
+              A c402 server does real confidential compute — it talks to the TEE and signs on-chain, so it runs on
+              your machine, not on this hosted page. The <span className="font-mono">localhost</span> presets point at that
+              server. Start one in ~2 minutes:
+            </p>
+
+            <ol className="mt-4 space-y-3">
+              <RunStep n={1} title="Clone and install">
+                <Cmd>git clone https://github.com/Oltking/c402.git && cd c402 && pnpm install</Cmd>
+              </RunStep>
+              <RunStep n={2} title="Add your Sepolia RPC + a test wallet key to .env">
+                <Cmd>cp .env.example .env   # then set SEPOLIA_RPC_URL and SEPOLIA_PRIVATE_KEY</Cmd>
+                <p className="mt-1.5 text-[11.5px] text-faint">Use a throwaway wallet holding a little Sepolia USDC. Never a real key.</p>
+              </RunStep>
+              <RunStep n={3} title="Start the treasury c402 server">
+                <Cmd>pnpm --filter @c402/cde-api start   # serves http://localhost:4021/v1/decide</Cmd>
+                <p className="mt-1.5 text-[11.5px] text-faint">For payroll instead: <span className="font-mono">pnpm --filter @c402/payroll start</span> (port 4026).</p>
+              </RunStep>
+              <RunStep n={4} title="Decode it — here, or from your terminal">
+                <p className="mb-1.5 text-[12px] text-muted">
+                  Open this page locally at <span className="font-mono">localhost:3000/inspect</span> and hit
+                  <span className="font-medium text-text"> Decode 402</span> — or use the CLI, no browser needed:
+                </p>
+                <Cmd>npx @c402/cli inspect http://localhost:4021/v1/decide</Cmd>
+                <Cmd>npx @c402/cli call http://localhost:4021/v1/decide --body {"'{ \"exposure\": 6000, \"signal\": 50 }'"}</Cmd>
+              </RunStep>
+            </ol>
+
+            <p className="mt-4 border-t border-line-soft pt-3 text-[12px] text-muted">
+              Already have a public c402 endpoint? Paste it above and it&apos;ll decode right here. Meanwhile everything
+              already on-chain is live: the{" "}
+              <a href="/app" className="text-accent hover:underline">treasury</a> and{" "}
+              <a href="/app/payroll" className="text-accent hover:underline">payroll</a> dashboards, or{" "}
+              <a href="/verify" className="text-accent hover:underline">verify a past decision</a>. Full guide in the{" "}
+              <a href="/docs" className="text-accent hover:underline">docs</a>.
+            </p>
           </div>
         )}
 
@@ -205,3 +235,20 @@ function Field({ k, v, mono, link }: { k: string; v: string; mono?: boolean; lin
   );
 }
 function short(a = "") { return a.length > 12 ? `${a.slice(0, 7)}…${a.slice(-4)}` : a; }
+
+function RunStep({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+  return (
+    <li className="flex gap-3">
+      <span className="grid h-6 w-6 shrink-0 place-items-center border border-line bg-panel-2 text-[12px] font-semibold text-muted">{n}</span>
+      <div className="min-w-0 flex-1">
+        <div className="text-[12.5px] font-medium text-text">{title}</div>
+        <div className="mt-1.5 space-y-1.5">{children}</div>
+      </div>
+    </li>
+  );
+}
+function Cmd({ children }: { children: React.ReactNode }) {
+  return (
+    <pre className="overflow-x-auto border border-line-soft bg-panel-2 px-3 py-2 font-mono text-[11.5px] leading-relaxed text-text">{children}</pre>
+  );
+}
