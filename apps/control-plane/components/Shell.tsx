@@ -52,7 +52,7 @@ export function Shell({ children, wide = false }: { children?: React.ReactNode; 
 
           <div className="flex items-center gap-2">
             <WalletButton />
-            {/* Hamburger — mobile only */}
+            {/* Hamburger - mobile only */}
             <button
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}

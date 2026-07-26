@@ -39,14 +39,14 @@ Built for the iExec WTF Hackathon (Summer Edition). All code written during the 
 
 ## Live demo
 
-**🌐 https://use-c402.vercel.app** — reads live from Ethereum Sepolia, no mock data.
+**🌐 https://use-c402.vercel.app** - reads live from Ethereum Sepolia, no mock data.
 
-- **`/`** — the protocol, the two headers, the code
-- **`/app`** — Confidential Treasury dashboard (live decisions, on-chain attestation verification)
-- **`/app/payroll`** — Confidential Payroll dashboard
-- **`/inspect`** — decode any c402 endpoint's 402 handshake
-- **`/verify`** — re-verify any decision's commitment on-chain
-- **`/protocol`** · **`/developers`** — the spec and the developer guide
+- **`/`** - the protocol, the two headers, the code
+- **`/app`** - Confidential Treasury dashboard (live decisions, on-chain attestation verification)
+- **`/app/payroll`** - Confidential Payroll dashboard
+- **`/inspect`** - decode any c402 endpoint's 402 handshake
+- **`/verify`** - re-verify any decision's commitment on-chain
+- **`/protocol`** · **`/developers`** - the spec and the developer guide
 
 > Install & run it yourself: [`docs/setup-deploy-usage.md`](docs/setup-deploy-usage.md) ·
 > deploy your own copy: [`docs/vercel-deploy.md`](docs/vercel-deploy.md).
@@ -112,6 +112,43 @@ packages/
   cli/                xcat CLI (status / market / run / verify / deploy)
   adapters/           SafeAdapter + UniswapAdapter (unmodified protocols)
 ```
+
+## Two ways to use c402
+
+There are no accounts and no API keys - you authenticate by paying. Pick the path that fits you:
+
+| | **Path 1 - Consume** | **Path 2 - Build your own** |
+|---|---|---|
+| You want to | pay a confidential endpoint and get + verify the private result | run your own confidential service others pay |
+| You need | a wallet + a little Sepolia USDC | a wallet, a Sepolia RPC, and to deploy your own engine |
+| Contracts to deploy | none - reuse what's already live | your own CDE + DecisionRegistry |
+| Server to run | none - call a live endpoint | your c402 server |
+
+**Path 1 (start here)** - bring a wallet with a little Sepolia USDC (free from a faucet) and call any live c402 endpoint:
+
+```bash
+# from a clone (pnpm install first); the `c402` bin is linked in the workspace
+pnpm exec c402 inspect <endpoint-url>                # decode the 402 (no wallet needed)
+pnpm exec c402 call <endpoint-url> \
+  --key $C402_KEY --rpc $SEPOLIA_RPC_URL \
+  --body '{"exposure":6000,"signal":50}'             # pay, get the attested result, verify on-chain
+```
+
+Or use the [inspector](https://use-c402.vercel.app/inspect) in the browser - no clone needed.
+
+**Path 2** - deploy your own confidential engine, then run and (optionally) host your server:
+
+```bash
+pnpm run deploy:own                       # build Nox contracts + deploy your CDE + DecisionRegistry
+# copy the printed CDE_ADDRESS / DECISION_REGISTRY_ADDRESS into .env, then:
+pnpm --filter @c402/facilitator start     # relays payment on-chain (port 4022)
+pnpm --filter @c402/cde-api start          # your c402 endpoint (port 4021)
+```
+
+To host it publicly for anyone to test, deploy the included [`render.yaml`](render.yaml) blueprint (one always-on
+service runs the facilitator + server via `scripts/start-public-endpoint.ts`, with per-IP rate limiting, a daily cap,
+a low-gas graceful 503, and a GitHub Actions keep-alive on `/health`). Use a **throwaway faucet wallet only**, and
+never put the key on Vercel.
 
 ## Quickstart
 

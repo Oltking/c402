@@ -1,8 +1,8 @@
 {
-  "name": "xcat",
+  "name": "c402",
   "version": "0.0.0",
   "private": true,
-  "description": "xCAT - Confidential Autonomous Treasury for Safe (iExec Nox + x402 + Uniswap) on Ethereum Sepolia",
+  "description": "c402 - an open confidential-compute protocol on top of x402 (iExec Nox TEEs on Ethereum Sepolia). xCAT and confidential payroll are the first apps.",
   "type": "module",
   "packageManager": "pnpm@10.34.5",
   "engines": {
@@ -10,6 +10,8 @@
   },
   "scripts": {
     "contracts:test": "pnpm --filter @c402/contracts test",
-    "contracts:build": "pnpm --filter @c402/contracts build"
+    "contracts:build": "pnpm --filter @c402/contracts build",
+    "deploy:own": "pnpm --filter @c402/contracts build && pnpm --filter @c402/contracts deploy:sepolia",
+    "start:endpoint": "node scripts/start-public-endpoint.ts"
   }
 }

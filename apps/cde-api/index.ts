@@ -20,13 +20,14 @@ import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
 import { createViemHandleClient, NotYetComputedHandleError } from "@iexec-nox/handle";
 import { c402 } from "@c402/server";
+import { rateLimit, dailyCap, gasGuard } from "./guards.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 loadEnv({ path: resolve(__dirname, "../../.env") });
 
 const NETWORK = "eip155:11155111";
 const EXPLORER = "https://sepolia.etherscan.io";
-const PORT = Number(process.env.CDE_API_PORT ?? 4021);
+const PORT = Number(process.env.PORT ?? process.env.CDE_API_PORT ?? 4021);
 const RPC = requireEnv("SEPOLIA_RPC_URL");
 const USDC = requireEnv("USDC_ADDRESS") as Address;
 const CDE_ADDRESS = requireEnv("CDE_ADDRESS") as Address;
@@ -121,7 +122,18 @@ async function runConfidentialDecision(exposure: bigint, signal: bigint) {
 }
 
 const app = express();
+app.set("trust proxy", true); // behind Render/any proxy: read the real client IP for rate limiting
 app.use(express.json());
+
+// Public-endpoint guardrails (all OFF unless set; the hosted box enables them).
+const RATE_LIMIT_PER_MIN = Number(process.env.RATE_LIMIT_PER_MIN ?? 0);
+const DAILY_CALL_CAP = Number(process.env.DAILY_CALL_CAP ?? 0);
+const MIN_GAS_WEI = BigInt(process.env.MIN_GAS_WEI ?? 0);
+const publicGuards = [
+  rateLimit(RATE_LIMIT_PER_MIN),
+  dailyCap(DAILY_CALL_CAP),
+  gasGuard({ getBalanceWei: () => publicClient.getBalance({ address: account.address }), minWei: MIN_GAS_WEI }),
+];
 
 // Public, unpaid metadata.
 app.get("/health", (_req, res) => res.json({ ok: true, network: NETWORK, cde: CDE_ADDRESS, price: PRICE, asset: USDC }));
@@ -131,6 +143,7 @@ app.get("/health", (_req, res) => res.json({ ok: true, network: NETWORK, cde: CD
 // we only supply `compute` - the actual confidential decision.
 app.post(
   "/v1/decide",
+  ...publicGuards,
   c402({
     price: PRICE,
     token: USDC,

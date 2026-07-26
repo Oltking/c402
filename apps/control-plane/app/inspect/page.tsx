@@ -82,13 +82,13 @@ export default function InspectPage() {
           </div>
         </div>
 
-        {/* On a hosted deploy the demo servers (localhost) aren't reachable — walk the user
+        {/* On a hosted deploy the demo servers (localhost) aren't reachable - walk the user
             through running one themselves instead of erroring. */}
         {hostedButLocalUrl && !decoded && (
           <div className="panel mt-4 p-5 leading-relaxed">
             <div className="text-[13.5px] font-semibold text-text">Run a c402 server, then decode it here</div>
             <p className="mt-1.5 text-[12.5px] text-muted">
-              A c402 server does real confidential compute — it talks to the TEE and signs on-chain, so it runs on
+              A c402 server does real confidential compute - it talks to the TEE and signs on-chain, so it runs on
               your machine, not on this hosted page. The <span className="font-mono">localhost</span> presets point at that
               server. Start one in ~2 minutes:
             </p>
@@ -105,13 +105,13 @@ export default function InspectPage() {
                 <Cmd>pnpm --filter @c402/cde-api start   # serves http://localhost:4021/v1/decide</Cmd>
                 <p className="mt-1.5 text-[11.5px] text-faint">For payroll instead: <span className="font-mono">pnpm --filter @c402/payroll start</span> (port 4026).</p>
               </RunStep>
-              <RunStep n={4} title="Decode it — here, or from your terminal">
+              <RunStep n={4} title="Decode it - here, or from your terminal">
                 <p className="mb-1.5 text-[12px] text-muted">
                   Open this page locally at <span className="font-mono">localhost:3000/inspect</span> and hit
-                  <span className="font-medium text-text"> Decode 402</span> — or use the CLI, no browser needed:
+                  <span className="font-medium text-text"> Decode 402</span> - or use the CLI, no browser needed:
                 </p>
-                <Cmd>npx @c402/cli inspect http://localhost:4021/v1/decide</Cmd>
-                <Cmd>npx @c402/cli call http://localhost:4021/v1/decide --body {"'{ \"exposure\": 6000, \"signal\": 50 }'"}</Cmd>
+                <Cmd>pnpm exec c402 inspect http://localhost:4021/v1/decide</Cmd>
+                <Cmd>pnpm exec c402 call http://localhost:4021/v1/decide --body {"'{ \"exposure\": 6000, \"signal\": 50 }'"}</Cmd>
               </RunStep>
             </ol>
 

@@ -1,0 +1,46 @@
+# Render blueprint for the PUBLIC hosted c402 endpoint.
+# One web service runs both the facilitator (internal) and the CDE API (public) via
+# scripts/start-public-endpoint.ts. Deploy: push this repo, then in Render pick "New +" ->
+# "Blueprint" and select it. Fill the two secrets (SEPOLIA_RPC_URL, SEPOLIA_PRIVATE_KEY)
+# in the Render dashboard - they are NEVER committed and NEVER put on Vercel.
+services:
+  - type: web
+    name: c402-endpoint
+    runtime: node
+    plan: free
+    region: oregon
+    autoDeploy: true
+    healthCheckPath: /health
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @c402/contracts build
+    startCommand: node scripts/start-public-endpoint.ts
+    envVars:
+      # ---- Node (native .ts execution needs a version that strips types by default) ----
+      - key: NODE_VERSION
+        value: "24"
+      # ---- Secrets: set these in the Render dashboard, never here ----
+      - key: SEPOLIA_RPC_URL
+        sync: false
+      - key: SEPOLIA_PRIVATE_KEY   # throwaway faucet wallet ONLY (holds a little Sepolia USDC + gas)
+        sync: false
+      # ---- Public, already-deployed Sepolia addresses ----
+      - key: USDC_ADDRESS
+        value: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+      - key: CDE_ADDRESS
+        value: "0xfff6e422de60d58573da667a45a66f17b705a237"
+      - key: DECISION_REGISTRY_ADDRESS
+        value: "0x1324b5a3eaf844d41235f58b473d78e368e8a076"
+      - key: PAYMENT_METER_ADDRESS
+        value: "0xc5718005f2916354103d5651d17f4305f6311230"
+      - key: NOX_COMPUTE_ADDRESS
+        value: "0x24ef36ec5b626d7dcd09a98f3083c2758f0f77bf"
+      - key: X402_NETWORK
+        value: "eip155:11155111"
+      - key: CDE_PRICE_USDC
+        value: "0.01"
+      # ---- Public-endpoint guardrails (protect the throwaway wallet) ----
+      - key: RATE_LIMIT_PER_MIN
+        value: "3"
+      - key: DAILY_CALL_CAP
+        value: "200"
+      - key: MIN_GAS_WEI          # 0.002 ETH - below this, /v1/decide returns a graceful 503
+        value: "2000000000000000"

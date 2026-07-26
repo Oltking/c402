@@ -8,6 +8,7 @@ const NAV: { group: string; items: { id: string; label: string }[] }[] = [
     group: "Getting started",
     items: [
       { id: "introduction", label: "Introduction" },
+      { id: "two-ways", label: "Two ways to use c402" },
       { id: "installation", label: "Installation" },
       { id: "quickstart", label: "Quickstart" },
     ],
@@ -95,19 +96,50 @@ export default function DocsPage() {
           <div className="label">Documentation</div>
           <h1 className="mt-2 text-[34px] font-semibold tracking-tight text-text">c402 developer docs</h1>
           <p className="mt-3 max-w-2xl text-[14.5px] leading-relaxed text-muted">
-            Everything to build, call, and verify confidential compute over x402. No accounts, no API keys —
+            Everything to build, call, and verify confidential compute over x402. No accounts, no API keys -
             bring a wallet.
           </p>
 
           {/* ---- Getting started ---- */}
           <Section id="introduction" title="Introduction">
             <P><B>c402</B> is a confidential compute layer that sits on top of x402 the same way x402 sits on top of HTTP.
-              It lets any server publish a <B>TEE-attested confidential endpoint</B> that any client can pay for and verify —
+              It lets any server publish a <B>TEE-attested confidential endpoint</B> that any client can pay for and verify -
               adding exactly <B>two HTTP headers</B> on top of x402.</P>
             <Table rows={[["HTTP", "give me a resource", "request / response"], ["x402", "pay to access a resource", "402 + PAYMENT-REQUIRED"], ["c402", "pay to access a private thought", "x402 + 2 headers"]]}
               head={["Layer", "Question", "Mechanism"]} />
             <P>The confidential computation runs inside an <B>iExec Nox</B> (Intel TDX) TEE. Inputs, state, and reasoning stay
               encrypted; the fact that an attested decision happened stays publicly verifiable on-chain.</P>
+          </Section>
+
+          <Section id="two-ways" title="Two ways to use c402">
+            <P>Before you install anything, figure out which of these you are. They need completely different setup -
+              most people start as a <B>consumer</B>.</P>
+            <Table
+              head={["", "Path 1 - Consume", "Path 2 - Build your own"]}
+              rows={[
+                ["You want to", "pay a confidential endpoint and get + verify the private result", "run your own confidential service others pay"]  ,
+                ["You need", "a wallet + a little Sepolia USDC", "a wallet, a Sepolia RPC, and to deploy your own engine"],
+                ["Contracts to deploy", "none - reuse what's already live", "your own CDE + DecisionRegistry"],
+                ["Server to run", "none - call a live endpoint", "your c402 server (cde-api-style)"],
+              ]}
+            />
+
+            <P className="!mt-6"><B>Path 1 - Consume (start here).</B> There are no accounts and no API keys: you authenticate by
+              paying. Bring a wallet with a little Sepolia USDC (free from a faucet), point it at a live c402 endpoint, and you get
+              the attested result back - re-verifiable against the already-deployed registry. Nothing to deploy.</P>
+            <Code>{`# decode the 402 handshake (no wallet needed)
+pnpm exec c402 inspect <endpoint-url>
+
+# pay with your wallet, get the attested result + on-chain verification
+pnpm exec c402 call <endpoint-url> --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
+  --body '{"exposure":6000,"signal":50}'`}</Code>
+            <Callout>Prefer clicking? The <A href="/inspect">inspector</A> does decode → pay → verify in the browser. If no
+              public endpoint is running yet, it walks you through starting one locally.</Callout>
+
+            <P className="!mt-6"><B>Path 2 - Build your own.</B> To become a provider you deploy your <B>own</B> CDE + DecisionRegistry
+              (the on-chain decrypt permission is tied to your runtime key, so you can't reuse someone else's), then run your c402
+              server pointing at those addresses. One command scaffolds the contracts - see
+              {" "}<A href="#deploy">Self-host &amp; deploy</A>.</P>
           </Section>
 
           <Section id="installation" title="Installation">
@@ -116,7 +148,9 @@ export default function DocsPage() {
             <Code>{`pnpm add @c402/server   # build a confidential endpoint
 pnpm add @c402/client   # call one from an agent
 pnpm add @c402/verify   # verify an attestation
-pnpm add -g @c402/cli    # the terminal tool: c402 inspect|call|verify`}</Code>
+
+# the terminal tool (c402 inspect|call|verify) ships in the repo - from a clone:
+pnpm install && pnpm exec c402 --help`}</Code>
             <P>To run the full reference stack (facilitator + treasury/payroll servers + control plane) from a clone,
               follow <A href="https://github.com/Oltking/c402/blob/main/docs/setup-deploy-usage.md">docs/setup-deploy-usage.md</A>.</P>
           </Section>
@@ -124,10 +158,10 @@ pnpm add -g @c402/cli    # the terminal tool: c402 inspect|call|verify`}</Code>
           <Section id="quickstart" title="Quickstart">
             <P>Call a live c402 endpoint from the terminal in one command (needs a wallet key with a little Sepolia USDC):</P>
             <Code>{`# 1. decode a c402 endpoint's 402 handshake (no wallet needed)
-c402 inspect http://localhost:4021/v1/decide
+pnpm exec c402 inspect http://localhost:4021/v1/decide
 
 # 2. pay it with your wallet, get the attested result + on-chain verification
-c402 call http://localhost:4021/v1/decide \\
+pnpm exec c402 call http://localhost:4021/v1/decide \\
   --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
   --body '{"exposure":6000,"signal":50}'`}</Code>
             <Callout>Prefer clicking? The <A href="/inspect">inspector</A> does decode → pay → verify in the browser.</Callout>
@@ -137,31 +171,31 @@ c402 call http://localhost:4021/v1/decide \\
           <Section id="two-headers" title="The two headers">
             <P>c402 is intentionally minimal. On an unpaid request a c402 server returns <B>HTTP 402</B> with both:</P>
             <Ul items={[
-              <><Mono>PAYMENT-REQUIRED</Mono> — the standard x402 header (price, token, network).</>,
-              <><Mono>Compute-Required</Mono> — the confidential computation: TEE standard, compute contract, input/output schema.</>,
+              <><Mono>PAYMENT-REQUIRED</Mono> - the standard x402 header (price, token, network).</>,
+              <><Mono>Compute-Required</Mono> - the confidential computation: TEE standard, compute contract, input/output schema.</>,
             ]} />
             <P>On a paid request it returns <B>200</B> with the x402 <Mono>PAYMENT-RESPONSE</Mono> and a c402 <Mono>X-Attestation</Mono>.
-              Everything else — what the computation means — is up to the server.</P>
+              Everything else - what the computation means - is up to the server.</P>
           </Section>
 
           <Section id="attestation" title="Attestation & verification">
             <P>The <Mono>X-Attestation</Mono> is not a trust-us blob. Every field is a real, independently re-verifiable on-chain
               artifact: <Mono>decisionId</Mono>, <Mono>commitment</Mono>, <Mono>registry</Mono>, <Mono>tx</Mono>, output handles.
-              A verifier re-reads the commitment from chain and confirms it matches — no cooperation from the server.</P>
+              A verifier re-reads the commitment from chain and confirms it matches - no cooperation from the server.</P>
             <P>Verification proves a confidential decision <B>happened and matches its commitment</B>. It never reveals the private
-              result — that stays ACL-encrypted to the authorized runtime.</P>
+              result - that stays ACL-encrypted to the authorized runtime.</P>
           </Section>
 
           <Section id="confidentiality" title="Confidentiality model">
             <P>Nox provides <B>confidentiality of values, not anonymity of addresses.</B> Calls and addresses stay public; the
-              values — inputs, encrypted state, and the decision itself — are encrypted. Never claim anonymity.</P>
+              values - inputs, encrypted state, and the decision itself - are encrypted. Never claim anonymity.</P>
           </Section>
 
           <Section id="no-keys" title="No accounts, no API keys">
-            <P>c402 inherits x402's model: <B>no signup, no accounts, no API keys.</B> The caller authenticates by <B>paying</B> —
+            <P>c402 inherits x402's model: <B>no signup, no accounts, no API keys.</B> The caller authenticates by <B>paying</B> -
               signing an EIP-3009 authorization with their wallet. The <Mono>--key</Mono> a client uses is a <B>wallet private key</B>,
-              not an issued token. The wallet needs the settlement token (e.g. Sepolia USDC), <B>not gas</B> — the facilitator relays.</P>
-            <Callout tone="amber">Use a dedicated, funded test wallet for automation — never a main key in a shell env.</Callout>
+              not an issued token. The wallet needs the settlement token (e.g. Sepolia USDC), <B>not gas</B> - the facilitator relays.</P>
+            <Callout tone="amber">Use a dedicated, funded test wallet for automation - never a main key in a shell env.</Callout>
           </Section>
 
           {/* ---- Packages ---- */}
@@ -191,7 +225,7 @@ app.post("/decide", c402({
 
           <Section id="client" title="@c402/client">
             <P>Call a c402 endpoint like a normal <Mono>fetch</Mono>. It reads <Mono>Compute-Required</Mono>, pays via x402, reads
-              <Mono> X-Attestation</Mono>, and re-verifies on-chain — invisibly.</P>
+              <Mono> X-Attestation</Mono>, and re-verifies on-chain - invisibly.</P>
             <Code>{`import { privateKeyToAccount } from "viem/accounts";
 import { c402Fetch } from "@c402/client";
 
@@ -208,12 +242,12 @@ res.verified.valid; // re-checked on-chain`}</Code>
           </Section>
 
           <Section id="verify" title="@c402/verify">
-            <P>A standalone verifier anyone can run — re-reads the on-chain commitment and confirms it matches.</P>
+            <P>A standalone verifier anyone can run - re-reads the on-chain commitment and confirms it matches.</P>
             <Code>{`import { verifyAttestation } from "@c402/verify";
 
 const result = await verifyAttestation(attestation, { rpcUrl });
 result.valid;   // true / false
-result.checks;  // [{ name, ok, detail }] — registry-has-decision, commitment-matches, …`}</Code>
+result.checks;  // [{ name, ok, detail }] - registry-has-decision, commitment-matches, …`}</Code>
           </Section>
 
           <Section id="cli" title="@c402/cli">
@@ -228,12 +262,12 @@ result.checks;  // [{ name, ok, detail }] — registry-has-decision, commitment-
           {/* ---- Guides ---- */}
           <Section id="build-server" title="Guide: build a c402 server">
             <P>A c402 app is a normal Express server with one <Mono>c402(&#123;…&#125;)</Mono> endpoint. The path is yours to choose
-              (<Mono>/decide</Mono>, <Mono>/score</Mono>, anything) — clients discover price and schema from the headers, not the URL.
+              (<Mono>/decide</Mono>, <Mono>/score</Mono>, anything) - clients discover price and schema from the headers, not the URL.
               See <A href="https://github.com/Oltking/c402/tree/main/examples/hello-c402">examples/hello-c402</A> for a full server + client.</P>
           </Section>
 
           <Section id="call-agent" title="Guide: call it from an agent">
-            <P>An agent is a c402 client with a funded wallet. The request <B>body is app-defined</B> — the treasury endpoint wants
+            <P>An agent is a c402 client with a funded wallet. The request <B>body is app-defined</B> - the treasury endpoint wants
               <Mono> &#123; exposure, signal &#125;</Mono>, payroll wants <Mono> &#123; budget, requested &#125;</Mono>. Run
               <Mono> c402 inspect</Mono> to see the declared schema, then send the app's documented JSON.</P>
           </Section>
@@ -241,7 +275,31 @@ result.checks;  // [{ name, ok, detail }] — registry-has-decision, commitment-
           <Section id="deploy" title="Guide: self-host & deploy">
             <P>The reference stack: a self-hosted <B>x402 facilitator</B> for <Mono>eip155:11155111</Mono>, the c402 servers, and the
               Next.js control plane. The frontend is read-only (no private key) and deploys to Vercel; the servers sign transactions and
-              need a funded key. Full walkthrough: <A href="https://github.com/Oltking/c402/blob/main/docs/setup-deploy-usage.md">setup-deploy-usage.md</A>
+              need a funded key that must live on the server host - <B>never on Vercel, never committed</B>.</P>
+
+            <P className="!mt-5"><B>1. Deploy your own confidential engine.</B> One command builds the Nox contracts and deploys your
+              own CDE + DecisionRegistry to Sepolia (needs <Mono>SEPOLIA_RPC_URL</Mono> + <Mono>SEPOLIA_PRIVATE_KEY</Mono> in <Mono>.env</Mono>):</P>
+            <Code>{`pnpm run deploy:own
+# prints the deployed addresses (also written to docs/deployments.sepolia.json).
+# copy them into .env:
+#   CDE_ADDRESS=0x...
+#   DECISION_REGISTRY_ADDRESS=0x...`}</Code>
+
+            <P className="!mt-5"><B>2. Run your c402 server.</B> Point it at your addresses and start the facilitator + server:</P>
+            <Code>{`pnpm --filter @c402/facilitator start   # relays payment on-chain (port 4022)
+pnpm --filter @c402/cde-api start        # your c402 endpoint (port 4021)`}</Code>
+
+            <P className="!mt-5"><B>3. Host it publicly (optional).</B> To let anyone test your endpoint, deploy the facilitator + server
+              as one always-on service. The repo ships a <Mono>render.yaml</Mono> blueprint and a
+              {" "}<Mono>scripts/start-public-endpoint.ts</Mono> launcher that runs both in one Render web service, plus public-endpoint
+              guardrails (per-IP rate limit, daily cap, and a low-gas graceful 503) so a throwaway wallet stays funded. A GitHub Actions
+              keep-alive pings <Mono>/health</Mono> so the free tier doesn't sleep. Set your public URL as
+              {" "}<Mono>NEXT_PUBLIC_CDE_URL</Mono> on Vercel and the inspector + CLI will hit it live.</P>
+
+            <Callout tone="amber">The public endpoint holds a <B>throwaway faucet wallet only</B> - a few dollars of Sepolia USDC and a
+              little gas. Never put a real key on a public server, and never on Vercel.</Callout>
+
+            <P className="!mt-5">Full walkthroughs: <A href="https://github.com/Oltking/c402/blob/main/docs/setup-deploy-usage.md">setup-deploy-usage.md</A>
               {" "}and <A href="https://github.com/Oltking/c402/blob/main/docs/vercel-deploy.md">vercel-deploy.md</A>.</P>
           </Section>
 
