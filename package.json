@@ -12,6 +12,11 @@
     "contracts:test": "pnpm --filter @c402/contracts test",
     "contracts:build": "pnpm --filter @c402/contracts build",
     "deploy:own": "pnpm --filter @c402/contracts build && pnpm --filter @c402/contracts deploy:sepolia",
-    "start:endpoint": "node scripts/start-public-endpoint.ts"
+    "start:endpoint": "node scripts/start-public-endpoint.ts",
+    "build:packages": "pnpm -r --filter=\"./packages/c402-*\" run build",
+    "release": "pnpm -r --filter=\"./packages/c402-*\" publish --access public --no-git-checks"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }

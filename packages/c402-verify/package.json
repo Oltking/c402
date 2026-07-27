@@ -2,14 +2,41 @@
   "name": "@c402/verify",
   "version": "0.1.0",
   "description": "Standalone c402 attestation verifier. Re-reads the on-chain decision commitment and confirms the TEE computation actually happened.",
+  "license": "MIT",
+  "author": "Oltking",
+  "homepage": "https://use-c402.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oltking/c402.git",
+    "directory": "packages/c402-verify"
+  },
+  "keywords": ["c402", "x402", "confidential-compute", "tee", "iexec", "attestation", "verify", "ethereum"],
   "type": "module",
   "main": "src/index.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "tsup"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
+  },
   "dependencies": {
     "@c402/spec": "workspace:*",
     "viem": "^2.46.3"
   },
   "devDependencies": {
     "@types/node": "^22.11.0",
+    "tsup": "^8.3.5",
     "typescript": "~5.8.0"
   }
 }

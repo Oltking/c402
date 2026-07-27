@@ -2,9 +2,29 @@
   "name": "@c402/cli",
   "version": "0.1.0",
   "description": "Call any c402 endpoint from the terminal: inspect the 402 handshake, pay with your wallet, and verify the TEE attestation on-chain.",
+  "license": "MIT",
+  "author": "Oltking",
+  "homepage": "https://use-c402.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oltking/c402.git",
+    "directory": "packages/c402-cli"
+  },
+  "keywords": ["c402", "x402", "confidential-compute", "tee", "iexec", "attestation", "cli", "ethereum"],
   "type": "module",
   "bin": {
     "c402": "src/index.ts"
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "tsup"
+  },
+  "publishConfig": {
+    "access": "public",
+    "bin": {
+      "c402": "dist/index.js"
+    }
   },
   "dependencies": {
     "@c402/client": "workspace:*",
@@ -17,6 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.11.0",
+    "tsup": "^8.3.5",
     "typescript": "~5.8.0"
   }
 }
