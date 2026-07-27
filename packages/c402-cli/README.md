@@ -5,10 +5,14 @@ endpoints or anyone else's. Inspect the 402 handshake, pay with your wallet, and
 attestation on-chain.
 
 ```bash
-# from the repo (no build step - Node runs the .ts directly):
-node packages/c402-cli/src/index.ts <command>
-# or, once linked as a bin, simply:  c402 <command>
+# zero install:
+npx @c402/cli <command>
+# or install globally, then use `c402` directly:
+npm i -g @c402/cli
+c402 <command>
 ```
+
+The examples below use the bare `c402` form (global install); prefix `npx @c402/cli` if you skipped it.
 
 ## Commands
 

@@ -127,14 +127,14 @@ There are no accounts and no API keys - you authenticate by paying. Pick the pat
 **Path 1 (start here)** - bring a wallet with a little Sepolia USDC (free from a faucet) and call any live c402 endpoint:
 
 ```bash
-# from a clone (pnpm install first); the `c402` bin is linked in the workspace
-pnpm exec c402 inspect <endpoint-url>                # decode the 402 (no wallet needed)
-pnpm exec c402 call <endpoint-url> \
+# the CLI is on npm - no clone needed
+npx @c402/cli inspect <endpoint-url>                 # decode the 402 (no wallet needed)
+npx @c402/cli call <endpoint-url> \
   --key $C402_KEY --rpc $SEPOLIA_RPC_URL \
   --body '{"exposure":6000,"signal":50}'             # pay, get the attested result, verify on-chain
 ```
 
-Or use the [inspector](https://use-c402.vercel.app/inspect) in the browser - no clone needed.
+Or use the [inspector](https://use-c402.vercel.app/inspect) in the browser - no install needed.
 
 **Path 2** - deploy your own confidential engine, then run and (optionally) host your server:
 

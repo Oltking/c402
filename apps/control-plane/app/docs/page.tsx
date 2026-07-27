@@ -128,10 +128,10 @@ export default function DocsPage() {
               paying. Bring a wallet with a little Sepolia USDC (free from a faucet), point it at a live c402 endpoint, and you get
               the attested result back - re-verifiable against the already-deployed registry. Nothing to deploy.</P>
             <Code>{`# decode the 402 handshake (no wallet needed)
-pnpm exec c402 inspect <endpoint-url>
+npx @c402/cli inspect <endpoint-url>
 
 # pay with your wallet, get the attested result + on-chain verification
-pnpm exec c402 call <endpoint-url> --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
+npx @c402/cli call <endpoint-url> --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
   --body '{"exposure":6000,"signal":50}'`}</Code>
             <Callout>Prefer clicking? The <A href="/inspect">inspector</A> does decode → pay → verify in the browser. If no
               public endpoint is running yet, it walks you through starting one locally.</Callout>
@@ -149,8 +149,8 @@ pnpm exec c402 call <endpoint-url> --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
 pnpm add @c402/client   # call one from an agent
 pnpm add @c402/verify   # verify an attestation
 
-# the terminal tool (c402 inspect|call|verify) ships in the repo - from a clone:
-pnpm install && pnpm exec c402 --help`}</Code>
+# the terminal tool - no install needed
+npx @c402/cli --help`}</Code>
             <P>To run the full reference stack (facilitator + treasury/payroll servers + control plane) from a clone,
               follow <A href="https://github.com/Oltking/c402/blob/main/docs/setup-deploy-usage.md">docs/setup-deploy-usage.md</A>.</P>
           </Section>
@@ -158,10 +158,10 @@ pnpm install && pnpm exec c402 --help`}</Code>
           <Section id="quickstart" title="Quickstart">
             <P>Call a live c402 endpoint from the terminal in one command (needs a wallet key with a little Sepolia USDC):</P>
             <Code>{`# 1. decode a c402 endpoint's 402 handshake (no wallet needed)
-pnpm exec c402 inspect http://localhost:4021/v1/decide
+npx @c402/cli inspect http://localhost:4021/v1/decide
 
 # 2. pay it with your wallet, get the attested result + on-chain verification
-pnpm exec c402 call http://localhost:4021/v1/decide \\
+npx @c402/cli call http://localhost:4021/v1/decide \\
   --key $C402_KEY --rpc $SEPOLIA_RPC_URL \\
   --body '{"exposure":6000,"signal":50}'`}</Code>
             <Callout>Prefer clicking? The <A href="/inspect">inspector</A> does decode → pay → verify in the browser.</Callout>

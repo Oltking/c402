@@ -110,8 +110,8 @@ export default function InspectPage() {
                   Open this page locally at <span className="font-mono">localhost:3000/inspect</span> and hit
                   <span className="font-medium text-text"> Decode 402</span> - or use the CLI, no browser needed:
                 </p>
-                <Cmd>pnpm exec c402 inspect http://localhost:4021/v1/decide</Cmd>
-                <Cmd>pnpm exec c402 call http://localhost:4021/v1/decide --body {"'{ \"exposure\": 6000, \"signal\": 50 }'"}</Cmd>
+                <Cmd>npx @c402/cli inspect http://localhost:4021/v1/decide</Cmd>
+                <Cmd>npx @c402/cli call http://localhost:4021/v1/decide --body {"'{ \"exposure\": 6000, \"signal\": 50 }'"}</Cmd>
               </RunStep>
             </ol>
 

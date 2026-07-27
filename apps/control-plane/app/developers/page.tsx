@@ -18,7 +18,9 @@ export default function DevelopersPage() {
         {/* Quickstart */}
         <div className="panel mt-8 overflow-hidden p-0">
           <div className="border-b border-line-soft bg-panel-2 px-4 py-2 font-mono text-[11.5px] text-muted">terminal · @c402/cli</div>
-          <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7] text-text">{`# 1. look at an endpoint - no wallet needed
+          <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7] text-text">{`# install: npm i -g @c402/cli   (or prefix any command with: npx @c402/cli)
+
+# 1. look at an endpoint - no wallet needed
 c402 inspect https://server.example/decide
 
 # 2. pay it with YOUR wallet, get the attested result
